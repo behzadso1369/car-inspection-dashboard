@@ -1,0 +1,104 @@
+:root {
+  --fa-style-family: var(--fa-style-family-classic);
+  --fa-style: 900;
+}
+
+body {
+  
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: IRANYekan !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+}
+
+.p-chip-text {
+  color: white !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.p-dropdown {
+  padding-right: 12px;
+}
+
+body,
+body .p-component {
+  font-family: IRANYekan !important;
+}
+
+.p-dropdown .p-component .p-inputwrapper {
+  font-family: IRANYekan !important;
+}
+
+.p-dropdown-label {
+  font-family: IRANYekan !important;
+}
+*{
+  font-family: IRANYekan !important;
+}
+
+.p-accordion-content {
+  padding: 0 !important;
+}
+
+.p-card-content {
+  padding: 0 !important;
+}
+
+.p-card-title {
+  padding: 0 !important;
+  font-size: 2rem !important;
+}
+
+.p-sortable-column-icon {
+  padding-right: 10px;
+}
+
+.p-password-input {
+  width: 100%;
+}
+
+.p-dropdown-panel {
+  margin-right: 0 !important;
+}
+
+.p-toast-message-text {
+  padding-right: 1rem !important;
+}
+
+[role='cell'] {
+  text-align: right !important;
+}
+
+.p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
+  margin-right: 0 !important;
+}
+
+.ag-root-wrapper-body {
+  font-family: IRANYekan;
+}
+
+.ag-rtl .ag-cell {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.ag-header-cell-label {
+  font-size: 16px;
+}
+
+.p-icon {
+  width: 1.5rem !important;
+}

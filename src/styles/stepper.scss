@@ -1,0 +1,72 @@
+
+.paperRoot {
+  font-family: IRANYekan !important;
+  .MuiSvgIcon-root.MuiStepIcon-root.Mui-active {
+    color: transparent !important;
+    border: 2px solid #2c3c51;
+    border-radius: 50%;
+  }
+  
+  .MuiStepLabel-iconContainer {
+    .MuiSvgIcon-root.Mui-completed {
+      border: 2px solid #2c3c51;
+      border-radius: 50%;
+      color: #1b263b !important;
+    }
+  }
+  
+  MuiSvgIcon-root
+    MuiSvgIcon-fontSizeMedium
+    MuiStepIcon-root
+    Mui-active
+    css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root
+    .MuiStep-horizontal {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    margin-top: 1rem !important;
+  }
+  
+  .MuiStepLabel-iconContainer {
+    padding-right: 0 !important;
+  }
+  
+  .MuiStepLabel-root {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .MuiStepLabel-label {
+    font-size: 14px !important;
+  }
+  
+  .MuiStepIcon-text {
+    display: none;
+  }
+  
+  .MuiStepLabel-alternativeLabel {
+    svg {
+      border: 2px solid #bdbdbd;
+      border-radius: 50% !important;
+      color: transparent !important;
+    }
+  }
+  
+  .MuiStepConnector-root {
+    left: calc(-50% + 12px) !important;
+    right: calc(50% + 12px) !important;
+  }
+  
+  .Mui-completed {
+    .MuiStepConnector-line {
+      border-color: #1b263b !important;
+      border-top-width: 2px !important;
+    }
+  }
+  
+  .MuiStepConnector-line {
+    border-color: #bdbdbd !important;
+    border-top-width: 2px !important;
+  }
+
+}
+

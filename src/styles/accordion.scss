@@ -1,0 +1,21 @@
+.accordionn:after {
+  content: "";
+  position: absolute;
+  bottom: 24px;
+  right: 20px;
+  width: 1px;
+  height: calc(100% - 96px);
+  background: #e4e4e4;
+}
+
+.sidebar-accordion {
+  .MuiPaper-root {
+    .MuiButtonBase-root {
+      min-height: 50px !important;
+
+      .MuiAccordionSummary-content {
+        margin: unset !important;
+      }
+    }
+  }
+}

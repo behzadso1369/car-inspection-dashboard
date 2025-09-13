@@ -1,0 +1,117 @@
+.ag-theme-alpine {
+  --ag-checkbox-checked-color: #1b263b;
+  --ag-checkbox-unchecked-color: #1b263b;
+  --ag-checkbox-indeterminate-color: #1b263b;
+  --ag-icon-size: 14px;
+}
+
+.ag-row-selected::before {
+  background: rgba(178, 231, 253, 0.3);
+}
+
+.ag-row-hover.ag-row-selected::before {
+  background: #f2f2f3;
+}
+.ag-row-hover:not(.ag-full-width-row)::before,
+.ag-row-hover.ag-full-width-row.ag-row-group::before {
+  background: #f2f2f3;
+}
+
+.ag-header-viewport,.ag-pinned-right-header  {
+  background: #ebedef;
+}
+.ag-pinned-right-header {
+  border: none;
+}
+
+.ag-root-wrapper {
+  border: none !important;
+}
+
+.ag-center-cols-clipper {
+  background: #f9f9f9;
+}
+
+.ag-row {
+  background: #f9f9f9;
+  border-bottom: 2px solid rgba(178, 231, 253, 0.5);
+}
+
+.ag-header-cell-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: rgba(27, 38, 59, 0.6);
+}
+
+.ag-cell {
+  font-size: 12px !important;
+  color: #2c3c51 !important;
+  border: none !important;
+}
+
+.ag-menu {
+  background: white !important;
+}
+
+.default-table {
+  .ag-header-cell {
+    .ag-header-cell-label {
+      justify-content: center;
+    }
+  }
+  .ag-header-cell:first-child {
+    .ag-header-cell-label {
+      justify-content: start;
+    }
+  }
+  .ag-cell:not(:first-child) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ag-cell {
+    padding-left: 1.5rem;
+  }
+}
+
+.not-center-table {
+  .ag-header-cell {
+    .ag-header-cell-label {
+      justify-content: center;
+    }
+  }
+  .ag-header-cell:first-child {
+    .ag-header-cell-label {
+      justify-content: start;
+    }
+  }
+  .ag-header-cell:last-child {
+    .ag-header-cell-label {
+      justify-content: start;
+    }
+  }
+  .ag-cell:not(:first-child) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ag-cell {
+    padding-left: 1.5rem;
+  }
+}
+
+.select-table {
+  .ag-header-cell:not(:first-child) {
+    .ag-header-cell-label {
+      justify-content: center;
+    }
+  }
+  .ag-cell:not(:first-child) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ag-cell {
+    padding-left: 1rem;
+  }
+}

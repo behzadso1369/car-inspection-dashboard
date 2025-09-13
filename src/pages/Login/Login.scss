@@ -1,0 +1,19 @@
+.login__main {
+
+    &::before {
+        width: 100%;
+        height: 100%;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+background-image: url("../../assets/images/login-back.jpg");
+    }
+    .login-form {
+        z-index: 2;
+    }
+    .login-title {
+        z-index: 2; 
+    }
+}

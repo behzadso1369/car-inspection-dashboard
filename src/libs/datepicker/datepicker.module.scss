@@ -1,0 +1,65 @@
+.date-picker {
+  border: none;
+
+  .MuiInputBase-root {
+    border-radius: 6px;
+    height: 100%;
+    width: 100%;
+    outline: 0;
+    box-shadow: 0px 0px 0px 1px rgba(134, 143, 160, 0.16),
+      0px 1px 2px 0px rgba(0, 0, 0, 0.06);
+
+    input {
+      direction: ltr;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.7);
+      padding-top: 1.3rem;
+      padding-left: 1rem;
+    }
+    fieldset {
+      border: none;
+    }
+    .MuiPickersCalendarHeader-root {
+      display: flex;
+      justify-content: space-between;
+      background: red;
+    }
+  }
+}
+
+.MuiPickersPopper-root {
+  .MuiPaper-elevation {
+    margin-top: 0.5rem;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.06),
+      0px 0px 0px 1px rgba(134, 143, 160, 0.16) !important;
+    width: 100%;
+  }
+}
+
+.MuiPickersCalendarHeader-root {
+  position: relative;
+  box-shadow: none;
+  div[role='presentation'] {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+.MuiIconButton-edgeEnd.MuiPickersArrowSwitcher-button {
+  position: absolute !important;
+  left: 5% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+.MuiIconButton-edgeStart.MuiPickersArrowSwitcher-button {
+  position: absolute !important;
+  right: 0 !important;
+  transform: translateY(-50%) !important;
+}
+.MuiPickersCalendarHeader-labelContainer {
+  margin-right: 0 !important;
+}
+.MuiPickersCalendarHeader-root {
+  justify-content: center !important;
+  padding: 0 !important;
+}

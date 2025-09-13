@@ -1,0 +1,120 @@
+@import './styles/global.scss';
+@import './styles/tailwind.scss';
+@import './styles/iran-sanse.scss';
+@import './styles/iran-yekan.scss';
+@import './styles/iran-yekan-black.scss';
+@import './styles/iran-yekan-extra-bold.scss';
+@import './styles/accordion.scss';
+@import './styles/ag-grid.scss';
+@import './styles/date-picker.scss';
+@import './styles/dropdown.scss';
+@import './styles/stepper.scss';
+@import './styles/mui-badge.scss';
+@import '../node_modules/ag-grid-community/styles/ag-grid.css';
+@import '../node_modules/ag-grid-community/styles/ag-theme-alpine.css';
+
+textarea {
+  resize: none;
+}
+* {
+  font-family: peydaRegular !important;
+}
+
+.ag-theme-alpine .ag-layout-auto-height .ag-center-cols-viewport,
+.ag-theme-alpine .ag-layout-auto-height .ag-center-cols-container,
+.ag-theme-alpine .ag-layout-print .ag-center-cols-viewport,
+.ag-theme-alpine .ag-layout-print .ag-center-cols-container,
+.ag-theme-alpine-dark .ag-layout-auto-height .ag-center-cols-viewport,
+.ag-theme-alpine-dark .ag-layout-auto-height .ag-center-cols-container,
+.ag-theme-alpine-dark .ag-layout-print .ag-center-cols-viewport,
+.ag-theme-alpine-dark .ag-layout-print .ag-center-cols-container {
+  min-height: auto !important;
+}
+.paperRoot {
+  direction: rtl;
+
+  
+
+
+  & .MuiStepConnector-root {
+      right:  calc(-50% + 20px) !important;
+      left: calc(50% + 20px) !important;
+  }
+}
+.ag-react-container {
+  width: 100% !important;
+}
+@layer base {
+  html {
+    @font-face {
+      font-family: peydaThin;
+      font-style: normal;
+      font-weight: 100;
+      src: url('./assets/fonts/woff2/PeydaWebFaNum-Thin.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+         url('./assets/fonts/woff/PeydaWebFaNum-Thin.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    }
+    @font-face {
+      font-family: peydaExtraLight;
+      font-style: normal;
+      font-weight: 200;
+      src: url('./assets/fonts/woff2/PeydaWebFaNum-ExtraLight.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+         url('./assets/fonts/woff/PeydaWebFaNum-ExtraLight.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    }
+    @font-face {
+      font-family: peydaLight;
+      font-style: normal;
+      font-weight: 300;
+      src: url('./assets/fonts/woff2/PeydaWebFaNum-Light.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+         url('./assets/fonts/woff/PeydaWebFaNum-Light.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    }
+    @font-face {
+      font-family: peydaMedium;
+      font-style: normal;
+      font-weight: 500;
+      src: url('./assets/fonts/woff2/PeydaWebFaNum-Medium.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+         url('./assets/fonts/woff/PeydaWebFaNum-Medium.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    }
+    @font-face {
+      font-family: peydaSemiBold;
+      font-style: normal;
+      font-weight: 600;
+      src: url('./assets/fonts/woff2/PeydaWebFaNum-SemiBold.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+         url('./assets/fonts/woff/PeydaWebFaNum-SemiBold.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    }
+    
+    @font-face {
+      font-family: peydaExtraBold;
+      font-style: normal;
+      font-weight: 800;
+      src: url('./assets/fonts/woff2/PeydaWebFaNum-ExtraBold.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+         url('./assets/fonts/woff/PeydaWebFaNum-ExtraBold.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    }
+    @font-face {
+      font-family: peydaNumBlack;
+      font-style: normal;
+      font-weight: 900;
+      src: url('./assets/fonts/woff2/PeydaWebFaNum-Black.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+         url('./assets/fonts/woff/PeydaWebFaNum-Black.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    }
+    @font-face {
+      font-family: peydaBold;
+      font-style: normal;
+      font-weight: bold;
+      src: url('./assets/fonts/woff2/PeydaWebFaNum-Bold.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+         url('./assets/fonts/woff/PeydaWebFaNum-Bold.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    }
+    @font-face {
+      font-family: peydaRegular;
+      font-style: normal;
+      font-weight: normal;
+      src: url('./assets/fonts/woff2/PeydaWebFaNum-Regular.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+         url('./assets/fonts/woff/PeydaWebFaNum-Regular.woff') format('woff');  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    }
+
+  }
+}
+
+
+
+
+
