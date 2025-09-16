@@ -122,7 +122,7 @@ import axios from "axios";
 import React from "react";
 console.log(window.location.pathname);
 const instance = axios.create({
-  baseURL: "http://87.107.111.20/",
+  baseURL: "http://45.139.11.225:5533/api/",
 });
 
 const AxiosInterceptor = ({ children }: any) => {
