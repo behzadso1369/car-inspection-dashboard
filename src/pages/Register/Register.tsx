@@ -5,22 +5,14 @@ import { Input } from '../../libs/input/input';
 import { Button, PrimaryButton } from '../../libs/button/button';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import loginLargeUrl from '../../assets/images/login-back2.jpg'
-import "./Login.scss";
 import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import PasswordInput from '../../libs/password-input/password-input';
-import { type } from './../../@types/api.type';
-const Login: React.FunctionComponent = () => {
+const Register: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, control,getValues,reset } = useForm();
   const onSubmit = () => {
-
-    instance.post(ApiHelper.get("login"),getValues()).then(res => {
-      if(res.data) {
-        localStorage.setItem("token",res.data.resultObject.token);
-        navigate("/home");
-      }
-
+    instance.post(ApiHelper.get("register"),getValues()).then(res => {
       reset();
     })
   };
@@ -59,8 +51,19 @@ const Login: React.FunctionComponent = () => {
               width="w-full lg:w-full xl:w-full"
             />
           </div>
+          <div className="mb-8">
+          <Input
+            placeholder={'ایمیل'}
+            label={'ایمیل'}
+            type="text"
+            register={register}
+            control={control}
+            title="Email"
+         
+          />
+          </div>
           <div className='mb-8'>
-           <PasswordInput
+          <PasswordInput
          placeholder="لطفا   رمز عبور  خود را وارد نمایید"
          register={register}
          title="Password"
@@ -75,12 +78,10 @@ const Login: React.FunctionComponent = () => {
               active={true}
               icon={faArrowLeft}
               style={PrimaryButton + "w-3/5 flex justify-center h-10 lg:w-full xl:w-full"}
-            
             />
           </div>
-          <div className="flex w-full my-4 justify-between ">
-          <span>آیا حساب کاربری ندارید؟</span>
-          <NavLink className="text-blue-600" to={"/register"}>ثبت نام</NavLink>
+          <div className=" w-full flex justify-center my-4">
+          <NavLink className="text-blue-600" to={"/login"}>رفتن به صفحه لاگین</NavLink>
         </div>
         </form>
        
@@ -88,4 +89,4 @@ const Login: React.FunctionComponent = () => {
     </div>
   );
 };
-export default Login;
+export default Register;

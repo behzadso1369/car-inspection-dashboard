@@ -7,21 +7,14 @@ import 'ag-grid-enterprise';
 import { AG_GRID_LOCALE_FN } from '../../utils/ag-grid-localize/localize';
 import PaginationLib from '../../libs/pagination/pagination';
 import { useForm } from 'react-hook-form';
-
 import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import QuickSearch from '../../libs/quick-search/quick-search';
 import { CircularProgress } from '@mui/material';
-import AddUser from './AddUser';
-
-import Switch from '@mui/material/Switch';
-import DeleteUser from './DeleteUser';
+import AddRole from './AddRole';
+import DeleteRole from './DeleteRole';
 import { NavLink } from 'react-router-dom';
-
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
-
-
-const User: React.FunctionComponent = () => {
+const Role: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
@@ -53,20 +46,20 @@ const User: React.FunctionComponent = () => {
       menuTabs: ['filterMenuTab'],
     };
   }, []);
-  const getAllUser = () => {
-    instance.get(ApiHelper.get("GetAllUsers")).then((res:any) => {
+  const getAllRoles = () => {
+    instance.get(ApiHelper.get("GetAllRolse")).then((res:any) => {
       setRowData(res?.data?.resultObject)
     })
   }
   useEffect(() => {
-    getAllUser();
+    getAllRoles();
  
-  }, [page,rowsPerPage,showAddModal,showDeleteUser,search]);
+  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal]);
   const setDisableUser = (params:any) => {
 
       instance.put(ApiHelper.get("disableUser"),{userId:params.data.id}).then((res:any) => {
         if(res.data.success) {
-          getAllUser();
+            getAllRoles();
         }
       })
   
@@ -85,89 +78,49 @@ const User: React.FunctionComponent = () => {
  
 
   const columnDefs:ColDef[] = [
-    // {
-    //   field: 'id',
-    //   headerName: '#',
-    //   sortable: true,
-    //   unSortIcon: true,
-    //   rowDrag:true,
-    //   filter: false,
-    //   pinned: "right",
-    //   width:280,
-    //   wrapText:false
+    {
+      field: 'id',
+      headerName: '#',
+      sortable: true,
+      unSortIcon: true,
+      rowDrag:true,
+      filter: false,
+      pinned: "right",
+      width:280,
+      wrapText:false
      
-    // },
-    // {
-    //   field: 'fullName',
-    //   headerName: 'نام  کامل',
-       
-    //   cellRenderer: (params:any) => {
-    //     return (
-    //       <>
-    //       {params.data.fullName ? <span className='text-sm'>{params.data.fullName}</span> : <button className='bg-slate-300 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
-    //       </>
-    //     )
-     
-    //    }
-    //     },
+    },
+  
    
     {
-      field: 'userName',
-      rowDrag:true,
-      headerName: 'نام کاربری',
+      field: 'name',
+      headerName: 'نام ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.userName ? <span>{params.data.userName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.name ? <span>{params.data.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
+        {
+            field: 'normalizedName',
+            headerName: 'normalizedName ',
+            cellRenderer: (params:any) => {
+              return (
+                <>
+                {params.data.normalizedName ? <span>{params.data.normalizedName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                </>
+              )
+           
+             }
+              },
 
     
     
   
-    {
-      field: 'email',
-      headerName: 'ایمیل',
-      width:400,
-      cellRenderer: (params:any) => {
-        return (
-          <>
-          {params.data.email ? <span className='text-xs'>{params.data.email}</span> : <button className='bg-red-400 text-balck flex justify-center items-center py-2 px-3'>ثبت نشده است</button>}
-          </>
-        )
-     
-       }
-    
-    },
-    {
-      field: 'role',
-      headerName: 'نقش کاربر',
-      cellRenderer: (params:any) => {
-        return (
-          <>
-          {params.data.roles[0] ? <span className='text-base'>{params.data.roles[0]}</span> : <button className='bg-red-400 text-balck flex justify-center items-center h-8  rounded-2xl  px-2 text-white'>ثبت نشده است</button>}
-          </>
-        )
-     
-       }
-    
-    },
-
-   
-    {
-      field: 'is_active',
-      headerName: 'فعال/غیر فعال',
- 
-   cellRenderer: (params:any) => {
-    return (
-      <Switch {...label} defaultChecked={params.data.is_active} onChange={() => setDisableUser(params)} />
-    )
- 
-   }
-    },
+  
   
     {
       field: 'action',
@@ -180,8 +133,8 @@ const User: React.FunctionComponent = () => {
   <div className="flex justify-start items-start">
          
         
-                <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' ><NavLink to={"../../users/detail/" + params.data.id}>ویرایش کاربر </NavLink></button>
-                <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteUser(params)}>حذف کاربر</button>
+                <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' ><NavLink to={"../../users/detail/" + params.data.id}>ویرایش نقش </NavLink></button>
+                <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteUser(params)}>حذف نقش</button>
 
           
            
@@ -218,8 +171,8 @@ const User: React.FunctionComponent = () => {
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
-          <h3 className="text-base font-bold text-primary">  کاربران </h3>
-          <button disabled className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن کاربر</button>
+          <h3 className="text-base font-bold text-primary">  نقش ها </h3>
+          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن نقش</button>
       
       </div>
         <QuickSearch  activeSearch={true}   register={register}
@@ -269,11 +222,11 @@ const User: React.FunctionComponent = () => {
       </div>
       </div>
       {showAddModal && (
-        <AddUser showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
+        <AddRole showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )}
      
       {showDeleteUser && (
-       <DeleteUser userId={userId} username={userName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+       <DeleteRole userId={userId} username={userName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
    
     
@@ -283,4 +236,4 @@ const User: React.FunctionComponent = () => {
   );
 };
 
-export default User;
+export default Role;

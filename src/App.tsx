@@ -13,6 +13,7 @@ import NotificationDetail from './pages/Notification/NotificationDetail';
 import './styles.scss'
 import Auth from './utils/Auth';
 import Setting from './pages/Setting/Setting';
+import Register from './pages/Register/Register';
 
 
 const App: React.FunctionComponent = () => {
@@ -36,7 +37,7 @@ const App: React.FunctionComponent = () => {
   return (
 
       <BrowserRouter>
-        {/* <AxiosInterceptor> */}
+        <AxiosInterceptor>
           <Routes>
             <Route
               path="login"
@@ -49,6 +50,20 @@ const App: React.FunctionComponent = () => {
                   }
                 >
                   <Login />
+                </React.Suspense>
+              }
+            />
+                 <Route
+              path="register"
+              element={
+                <React.Suspense
+                  fallback={
+                    <div className="flex justify-center items-center h-screen">
+                      ...
+                    </div>
+                  }
+                >
+                  <Register />
                 </React.Suspense>
               }
             />
@@ -74,7 +89,7 @@ const App: React.FunctionComponent = () => {
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
-        {/* </AxiosInterceptor> */}
+        </AxiosInterceptor>
       </BrowserRouter>
  
   );

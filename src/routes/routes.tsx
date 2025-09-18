@@ -21,6 +21,7 @@ import BankRoute from '../pages/Banks/BankRoutes';
 
 import TransactionRoute from '../pages/Transactions/TransactionRoute';
 import WithdrawRoute from '../pages/Withdraw/WithdrawRoute';
+import RoleRoute from '../pages/Role/RoleRoute';
 
 
 export const RoutesData = [
@@ -46,7 +47,13 @@ export const RoutesData = [
           path: 'users/list',
           permission: ['admin', 'superAdmin' ,'customer'],
           ID: 1,
-          title: "کاربران",
+          title: "کاربران ادمین",
+        },
+        {
+          path: 'users/list',
+          permission: ['admin', 'superAdmin' ,'customer'],
+          ID: 1,
+          title: "کاربران سایت",
         },
         {
           path: 'users/unverified-users',
@@ -55,6 +62,15 @@ export const RoutesData = [
           title: "کاربران   احراز هویت نشده",
         },
     ],
+
+  },
+  {
+    path: 'roles',
+    component: RoleRoute,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "نقش ها",
+    icon: faUser,
 
   },
   {

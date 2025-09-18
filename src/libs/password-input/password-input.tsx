@@ -1,8 +1,27 @@
-import React, { useState } from 'react';
+import React, { ComponentPropsWithoutRef, FC, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { Controller } from 'react-hook-form';
+type InputProps = ComponentPropsWithoutRef<'input'> & {
+  label?: string;
+  placeholder?: string;
+  width?: string;
+  error?: boolean;
+  title: string;
+  register: any;
+  control: any;
+};
 
-const PasswordInput: React.FunctionComponent = () => {
+const PasswordInput: FC<InputProps> = ({
+  label,
+  placeholder,
+  register,
+  title,
+  control,
+  width,
+  error,
+  ...props
+}) => {
   const [focused, setFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [input, setInput] = useState<string>('');
@@ -13,23 +32,30 @@ const PasswordInput: React.FunctionComponent = () => {
         پسورد
       </label>
       <div
-        className="bg-white flex items-center rounded-lg w-80 mt-2 "
+        className="bg-white flex items-center rounded-lg w-full mt-2 "
         style={{
           boxShadow:
             focused && input
               ? '0px 0px 0px 1px rgba(134, 143, 160, 0.16), 0px 1px 2px 0px rgba(0, 0, 0, 0.06), 0px 0px 0px 3px rgba(178, 231, 253, 0.50)'
               : '0px 0px 0px 1px rgba(134, 143, 160, 0.16), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)',
-          direction: !focused && !input ? 'rtl' : 'ltr',
+          direction: "rtl"
         }}
       >
-        <input
-          className={`appearance-none w-full text-black-opacity-40 placeholder-black-opacity-40 leading-tight focus:outline-none focus:shadow-outline text-base p-3 rounded-lg`}
-          id="username"
+                <Controller
+          {...register(title)}
+          control={control}
+          render={({ field: { ref, ...field } }) => {
+            const { value } = field;
+            return (
+              <>
+                 <input
+                    {...field}
+                    {...register(title)}
+                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-8 w-full text-primary placeholder-black-opacity-40 leading-tight focus:outline-none focus:shadow-outline text-sm rounded-lg py-3 px-3"
+                  id={title}
           type={showPassword ? 'text' : 'password'}
           placeholder="پسورد"
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          onChange={(e) => setInput(e.target.value)}
+       
         />
         {input && (
           <div
@@ -51,6 +77,12 @@ const PasswordInput: React.FunctionComponent = () => {
             )}
           </div>
         )}
+              </>
+            )
+          }}
+          />
+     
+        
       </div>
     </div>
   );

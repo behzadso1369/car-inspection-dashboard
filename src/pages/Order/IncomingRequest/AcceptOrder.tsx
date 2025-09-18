@@ -61,7 +61,6 @@ const AcceptOrder: React.FunctionComponent = () => {
     instance.get(ApiHelper.get("getRequestDetail"),{params:{requestId:id}}).then((res:any) => {
       if(res) {
         setDetailData(res?.data?.data);
-        debugger
         
     
         

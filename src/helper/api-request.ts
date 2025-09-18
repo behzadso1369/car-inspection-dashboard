@@ -5,6 +5,7 @@ export class ApiHelper {
     * Get the full URL for a given service
      */
     static get(service: string = '', postfix: string = ''): string {
+        
         if (typeof services[service] !== 'undefined') {
             return  services[service] + (postfix ? '/' + postfix : '');
         }
