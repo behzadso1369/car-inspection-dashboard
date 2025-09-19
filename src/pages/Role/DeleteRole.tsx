@@ -15,8 +15,8 @@ import { ApiHelper } from '../../helper/api-request';
 
 interface EditPieceProps extends React.PropsWithChildren {
   showDeleteModal: boolean;
-  userId:number;
-  username:string;
+  roleId:number;
+  roleName:string;
 
 
 
@@ -25,12 +25,12 @@ interface EditPieceProps extends React.PropsWithChildren {
 
 const DeleteRole: React.FunctionComponent<
 EditPieceProps
-> = ({ showDeleteModal, setShowDeleteModal,username,userId }) => {
+> = ({ showDeleteModal, setShowDeleteModal,roleName,roleId }) => {
 
 
 
   const onSubmit = () => {
-    instance.delete(ApiHelper.get("User")  + userId).then((res:any) => {
+    instance.delete(ApiHelper.get("DeleteRole") + "/"  + roleId).then((res:any) => {
         if(res) {
           setShowDeleteModal(false)
     
@@ -63,7 +63,7 @@ EditPieceProps
       <div className="grid grid-cols-3 gap-3 pb-8 px-10 py-5">
         <div className='col-span-3'>
             <span>آیا از حذف نقش</span>
-            <span className='text-blue-500'> {username} </span>
+            <span className='text-blue-500'> {roleName} </span>
             <span> </span>
             <span>مطمئن هستید؟</span>
         </div>

@@ -20,11 +20,12 @@ const Role: React.FunctionComponent = () => {
 
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [showDeleteUser, setShowDeleteUser] = useState<boolean>(false);
-  const [userId, setUserId] = useState<number>(0);
-  const [userName, setUserName] = useState<string>("");
+  const [roleId, setUserId] = useState<number>(0);
+  const [roleName, setRoleName] = useState<string>("");
   const [page, setPage] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [search,setSearch] = useState<string>("")
+  const [count, setCount] = React.useState(0);
 
   const [rowData, setRowData] = useState<any>();
 
@@ -47,29 +48,19 @@ const Role: React.FunctionComponent = () => {
     };
   }, []);
   const getAllRoles = () => {
-    instance.get(ApiHelper.get("GetAllRolse")).then((res:any) => {
-      setRowData(res?.data?.resultObject)
+    instance.get(ApiHelper.get("GetAllRolse"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+      setRowData(res?.data?.resultObject);
+         setCount(res?.data?.countData);
     })
   }
   useEffect(() => {
     getAllRoles();
  
   }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal]);
-  const setDisableUser = (params:any) => {
-
-      instance.put(ApiHelper.get("disableUser"),{userId:params.data.id}).then((res:any) => {
-        if(res.data.success) {
-            getAllRoles();
-        }
-      })
-  
-  
-
-  }
 
   const deleteUser = (params:any) => {
-    setUserId(params.data.id);
-    setUserName(params.data.username);
+    setUserId(params.data.Id);
+    setRoleName(params.data.Name);
     setShowDeleteUser(true);
   
   }
@@ -79,7 +70,7 @@ const Role: React.FunctionComponent = () => {
 
   const columnDefs:ColDef[] = [
     {
-      field: 'id',
+      field: 'Id',
       headerName: '#',
       sortable: true,
       unSortIcon: true,
@@ -93,24 +84,24 @@ const Role: React.FunctionComponent = () => {
   
    
     {
-      field: 'name',
+      field: 'Name',
       headerName: 'نام ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.name ? <span>{params.data.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.Name ? <span>{params.data.Name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
         {
-            field: 'normalizedName',
+            field: 'NormalizedName',
             headerName: 'normalizedName ',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.normalizedName ? <span>{params.data.normalizedName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.NormalizedName ? <span>{params.data.NormalizedName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
@@ -133,7 +124,7 @@ const Role: React.FunctionComponent = () => {
   <div className="flex justify-start items-start">
          
         
-                <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' ><NavLink to={"../../users/detail/" + params.data.id}>ویرایش نقش </NavLink></button>
+                {/* <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' ><NavLink to={"../../users/detail/" + params.data.id}>ویرایش نقش </NavLink></button> */}
                 <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteUser(params)}>حذف نقش</button>
 
           
@@ -183,7 +174,7 @@ const Role: React.FunctionComponent = () => {
         className="absolute right-0 bottom-0 bg-white w-full"
         style={{ boxShadow: '0px -2px 7px 0px rgba(0, 0, 0, 0.05)' }}
       >
-    <PaginationLib page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
+    <PaginationLib count={count} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
       </div>
       <div style={containerStyle}>
       <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-32 pt-6">
@@ -226,7 +217,7 @@ const Role: React.FunctionComponent = () => {
      )}
      
       {showDeleteUser && (
-       <DeleteRole userId={userId} username={userName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+       <DeleteRole roleId={roleId} roleName={roleName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
    
     

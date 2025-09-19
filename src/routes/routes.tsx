@@ -22,6 +22,7 @@ import BankRoute from '../pages/Banks/BankRoutes';
 import TransactionRoute from '../pages/Transactions/TransactionRoute';
 import WithdrawRoute from '../pages/Withdraw/WithdrawRoute';
 import RoleRoute from '../pages/Role/RoleRoute';
+import Role from '../pages/Role/Role';
 
 
 export const RoutesData = [
@@ -50,99 +51,94 @@ export const RoutesData = [
           title: "کاربران ادمین",
         },
         {
-          path: 'users/list',
+          path: 'site-users/list',
           permission: ['admin', 'superAdmin' ,'customer'],
-          ID: 1,
+          ID: 2,
           title: "کاربران سایت",
         },
-        {
-          path: 'users/unverified-users',
-          permission: ['admin', 'superAdmin' ,'customer'],
-          ID: 1,
-          title: "کاربران   احراز هویت نشده",
-        },
+        
     ],
 
   },
   {
-    path: 'roles',
-    component: RoleRoute,
+    path: 'roles/list',
+    component: Role,
     ID: 2,
     permission: ['admin', 'superAdmin'],
     title: "نقش ها",
     icon: faUser,
 
   },
-  {
-    path: 'services',
-    component: ServicesRoute,
-    ID: 3,
-    permission: ['admin', 'superAdmin' ,'customer'],
-    title: "سرویس ها",
-    icon: faTruckRampBox,
-    children: [
-      {
-        path: 'services/list',
-        permission: ['admin', 'superAdmin' ,'customer'],
-        ID: 1,
-        title: "لیست سرویس ها",
-      }
-    ],
-  },
+  // {
+  //   path: 'services',
+  //   component: ServicesRoute,
+  //   ID: 3,
+  //   permission: ['admin', 'superAdmin' ,'customer'],
+  //   title: "سرویس ها",
+  //   icon: faTruckRampBox,
+  //   children: [
+  //     {
+  //       path: 'services/list',
+  //       permission: ['admin', 'superAdmin' ,'customer'],
+  //       ID: 1,
+  //       title: "لیست سرویس ها",
+  //     }
+  //   ],
+  // },
   
-  {
-    path: 'order',
-    component: OrderRoute,
-    ID: 4,
-    permission: ['admin', 'superAdmin' ,'customer'],
-    title: "سفارشات",
-    icon: faCartArrowDown,
-    children: [
+  // {
+  //   path: 'order',
+  //   component: OrderRoute,
+  //   ID: 4,
+  //   permission: ['admin', 'superAdmin' ,'customer'],
+  //   title: "سفارشات",
+  //   icon: faCartArrowDown,
+  //   children: [
      
-      {
-        path: 'order/list',
-        permission: ['admin', 'superAdmin' ,'customer'],
-        ID: 1,
-        title: "کل سفارشات ",
-      },
-      {
-        path: 'order/sell',
-        permission: ['admin', 'superAdmin' ,'customer'],
-        ID: 1,
-        title: "سفارشات فروش",
-      },
-      {
-        path: 'order/buy',
-        permission: ['admin', 'superAdmin' ,'customer'],
-        ID: 1,
-        title: "سفارشات خرید",
-      },
+  //     {
+  //       path: 'order/list',
+  //       permission: ['admin', 'superAdmin' ,'customer'],
+  //       ID: 1,
+  //       title: "کل سفارشات ",
+  //     },
+  //     {
+  //       path: 'order/sell',
+  //       permission: ['admin', 'superAdmin' ,'customer'],
+  //       ID: 1,
+  //       title: "سفارشات فروش",
+  //     },
+  //     {
+  //       path: 'order/buy',
+  //       permission: ['admin', 'superAdmin' ,'customer'],
+  //       ID: 1,
+  //       title: "سفارشات خرید",
+  //     },
       
       
-    ],
-  },
-  {
-    path: 'transactions',
-    component: TransactionRoute,
-    ID: 5,
-    permission: ['admin', 'superAdmin' ,'customer'],
-    title: "تراکنش ها",
-    icon: faWallet
-  },
-  {
-    path: 'withdraw',
-    component: WithdrawRoute,
-    ID: 6,
-    permission: ['admin', 'superAdmin' ,'customer'],
-    title: "درخواست برداشت",
-    icon: faWallet
-  },
-  {
-    path: 'bank',
-    component: BankRoute,
-    ID: 7,
-    permission: ['admin', 'superAdmin' ,'customer'],
-    title: "حساب های بانکی",
-    icon: faCreditCard
-  }
+  //   ],
+  // },
+  // {
+  //   path: 'transactions',
+  //   component: TransactionRoute,
+  //   ID: 5,
+  //   permission: ['admin', 'superAdmin' ,'customer'],
+  //   title: "تراکنش ها",
+  //   icon: faWallet
+  // },
+  // {
+  //   path: 'withdraw',
+  //   component: WithdrawRoute,
+  //   ID: 6,
+  //   permission: ['admin', 'superAdmin' ,'customer'],
+  //   title: "درخواست برداشت",
+  //   icon: faWallet
+  // },
+  // {
+  //   path: 'bank',
+  //   component: BankRoute,
+  //   ID: 7,
+  //   permission: ['admin', 'superAdmin' ,'customer'],
+  //   title: "حساب های بانکی",
+  //   icon: faCreditCard
+  // }
 ];

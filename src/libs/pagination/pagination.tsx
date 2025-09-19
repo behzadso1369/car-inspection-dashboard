@@ -9,16 +9,13 @@ page:number;
 rowsPerPage:number;
 setPage:any;
 setRowsPerPage:any;
+count:number;
 }
 
 
-export const PaginationLib: React.FunctionComponent<PaginationProps> = ({page,setPage,setRowsPerPage,rowsPerPage}) => {
-
-
+export const PaginationLib: React.FunctionComponent<PaginationProps> = ({page,setPage,setRowsPerPage,rowsPerPage,count}) => {
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    console.log(event)
-    debugger
     setPage(value);
   };
 
@@ -35,16 +32,17 @@ export const PaginationLib: React.FunctionComponent<PaginationProps> = ({page,se
       style={{ direction: 'ltr' }}
     >
       <Stack spacing={2}>
-        <Pagination sx={{ color: '#B2E7FD' }} shape="rounded" count={10} onChange={handleChange} />
+        <Pagination sx={{ color: '#B2E7FD' }} shape="rounded" count={(Math.ceil(count/rowsPerPage))} onChange={handleChange} />
       </Stack>
       <TablePagination
         component="div"
-        count={100}
+        count={Number(count)}
         page={page}
       
         onPageChange={() =>{}}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        rowsPerPageOptions={[5,10,25,100]}
         labelRowsPerPage={': تعداد سطر در هر صفحه'}
         SelectProps={{
           IconComponent: () => {
