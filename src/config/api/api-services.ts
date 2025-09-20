@@ -12,7 +12,11 @@ GetAllUsers:"Auth/GetAllUsers",
 GetAllRolse: "Auth/GetAllRolse",
 DeleteRole: "Auth/DeleteRole",
 DeActiveUser: "Auth/DeActiveUser",
-ActiveUser: "Auth/ActiveUser"
+ActiveUser: "Auth/ActiveUser",
+CreateSlider: "/Slider/CreateWithFile",
+UpdateSlider: "/Slider/UpdateWithFile",
+DeleteSlider: "/Slider/Delete",
+SliderList:"/Slider/List"
 
 
 
