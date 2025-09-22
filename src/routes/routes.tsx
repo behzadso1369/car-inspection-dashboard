@@ -23,6 +23,7 @@ import TransactionRoute from '../pages/Transactions/TransactionRoute';
 import WithdrawRoute from '../pages/Withdraw/WithdrawRoute';
 import RoleRoute from '../pages/Role/RoleRoute';
 import Role from '../pages/Role/Role';
+import Slider from '../pages/Slider/Slider';
 
 
 export const RoutesData = [
@@ -66,6 +67,15 @@ export const RoutesData = [
     ID: 2,
     permission: ['admin', 'superAdmin'],
     title: "نقش ها",
+    icon: faUser,
+
+  },
+  {
+    path: 'slides/list',
+    component: Slider,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "اسلایدها",
     icon: faUser,
 
   },

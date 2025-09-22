@@ -1,3 +1,4 @@
+import DeleteSlider from "../../pages/Slider/DeleteSlider";
 
 
 export default {
@@ -16,8 +17,9 @@ ActiveUser: "Auth/ActiveUser",
 CreateSlider: "/Slider/CreateWithFile",
 UpdateSlider: "/Slider/UpdateWithFile",
 DeleteSlider: "/Slider/Delete",
-SliderList:"/Slider/List"
-
+SliderList:"/Slider/List",
+CreateSliderWithFile : "Slider/CreateWithFile",
+UpdateSliderWithFile : "Slider/UpdateSliderWithFile",
 
 
 
