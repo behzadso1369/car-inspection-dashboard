@@ -79,6 +79,48 @@ export const RoutesData = [
     icon: faUser,
 
   },
+   {
+    path: 'blog',
+    component: ServicesRoute,
+    ID: 3,
+    permission: ['admin', 'superAdmin' ,'customer'],
+    title: "سرویس ها",
+    icon: faTruckRampBox,
+    children: [
+      {
+        path: 'blog/posts',
+        permission: ['admin', 'superAdmin' ,'customer'],
+        ID: 1,
+        title: "پست های بلاگ",
+      },
+    
+      {
+        path: 'blog/blog-categories',
+        permission: ['admin', 'superAdmin' ,'customer'],
+        ID: 2,
+        title: "دسته بندی بلاگ",
+      },
+      {
+        path: 'blog/blog-comments',
+        permission: ['admin', 'superAdmin' ,'customer'],
+        ID: 3,
+        title: "کامنت های بلاگ",
+      },
+      {
+        path: 'blog/tags',
+        permission: ['admin', 'superAdmin' ,'customer'],
+        ID: 4,
+        title: "تگ های بلاگ",
+      },
+      {
+        path: 'blog/post-tag',
+        permission: ['admin', 'superAdmin' ,'customer'],
+        ID: 5,
+        title: "تگ های پست بلاگ",
+      },
+      
+    ],
+  },
   // {
   //   path: 'services',
   //   component: ServicesRoute,
