@@ -33,6 +33,7 @@ EditPieceProps
   const inputImageRef = useRef<any>(null);
 
   const { register, control,getValues} = useForm({});
+  const [blogCategories,setBlogCategories] = useState<any>([])
 
 
 
@@ -42,17 +43,8 @@ EditPieceProps
   
     const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
   const onSubmit = () => {
-    const formData = new FormData();
-    formData.append("Text",getValues()["Text"])
-    formData.append("Link",getValues()["Link"])
-    formData.append("DurationTime",getValues()["DurationTime"])
-    formData.append("Image",image);
-    debugger
-    // for (const key in getValues()) {
-    //     formData.append(key,getValues()[key])
-    
-    // }
-  instance.post(ApiHelper.get("CreateSliderWithFile"),formData).then((res:any) => {
+
+  instance.post(ApiHelper.get("CreateBlogPost"),getValues()).then((res:any) => {
     if(res.data) {
         setShowAddUserModal(false);
     }
@@ -67,7 +59,14 @@ EditPieceProps
     setImage(file);
 
   };
+  const getBlogCategories = () => {
+    instance.get(ApiHelper.get("BlogCategoriesList"),{params: {pageNumber:0,pageSize:10000}}).then((res:any) => {
+      setBlogCategories(res.data.resultObject);
+
+    })
+  }
   useEffect(() => {
+    getBlogCategories();
   
   },[])
   return (
@@ -93,12 +92,12 @@ EditPieceProps
       <div className="grid grid-cols-4 gap-3 !py-3 px-4">
   
   <Input
-  placeholder='متن'
+  placeholder='عنوان'
   type="text"
   register={register}
   control={control}
-  title="Text"
-  label='متن'
+  title="Title"
+  label='عنوان'
   width="w-full"
 />
   <Input
@@ -106,20 +105,51 @@ EditPieceProps
          type="text"
          register={register}
          control={control}
-         title="Link"
-         label='لینک'
+         title="Slug"
+         label='Slug'
          width="w-full"
        />
-         
-     <Input
+  <Input
       
-      type="text"
+         type="text"
+         register={register}
+         control={control}
+         title="Excerpt"
+         label='گزیده'
+         width="w-full"
+       />
+             <div className='flex justify-between items-center'>
+                    <span>پابلیش شود؟</span>
+                    <Switch {...register("IsPublished")} {...label} defaultChecked={false}  />
+
+                  </div>
+             <div className='flex justify-between items-center'>
+                    <span>صفحه اول  باشئ؟</span>
+                    <Switch {...register("IsFirstPage")} {...label} defaultChecked={false}  />
+
+                  </div>
+     <TextArea
       register={register}
       control={control}
-      title="DurationTime"
-      label='زمان عوض شدن'
-      width="w-full"
+      title="Content"
+      label='متن'
     />
+      <Dropdown
+                  register={register}
+                  control={control}
+                  title="bank"
+                  label='بانک'
+                  option={blogCategories?.map((item:any) => {
+                    console.log(item);
+                    
+                    return {
+                      id: item?.id,
+                      title:item?.name
+                    }
+                  })}
+                  fullWidth={true}
+                />
+
     
 
 

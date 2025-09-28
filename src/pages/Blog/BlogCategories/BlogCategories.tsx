@@ -14,6 +14,8 @@ import { CircularProgress } from '@mui/material';
 import CreateSlider from './CreateBlogCategory';
 import DeleteSlider from './DeleteBlogCategory';
 import { NavLink } from 'react-router-dom';
+import CreateBlogCategory from './CreateBlogCategory';
+import EditBlogCategory from './EditBlogCategory';
 const BlogCategories: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -26,8 +28,12 @@ const BlogCategories: React.FunctionComponent = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [search,setSearch] = useState<string>("")
   const [count, setCount] = React.useState(0);
+  const [blogCatName, setBlogCatName] = React.useState<string>("");
+  const [blogCatId, setBlogCatId] = React.useState<number>(0);
+  const [showEditModal, setShowEditModal] = React.useState<boolean>(false);
 
   const [rowData, setRowData] = useState<any>();
+
 
   const allgridRef = useRef<any>();
 
@@ -58,7 +64,7 @@ const BlogCategories: React.FunctionComponent = () => {
  
   }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal]);
 
-  const deleteSlider = (params:any) => {
+  const deleteBlog = (params:any) => {
     setSlideId(params.data.Id);
     setSlideName(params.data.Name);
     setShowDeleteUser(true);
@@ -133,15 +139,15 @@ const BlogCategories: React.FunctionComponent = () => {
       cellRenderer: (params:any) => {
         return (
    
-  <div className="flex justify-start items-start">
-         
-        
-                {/* <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' ><NavLink to={"../../users/detail/" + params.data.id}>ویرایش نقش </NavLink></button> */}
-                <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteSlider(params)}>حذف اسلاید</button>
-
-          
-           
-          </div>
+          <div className="flex justify-start items-start">
+          <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' onClick={() => {
+            
+            setShowEditModal(true)
+            setBlogCatId(params.data.Id);
+            setBlogCatName(params.data.Roles[0]);
+            }}>ویرایش دسته بندی بلاگ </button>
+          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف دسته بندی</button>
+    </div>
         
         
         );
@@ -174,8 +180,8 @@ const BlogCategories: React.FunctionComponent = () => {
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
-          <h3 className="text-base font-bold text-primary">   اسلایدها </h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن اسلاید</button>
+          <h3 className="text-base font-bold text-primary">   دسته بندی بلاگ </h3>
+          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن دسته بندی بلاگ</button>
       
       </div>
         <QuickSearch  activeSearch={true}   register={register}
@@ -225,11 +231,14 @@ const BlogCategories: React.FunctionComponent = () => {
       </div>
       </div>
       {showAddModal && (
-        <CreateSlider showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
+        <CreateBlogCategory showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )}
      
       {showDeleteUser && (
        <DeleteSlider slideId={sliderId} slideName={slideName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+     )}
+       {showEditModal && (
+        <EditBlogCategory blogCatId={blogCatId} blogCatName={blogCatName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
      )}
    
     

@@ -11,84 +11,49 @@ import { ApiHelper } from '../../../helper/api-request';
 import Input from '../../../libs/input/input';
 import Datepicker from '../../../libs/datepicker/datepicker';
 import Dropdown from '../../../libs/dropdown/dropdown';
+import Button, { PrimaryButton, SecondaryButton } from '../../../libs/button/button';
 
 
 
 
 
 interface EditPieceProps extends React.PropsWithChildren {
-  showEditUserModal: boolean;
-  userId:number;
-  userName:string;
+  showEditModal: boolean;
+  blogTagName:string;
+  blogTagId:number;
 
 
 
-  setShowEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EditBlogTag: React.FunctionComponent<
 EditPieceProps
-> = ({ showEditUserModal, setShowEditUserModal,userId,userName }) => {
-    const [userData,setUserData] = useState<any>({});
-    const [customer,setCustomer] = useState<any>([]);
-
-    const { register, control,reset} = useForm({
-        defaultValues: {
-            "id": userData.id,
-            "customerId": 1,
-            "username": userData.username,
-            "password": userData.password,
-            "firstName": userData.firstName,
-            "lastName": userData.lastName,
-            "nationalCode": userData.nationalCode,
-            "mobile": userData.mobile,
-            "birthDate": userData.birthDate,
-            "roleId":1
-        }
-    });
-
-    const [roles,setRoles] = useState<any>([]);
-
-
- 
-  useEffect(() => {
-    instance.get(ApiHelper.get('getCustomers')).then((res:any) => {
-      setCustomer(res.data);
-     
+> = ({ showEditModal, setShowEditModal,blogTagId,blogTagName }) => {
+    const { register, control,getValues,reset} = useForm({});
+    const onSubmit = () => {
+    instance.put(ApiHelper.get("EditBlogTag") + "?id=" + blogTagId ,getValues()).then((res:any) => {
+      if(res.data) {
+        setShowEditModal(false);
+      }
     })
-    instance.get(ApiHelper.get("getRoles")).then((res:any) => {
-        if(res.data.success) {
-            setRoles(res.data.data);
-        }
-    })
-    instance.get(ApiHelper.get("getUserById"),{params: {UserId:userId}}).then((res:any) => {
-        if(res.data.success) {
-          setUserData(res.data.data);
-          // reset(res.data.data);
-         
-           
-          
-
-            reset({
-            "id": res?.data?.data.id,
-            "customerId": 1,
-            "username": res.data.data.username,
-            "password": res.data.data.password,
-            "firstName": res.data.data.firstName,
-            "lastName": res.data.data.lastName,
-            "nationalCode": res.data.data.nationalCode,
-            "mobile": res.data.data.mobile,
-            "birthDate": res.data.data.birthDate,
-            "roleId":res.data.data.roles[0].id
-            });
-        }
-    })
-  },[])
+    };
+    const  getBlogTagById = () => {
+      instance.get(ApiHelper.get("GetBlogTagById"),{params:{id:blogTagId}}).then((res:any) => {
+          reset({
+            name:res.data.resultObject.name,
+            slug:res.data.resultObject.slug,
+          })
+      })
+    }
+    useEffect(() => {
+      getBlogTagById();
+    },[])
   return (
     <Dialog
       className="w-full  !overflow-hidden"
-      onClose={() => setShowEditUserModal(false)}
-      open={showEditUserModal}
+      onClose={() => setShowEditModal(false)}
+      open={showEditModal}
      
       maxWidth="xl"
       
@@ -100,117 +65,48 @@ EditPieceProps
       }}
     >
       <DialogTitle className="w-full flex items-center gap-3 border-b !pb-6">
-        <span> ویرایش  کاربر </span>
+        <span> ویرایش  تگ بلاگ </span>
         <span> </span>
-        <span>{userName}</span>
+        <span>{blogTagName}</span>
         
       </DialogTitle>
       <div className="grid grid-cols-3 gap-3 pb-8 px-10 py-5">
-      
-{/*               
-    <Dropdown
-                  register={register}
-                  control={control}
-                  title="equipId"
-                  label='نام تجهیز'
-                  option={equip?.data}
-                  fullWidth={true}
-                />
-                  <Dropdown
-                register={register}
-                control={control}
-                title="equipPartId"
-                
-                label='نام قطعه'
-                option={equipPart?.data}
-             
-                fullWidth={true}
-               
-              />  */}
-               <Dropdown
-                  register={register}
-                  control={control}
-                  title="customerId"
-                  label='مشتری'
-                  option={customer?.data}
-                
-                  fullWidth={true}
-                />
-               <Input
-       
-       placeholder=' نام کاربری'
-       type="text"
-       register={register}
-       control={control}
-       title="username"
-       label='نام کاربری'
-       width="w-full"
-     />
       <Input
-
-       type="password"
-       register={register}
-       control={control}
-       title="password"
-       label='پسورد'
-       width="w-full"
-     />
-       <Input
-       placeholder='نام'
-       type="text"
-       register={register}
-       control={control}
-       title="firstName"
-       label='نام'
-       width="w-full"
-     />
-       <Input
-           
-              type="text"
-              register={register}
-              control={control}
-              title="lastName"
-              label='نام خانوادگی'
-              width="w-full"
+  placeholder='نام'
+  type="text"
+  register={register}
+  control={control}
+  title="name"
+  label='نام'
+  width="w-full"
+/>
+  <Input
+      
+         type="text"
+         register={register}
+         control={control}
+         title="slug"
+         label='slug'
+         width="w-full"
+       />
+         
+    
+   <div className='col-span-4 flex justify-end mt-8'>
+              <Button
+              title='لغو'
+              active={true}
+              style={SecondaryButton}
+              onClick={() =>setShowEditModal(false)}
             />
-       <Input
-           
-              type="text"
-              register={register}
-              control={control}
-              title="nationalCode"
-              label='کد ملی'
-              width="w-full"
-            />
-       <Input
-           
-              type="text"
-              register={register}
-              control={control}
-              title="mobile"
-              label='موبایل'
-              width="w-full"
+              <Button
+              title='ویرایش'
+              active={true}
+              style={PrimaryButton}
+              onClick={onSubmit}
             />
             
-               <Datepicker
-                    label={"تاریخ تولد"}
-                    register={register}
-                    control={control}
-                    
-                    title={"birthDate"}
-                  />
-                    <Dropdown
-                  register={register}
-                  control={control}
-                  title="roleId"
-                  label='نام نقش'
-                  option={roles}
-                  fullWidth={true}
-                />
-                     
+              </div>
             </div>
-    
-   
     </Dialog>
   );
 };

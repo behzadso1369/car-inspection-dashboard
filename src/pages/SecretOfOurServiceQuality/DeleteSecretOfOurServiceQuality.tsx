@@ -15,22 +15,22 @@ import { ApiHelper } from '../../helper/api-request';
 
 interface EditPieceProps extends React.PropsWithChildren {
   showDeleteModal: boolean;
-  slideId:number;
-  slideName:string;
+  secretOfOurServiceQualityId:number;
+  secretOfOurServiceQualityName:string;
 
 
 
   setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DeleteSlider: React.FunctionComponent<
+const DeleteSecretOfOurServiceQuality: React.FunctionComponent<
 EditPieceProps
-> = ({ showDeleteModal, setShowDeleteModal,slideName,slideId }) => {
+> = ({ showDeleteModal, setShowDeleteModal,secretOfOurServiceQualityName,secretOfOurServiceQualityId }) => {
 
 
 
   const onSubmit = () => {
-    instance.delete(ApiHelper.get("DeleteSlider")  + "?id=" +slideId).then((res:any) => {
+    instance.delete(ApiHelper.get("DeleteSecretOfOurServiceQuality")+ "?id=" + secretOfOurServiceQualityId).then((res:any) => {
         if(res) {
           setShowDeleteModal(false)
     
@@ -57,13 +57,13 @@ EditPieceProps
       }}
     >
       <DialogTitle className="w-full flex items-center gap-3 border-b !pb-6">
-        <span> حذف  اسلایدر </span>
+        <span> حذف  راز کیفیت خدمات ما </span>
         
       </DialogTitle>
       <div className="grid grid-cols-3 gap-3 pb-8 px-10 py-5">
         <div className='col-span-3'>
-            <span>آیا از حذف اسلایدر</span>
-            <span className='text-blue-500'> {slideName} </span>
+            <span>آیا از حذف راز کیفیت خدمات ما</span>
+            <span className='text-blue-500'> {secretOfOurServiceQualityName} </span>
             <span> </span>
             <span>مطمئن هستید؟</span>
         </div>
@@ -89,4 +89,4 @@ EditPieceProps
   );
 };
 
-export default DeleteSlider;
+export default DeleteSecretOfOurServiceQuality;

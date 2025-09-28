@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Dialog, DialogTitle } from '@mui/material';
 
@@ -17,78 +17,73 @@ import Dropdown from '../../libs/dropdown/dropdown';
 
 
 interface EditPieceProps extends React.PropsWithChildren {
-  showEditUserModal: boolean;
-  userId:number;
-  userName:string;
+  showEditModal: boolean;
+  slideId:number;
+  slideName:string;
 
 
 
-  setShowEditUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EditSlider: React.FunctionComponent<
 EditPieceProps
-> = ({ showEditUserModal, setShowEditUserModal,userId,userName }) => {
-    const [userData,setUserData] = useState<any>({});
-    const [customer,setCustomer] = useState<any>([]);
+> = ({ showEditModal, setShowEditModal,slideId,slideName }) => {
+   
+  const inputImageRef = useRef<any>(null);
 
-    const { register, control,reset} = useForm({
-        defaultValues: {
-            "id": userData.id,
-            "customerId": 1,
-            "username": userData.username,
-            "password": userData.password,
-            "firstName": userData.firstName,
-            "lastName": userData.lastName,
-            "nationalCode": userData.nationalCode,
-            "mobile": userData.mobile,
-            "birthDate": userData.birthDate,
-            "roleId":1
-        }
-    });
+  const { register, control,getValues,reset} = useForm({});
 
-    const [roles,setRoles] = useState<any>([]);
 
+
+    const [fileId,setFileId] = useState<any>(null);
+    const [files,setFiles] = useState<any>([]);
+    const [image,setImage] = useState<any>(null);
+  
+    const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
+  const onSubmit = () => {
+    const formData = new FormData();
+    formData.append("text",getValues()["text"])
+    formData.append("link",getValues()["link"])
+    formData.append("durrationTime",getValues()["durrationTime"])
+    formData.append("image",image);
+  instance.put(ApiHelper.get("EditSecretOfOurServiceQuality")+ "?id=" + slideId,formData).then((res:any) => {
+    if(res.data) {
+        setShowEditModal(false);
+    }
+  })
+
+    
+   
+  };
+  const uploadImageFile = async () => {
+    console.log(fileId);
+    const file = inputImageRef.current?.files[0];
+    setImage(file);
+
+  };
+  const  getBlogTagById = () => {
+    instance.get(ApiHelper.get("GetSecretOfOurServiceQuality"),{params:{id:slideId}}).then((res:any) => {
+        reset({
+          Title:res.data.resultObject.title,
+          DurationTime:res.data.resultObject.durationTime,
+          Link:res.data.resultObject.link,
+          imagePath:res.data.resultObject.imagePath
+        })
+        setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)
+    })
+  }
+  useEffect(() => {
+    getBlogTagById();
+  },[])
 
  
-  useEffect(() => {
-    instance.get(ApiHelper.get('getCustomers')).then((res:any) => {
-      setCustomer(res.data);
-     
-    })
-    instance.get(ApiHelper.get("getRoles")).then((res:any) => {
-        if(res.data.success) {
-            setRoles(res.data.data);
-        }
-    })
-    instance.get(ApiHelper.get("getUserById"),{params: {UserId:userId}}).then((res:any) => {
-        if(res.data.success) {
-          setUserData(res.data.data);
-          // reset(res.data.data);
-         
-           
-          
-
-            reset({
-            "id": res?.data?.data.id,
-            "customerId": 1,
-            "username": res.data.data.username,
-            "password": res.data.data.password,
-            "firstName": res.data.data.firstName,
-            "lastName": res.data.data.lastName,
-            "nationalCode": res.data.data.nationalCode,
-            "mobile": res.data.data.mobile,
-            "birthDate": res.data.data.birthDate,
-            "roleId":res.data.data.roles[0].id
-            });
-        }
-    })
-  },[])
+ 
   return (
     <Dialog
       className="w-full  !overflow-hidden"
-      onClose={() => setShowEditUserModal(false)}
-      open={showEditUserModal}
+      onClose={() => setShowEditModal(false)}
+      open={showEditModal}
      
       maxWidth="xl"
       
@@ -100,113 +95,84 @@ EditPieceProps
       }}
     >
       <DialogTitle className="w-full flex items-center gap-3 border-b !pb-6">
-        <span> ویرایش  کاربر </span>
+        <span> ویرایش  اسلاید </span>
         <span> </span>
-        <span>{userName}</span>
+        <span>{slideName}</span>
         
       </DialogTitle>
       <div className="grid grid-cols-3 gap-3 pb-8 px-10 py-5">
       
-{/*               
-    <Dropdown
-                  register={register}
-                  control={control}
-                  title="equipId"
-                  label='نام تجهیز'
-                  option={equip?.data}
-                  fullWidth={true}
-                />
-                  <Dropdown
-                register={register}
-                control={control}
-                title="equipPartId"
-                
-                label='نام قطعه'
-                option={equipPart?.data}
-             
-                fullWidth={true}
-               
-              />  */}
-               <Dropdown
-                  register={register}
-                  control={control}
-                  title="customerId"
-                  label='مشتری'
-                  option={customer?.data}
-                
-                  fullWidth={true}
-                />
-               <Input
-       
-       placeholder=' نام کاربری'
-       type="text"
-       register={register}
-       control={control}
-       title="username"
-       label='نام کاربری'
-       width="w-full"
-     />
       <Input
+  placeholder='عنوان'
+  type="text"
+  register={register}
+  control={control}
+  title="Title"
+  label='عنوان'
+  width="w-full"
+/>
+<Input
+      
+      type="text"
+      register={register}
+      control={control}
+      title="Link"
+      label='لینک'
+       
+      width="w-full"
+    />
+  <Input
+      
+         type="text"
+         register={register}
+         control={control}
+         title="DurationTime"
+         label='مدت زمان اسلایدر'
+          
+         width="w-full"
+       />
+         
+ 
+         <div className='mt-8 col-span-2 flex'>
+   <div className="flex ">
 
-       type="password"
-       register={register}
-       control={control}
-       title="password"
-       label='پسورد'
-       width="w-full"
-     />
-       <Input
-       placeholder='نام'
-       type="text"
-       register={register}
-       control={control}
-       title="firstName"
-       label='نام'
-       width="w-full"
-     />
-       <Input
-           
-              type="text"
-              register={register}
-              control={control}
-              title="lastName"
-              label='نام خانوادگی'
-              width="w-full"
-            />
-       <Input
-           
-              type="text"
-              register={register}
-              control={control}
-              title="nationalCode"
-              label='کد ملی'
-              width="w-full"
-            />
-       <Input
-           
-              type="text"
-              register={register}
-              control={control}
-              title="mobile"
-              label='موبایل'
-              width="w-full"
-            />
-            
-               <Datepicker
-                    label={"تاریخ تولد"}
-                    register={register}
-                    control={control}
-                    
-                    title={"birthDate"}
-                  />
-                    <Dropdown
-                  register={register}
-                  control={control}
-                  title="roleId"
-                  label='نام نقش'
-                  option={roles}
-                  fullWidth={true}
-                />
+<div className='w-1/2'>
+ <label
+   htmlFor="Image"
+   className=" rounded-md px-3 py-1 text-sm bg-gray-700 text-white hover:bg-blue-700 focus:bg-blue-opacity-90 focus:shadow-primary-focus whitespace-nowrap cursor-pointer"
+ >
+   آپلود عکس   
+ </label>
+ <input
+   name="Image"
+   id="Image"
+   type="file"
+   ref={inputImageRef}
+   onInput={uploadImageFile}
+   style={{ visibility: 'hidden' }}
+ />
+
+</div>
+{progressImageBar ? <span>فایل عکس در حال آپلود است</span> : <div>
+{image &&  <div className='w-auto relative p-2 border-2 border-slate-400 flex flex-col items-center'><img width="50px" height="50px" src={image.image}/></div>}
+</div>}
+
+
+
+
+{/* <Button
+ title={'ذخیره   '}
+ active={true}
+ style={PrimaryButton}
+ onClick={uploadFile}
+>
+ {' '}
+ ذخیره
+</Button> */}
+<div className="flex "></div>
+   </div>
+ 
+   </div>
                      
             </div>
     

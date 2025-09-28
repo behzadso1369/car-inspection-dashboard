@@ -24,6 +24,9 @@ import WithdrawRoute from '../pages/Withdraw/WithdrawRoute';
 import RoleRoute from '../pages/Role/RoleRoute';
 import Role from '../pages/Role/Role';
 import Slider from '../pages/Slider/Slider';
+import BlogRoute from '../pages/Blog/BlogRoute';
+import CarInspectionService from '../pages/CarInspectionService/CarInspectionService';
+import SecretOfOurServiceQuality from '../pages/SecretOfOurServiceQuality/SecretOfOurServiceQuality';
 
 
 export const RoutesData = [
@@ -81,10 +84,10 @@ export const RoutesData = [
   },
    {
     path: 'blog',
-    component: ServicesRoute,
+    component: BlogRoute,
     ID: 3,
     permission: ['admin', 'superAdmin' ,'customer'],
-    title: "سرویس ها",
+    title: "بلاگ",
     icon: faTruckRampBox,
     children: [
       {
@@ -120,6 +123,24 @@ export const RoutesData = [
       },
       
     ],
+  },
+  {
+    path: 'car-inspection-service/list',
+    component: CarInspectionService,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "خدمات خودرویی",
+    icon: faUser,
+
+  },
+  {
+    path: 'secretOfOurServicequality/list',
+    component: SecretOfOurServiceQuality,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "راز خدمات ما",
+    icon: faUser,
+
   },
   // {
   //   path: 'services',

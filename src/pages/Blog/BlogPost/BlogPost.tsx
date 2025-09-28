@@ -48,7 +48,7 @@ const BlogPost: React.FunctionComponent = () => {
     };
   }, []);
   const getAllRoles = () => {
-    instance.get(ApiHelper.get("SliderList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+    instance.get(ApiHelper.get("BlogPostList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
       setRowData(res?.data?.resultObject);
          setCount(res?.data?.countData);
     })

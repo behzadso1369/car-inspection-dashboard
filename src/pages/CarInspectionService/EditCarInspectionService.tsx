@@ -11,6 +11,7 @@ import Dropdown from '../../libs/dropdown/dropdown';
 import TextArea from '../../libs/text-area/text-area';
 import Button, { PrimaryButton, SecondaryButton } from '../../libs/button/button';
 import { Link } from 'react-router-dom';
+import { Image } from 'antd';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -19,20 +20,22 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 
 interface EditPieceProps extends React.PropsWithChildren {
-  showAddUserModal: boolean;
+  showEditModal: boolean;
+  carInspectionServiceId:number;
+  carInspectionServiceName:string;
 
 
 
-  setShowAddUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateSlider: React.FunctionComponent<
+const EditCarInspectionSrvice: React.FunctionComponent<
 EditPieceProps
-> = ({ showAddUserModal, setShowAddUserModal }) => {
+> = ({ showEditModal, setShowEditModal,carInspectionServiceId,carInspectionServiceName }) => {
  
   const inputImageRef = useRef<any>(null);
 
-  const { register, control,getValues} = useForm({});
+  const { register, control,getValues,reset} = useForm({});
 
 
 
@@ -43,13 +46,13 @@ EditPieceProps
     const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
   const onSubmit = () => {
     const formData = new FormData();
-    formData.append("text",getValues()["Text"])
-    formData.append("link",getValues()["Link"])
-    formData.append("durationTime",getValues()["DurationTime"])
+    formData.append("title",getValues()["title"])
+    formData.append("inspectionServiceDescription",getValues()["inspectionServiceDescription"])
+    formData.append("durationTime",getValues()["durationTime"])
     formData.append("image",image);
-  instance.post(ApiHelper.get("CreateSliderWithFile"),formData).then((res:any) => {
+  instance.put(ApiHelper.get("EditCarInspectionService")+ "?id=" + carInspectionServiceId,formData).then((res:any) => {
     if(res.data) {
-        setShowAddUserModal(false);
+        setShowEditModal(false);
     }
   })
 
@@ -62,14 +65,25 @@ EditPieceProps
     setImage(file);
 
   };
+  const  getBlogTagById = () => {
+    instance.get(ApiHelper.get("GetCarInspectionServiceById"),{params:{id:carInspectionServiceId}}).then((res:any) => {
+        reset({
+          title:res.data.resultObject.title,
+          inspectionServiceDescription:res.data.resultObject.inspectionServiceDescription,
+          durationTime:res.data.resultObject.durationTime,
+          imagePath:res.data.resultObject.imagePath
+        })
+        setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)
+    })
+  }
   useEffect(() => {
-  
+    getBlogTagById();
   },[])
   return (
     <Dialog
       className="w-full  "
-      onClose={() => setShowAddUserModal(false)}
-      open={showAddUserModal}
+      onClose={() => setShowEditModal(false)}
+      open={showEditModal}
       maxWidth={false}
     
       
@@ -81,19 +95,20 @@ EditPieceProps
         },
       }}
     >
-      <DialogTitle className="w-full flex items-center gap-3 border-b !py-3 px-4">
-        <span>اضافه کردن  اسلاید </span>
+       <DialogTitle className="w-full flex items-center gap-3 border-b !pb-6">
+        <span> ویرایش  دسته بندی بلاگ </span>
+        <span> </span>
+        <span>{carInspectionServiceName}</span>
         
       </DialogTitle>
       <div className="grid grid-cols-4 gap-3 !py-3 px-4">
-  
-  <Input
-  placeholder='متن'
+      <Input
+  placeholder='عنوان'
   type="text"
   register={register}
   control={control}
-  title="text"
-  label='متن'
+  title="title"
+  label='عنوان'
   width="w-full"
 />
   <Input
@@ -101,25 +116,20 @@ EditPieceProps
          type="text"
          register={register}
          control={control}
-         title="link"
-         label='لینک'
+         title="durationTime"
+         label='مدت زمان اسلایدر'
+          
          width="w-full"
        />
          
-     <Input
-      
-      type="text"
+     <TextArea
       register={register}
       control={control}
-      title="durationTime"
-      label='زمان عوض شدن'
-      width="w-full"
+      title="inspectionServiceDescription"
+      label='توضیحات'
+
     />
-    
-
-
-        
-         <div className='mt-8 col-span-2 flex'>
+        <div className='mt-8 col-span-2 flex'>
    <div className="flex ">
 
 <div className='w-1/2'>
@@ -141,6 +151,12 @@ EditPieceProps
 </div>
 {progressImageBar ? <span>فایل عکس در حال آپلود است</span> : <div>
 {image &&  <div className='w-auto relative p-2 border-2 border-slate-400 flex flex-col items-center'><img width="50px" height="50px" src={image.image}/></div>}
+<div className="flex items-center py-2">
+                         <Image
+                    style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
+                    src={files}
+                    />
+                    </div>
 </div>}
 
 
@@ -159,15 +175,18 @@ EditPieceProps
    </div>
  
    </div>
+
+        
+     
    <div className='col-span-4 flex justify-end mt-8'>
               <Button
               title='لغو'
               active={true}
               style={SecondaryButton}
-              onClick={() =>setShowAddUserModal(false)}
+              onClick={() =>setShowEditModal(false)}
             />
               <Button
-              title='اضافه کردن'
+              title='ویرایش'
               active={true}
               style={PrimaryButton}
               onClick={onSubmit}
@@ -204,4 +223,4 @@ EditPieceProps
   );
 };
 
-export default CreateSlider;
+export default EditCarInspectionSrvice;

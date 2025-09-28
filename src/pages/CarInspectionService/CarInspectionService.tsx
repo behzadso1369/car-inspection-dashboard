@@ -10,27 +10,34 @@ import { useForm } from 'react-hook-form';
 import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import QuickSearch from '../../libs/quick-search/quick-search';
-import { CircularProgress } from '@mui/material';
-import CreateSlider from './CreateSlider';
-import DeleteSlider from './DeleteSlider';
+import { Box, CircularProgress } from '@mui/material';
+import CreateSlider from './CreateCarInspectionService';
+import DeleteSlider from './DeleteCarInspectionService';
 import { NavLink } from 'react-router-dom';
-import { Image } from 'antd';
-import EditSlider from './EditSlider';
-const Slider: React.FunctionComponent = () => {
+import CreateBlogCategory from './CreateCarInspectionService';
+import EditBlogCategory from './EditCarInspectionService';
+import CreateCarInspectionSrvice from './CreateCarInspectionService';
+import DeleteCarInspectionSrvice from './DeleteCarInspectionService';
+import EditCarInspectionSrvice from './EditCarInspectionService';
+import {Image} from "antd";
+const CarInspectionService: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [showDeleteUser, setShowDeleteUser] = useState<boolean>(false);
-  const [sliderId, setSlideId] = useState<number>(0);
-  const [slideName, setSlideName] = useState<string>("");
+  const [carInspectionServiceId, setCarInspectionServiceId] = useState<number>(0);
+  const [carInspectionServiceName, setCarInspectionServiceName] = useState<string>("");
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [search,setSearch] = useState<string>("")
   const [count, setCount] = React.useState(0);
+  const [blogCatName, setBlogCatName] = React.useState<string>("");
+  const [blogCatId, setBlogCatId] = React.useState<number>(0);
+  const [showEditModal, setShowEditModal] = React.useState<boolean>(false);
 
   const [rowData, setRowData] = useState<any>();
-  const [showEditModal, setShowEditModal] = React.useState<boolean>(false);
+
 
   const allgridRef = useRef<any>();
 
@@ -51,7 +58,7 @@ const Slider: React.FunctionComponent = () => {
     };
   }, []);
   const getAllRoles = () => {
-    instance.get(ApiHelper.get("SliderList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+    instance.get(ApiHelper.get("CarInspectionServiceList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
       setRowData(res?.data?.resultObject);
          setCount(res?.data?.countData);
     })
@@ -59,11 +66,11 @@ const Slider: React.FunctionComponent = () => {
   useEffect(() => {
     getAllRoles();
  
-  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal]);
+  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal]);
 
-  const deleteSlider = (params:any) => {
-    setSlideId(params.data.id);
-    setSlideName(params.data.text);
+  const deleteBlog = (params:any) => {
+    setCarInspectionServiceId(params.data.id);
+    setCarInspectionServiceName(params.data.title);
     setShowDeleteUser(true);
   
   }
@@ -87,24 +94,24 @@ const Slider: React.FunctionComponent = () => {
   
    
     {
-      field: 'text',
-      headerName: 'متن ',
+      field: 'title',
+      headerName: 'عنوان ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.text ? <span>{params.data.text}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.title ? <span>{params.data.title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
         {
-            field: 'link',
-            headerName: 'Lilinknk',
+            field: 'inspectionServiceDescription',
+            headerName: 'توضیحات',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.link ? <span>{params.data.link}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.inspectionServiceDescription ? <span>{params.data.inspectionServiceDescription}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
@@ -117,11 +124,15 @@ const Slider: React.FunctionComponent = () => {
                 cellRenderer: (params:any) => {
                   return (
                     <div className="flex items-center py-2">
-                    <Image
-               style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
-               src={"http://45.139.11.225:5533/" + params.data.imagePath}
-               />
-               </div>
+                         <Image
+                    style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
+                    src={"http://45.139.11.225:5533/" + params.data.imagePath}
+                    />
+                    </div>
+                   
+                      
+                   
+                 
                   )
                
                  }
@@ -144,10 +155,10 @@ const Slider: React.FunctionComponent = () => {
           <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' onClick={() => {
             
             setShowEditModal(true)
-            setSlideId(params.data.id);
-            setSlideName(params.data.text);
-            }}>ویرایش   اسلاید </button>
-          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteSlider(params)}>حذف  خدمات</button>
+            setCarInspectionServiceId(params.data.id);
+            setCarInspectionServiceName(params.data.title);
+            }}>ویرایش   خدمات </button>
+          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  خدمات</button>
     </div>
         
         
@@ -181,8 +192,8 @@ const Slider: React.FunctionComponent = () => {
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
-          <h3 className="text-base font-bold text-primary">   اسلایدها </h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن اسلاید</button>
+          <h3 className="text-base font-bold text-primary"> خدمات خودرویی </h3>
+          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن خدمات خودرویی</button>
       
       </div>
         <QuickSearch  activeSearch={true}   register={register}
@@ -232,14 +243,14 @@ const Slider: React.FunctionComponent = () => {
       </div>
       </div>
       {showAddModal && (
-        <CreateSlider showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
+        <CreateCarInspectionSrvice showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )}
      
       {showDeleteUser && (
-       <DeleteSlider slideId={sliderId} slideName={slideName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+       <DeleteCarInspectionSrvice carInspectionServiceId={carInspectionServiceId} carInspectionServiceName={carInspectionServiceName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
-         {showEditModal && (
-        <EditSlider slideId={sliderId} slideName={slideName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
+       {showEditModal && (
+        <EditCarInspectionSrvice carInspectionServiceId={carInspectionServiceId} carInspectionServiceName={carInspectionServiceName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
      )}
    
     
@@ -249,4 +260,4 @@ const Slider: React.FunctionComponent = () => {
   );
 };
 
-export default Slider;
+export default CarInspectionService;
