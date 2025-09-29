@@ -11,6 +11,7 @@ import Dropdown from '../../../libs/dropdown/dropdown';
 import TextArea from '../../../libs/text-area/text-area';
 import Button, { PrimaryButton, SecondaryButton } from '../../../libs/button/button';
 import { Link } from 'react-router-dom';
+import TextEditor from '../../../libs/text-editor/text-editor';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -128,12 +129,20 @@ EditPieceProps
                     <Switch {...register("IsFirstPage")} {...label} defaultChecked={false}  />
 
                   </div>
-     <TextArea
+     {/* <TextArea
       register={register}
       control={control}
       title="Content"
       label='متن'
-    />
+    /> */}
+    <div className="col-span-4">
+    <TextEditor baseUrl='' register={register}
+      control={control}
+      title="Content"
+      className="w-full"
+      label='متن' />
+    </div>
+  
       <Dropdown
                   register={register}
                   control={control}
