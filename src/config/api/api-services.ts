@@ -53,7 +53,86 @@ secretOfOurServiceQualityList: "secretOfOurServiceQuality/List",
 CreateSecretOfOurServiceQuality: "secretOfOurServiceQuality/CreateWithFile",
 DeleteSecretOfOurServiceQuality: "secretOfOurServiceQuality/Delete",
 EditSecretOfOurServiceQuality: "secretOfOurServiceQuality/UpdateWithFile",
-GetSecretOfOurServiceQuality: "secretOfOurServiceQuality/Get"
+GetSecretOfOurServiceQuality: "secretOfOurServiceQuality/Get",
+
+CarBrandList: "CarBrand/List",
+CreateCarBrand: "CarBrand/CreateWithFile",
+DeleteCarBrand: "CarBrand/Delete",
+EditCarBrand: "CarBrand/UpdateWithFile",
+GetCarBrand: "CarBrand/Get",
+
+CarGroupList: "CarGroup/List",
+CreateCarGroup: "CarGroup/CreateWithFile",
+DeleteCarGroup: "CarGroup/Delete",
+EditCarGroup: "CarGroup/UpdateWithFile",
+GetCarGroup: "CarGroup/Get",
+
+CarInspectionList: "CarInspection/List",
+CreateCarInspection: "CarInspection/CreateWithFile",
+DeleteCarInspection: "CarInspection/Delete",
+EditCarInspection: "CarInspection/UpdateWithFile",
+GetCarInspection: "CarInspection/Get",
+
+CarInspectionDateTypeList: "CarInspectionDateType/List",
+CreateCarInspectionDateType: "CarInspectionDateType/CreateWithFile",
+DeleteCarInspectionDateType: "CarInspectionDateType/Delete",
+EditCarInspectionDateType: "CarInspectionDateType/UpdateWithFile",
+GetCarInspectionDateType: "CarInspectionDateType/Get",
+
+CarInspectionFeatureList: "secretOfOurServiceQCarInspectionFeatureuality/List",
+CreateCarInspectionFeature: "CarInspectionFeature/CreateWithFile",
+DeleteCarInspectionFeature: "CarInspectionFeature/Delete",
+EditCarInspectionFeature: "CarInspectionFeature/UpdateWithFile",
+GetCarInspectionFeature: "CarInspectionFeature/Get",
+
+CarInspectionLocationList: "CarInspectionLocation/List",
+CreateCarInspectionLocation: "CarInspectionLocation/CreateWithFile",
+DeleteCarInspectionLocation: "CarInspectionLocation/Delete",
+EditCarInspectionLocation: "CarInspectionLocation/UpdateWithFile",
+GetCarInspectionLocation: "CarInspectionLocation/Get",
+
+CarInspectionTypeList: "CarInspectionType/List",
+CreateCarInspectionType: "CarInspectionType/CreateWithFile",
+DeleteCarInspectionType: "CarInspectionType/Delete",
+EditCarInspectionType: "CarInspectionType/UpdateWithFile",
+GetCarInspectionType: "CarInspectionType/Get",
+
+DateAndTimeList: "DateAndTime/List",
+CreateDateAndTime: "DateAndTime/CreateWithFile",
+DeleteDateAndTime: "DateAndTime/Delete",
+EditDateAndTime: "DateAndTime/UpdateWithFile",
+GetDateAndTime: "DateAndTime/Get",
+
+FlowLifeCycleList: "FlowLifeCycle/List",
+CreateFlowLifeCycle: "FlowLifeCycle/CreateWithFile",
+DeleteFlowLifeCycle: "FlowLifeCycle/Delete",
+EditFlowLifeCycle: "FlowLifeCycle/UpdateWithFile",
+GetFlowLifeCycle: "FlowLifeCycle/Get",
+
+FlowStateList: "FlowState/List",
+CreateFlowState: "FlowState/CreateWithFile",
+DeleteFlowState: "FlowState/Delete",
+EditFlowState: "FlowState/UpdateWithFile",
+GetFlowState: "FlowState/Get",
+
+FlowTypeList: "FlowType/List",
+CreateFlowType: "FlowType/CreateWithFile",
+DeleteFlowType: "FlowType/Delete",
+EditFlowType: "FlowType/UpdateWithFile",
+GetFlowType: "FlowType/Get",
+
+MasterSiteDetailList: "MasterSiteDetail/List",
+CreateMasterSiteDetail: "MasterSiteDetail/CreateWithFile",
+DeleteMasterSiteDetail: "MasterSiteDetail/Delete",
+EditMasterSiteDetail: "MasterSiteDetail/UpdateWithFile",
+GetMasterSiteDetail: "MasterSiteDetail/Get",
+
+WhyWeList: "WhyWe/List",
+CreateWhyWe: "WhyWe/CreateWithFile",
+DeleteWhyWe: "WhyWe/Delete",
+EditWhyWe: "WhyWe/UpdateWithFile",
+GetWhyWe: "WhyWe/Get",
+
 
 
 

@@ -27,6 +27,19 @@ import Slider from '../pages/Slider/Slider';
 import BlogRoute from '../pages/Blog/BlogRoute';
 import CarInspectionService from '../pages/CarInspectionService/CarInspectionService';
 import SecretOfOurServiceQuality from '../pages/SecretOfOurServiceQuality/SecretOfOurServiceQuality';
+import WhyWe from '../pages/WhyWe/WhyWe';
+import MasterSiteDetail from '../pages/MasterSiteDetail/MasterSiteDetail';
+import FlowType from '../pages/FlowType/FlowType';
+import FlowState from '../pages/FlowState/FlowState';
+import FlowLifeCycle from '../pages/FlowLifeCycle/FlowLifeCycle';
+import CarGroup from '../pages/CarGroup/CarGroup';
+import CarBrand from '../pages/CarBrand/CarBrand';
+import CarInspection from '../pages/CarInspection/CarInspection';
+import CarInspectionDateType from '../pages/CarInspectionDateType/CarInspectionDateType';
+import CarInspectionFeature from '../pages/CarInspectionFeature/CarInspectionFeature';
+import CarInspectionLocation from '../pages/CarInspectionLocation/CarInspectionLocation';
+import CarInspectionType from '../pages/CarInspectionType/CarInspectionType';
+import DateAndTime from '../pages/DateAndTime/DateAndTime';
 
 
 export const RoutesData = [
@@ -124,7 +137,62 @@ export const RoutesData = [
       
     ],
   },
+
   {
+    path: 'secretOfOurServicequality/list',
+    component: SecretOfOurServiceQuality,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "راز خدمات ما",
+    icon: faUser,
+
+  },
+  {
+    path: 'ٌwhy-we/list',
+    component: WhyWe,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "چرا ما",
+    icon: faUser,
+
+  },
+  {
+    path: 'MasterSiteDetail/list',
+    component: MasterSiteDetail,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "اطلاعات سایت",
+    icon: faUser,
+
+  },
+  {
+    path: 'FlowType/list',
+    component: FlowType,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "نوع چرخه",
+    icon: faUser,
+
+  },
+  {
+    path: 'FlowState/list',
+    component: FlowState,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "وضعیت چرخه",
+    icon: faUser,
+
+  },
+  {
+    path: 'FlowLifeCycle/list',
+    component: FlowLifeCycle,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "چرخه فرآیند",
+    icon: faUser,
+
+  },
+    {
     path: 'car-inspection-service/list',
     component: CarInspectionService,
     ID: 2,
@@ -134,11 +202,83 @@ export const RoutesData = [
 
   },
   {
-    path: 'secretOfOurServicequality/list',
-    component: SecretOfOurServiceQuality,
+    path: 'CarGroup/list',
+    component: CarGroup,
     ID: 2,
     permission: ['admin', 'superAdmin'],
-    title: "راز خدمات ما",
+    title: "گروه خودرو",
+    icon: faUser,
+
+  },
+  {
+    path: 'CarBrand/list',
+    component: CarBrand,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "برند خودرو",
+    icon: faUser,
+
+  },
+  {
+    path: 'CarInspection/list',
+    component: CarInspection,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "کارشناسی خودرو",
+    icon: faUser,
+
+  },
+  {
+    path: 'CarInspectionDateType/list',
+    component: CarInspectionDateType,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "نوع تاریخ کارشناسی",
+    icon: faUser,
+
+  },
+  {
+    path: 'CarInspectionFeature/list',
+    component: CarInspectionFeature,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "ویژگیهای کارشناسی",
+    icon: faUser,
+
+  },
+  {
+    path: 'CarInspectionLocation/list',
+    component: CarInspectionLocation,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "مکان کارشناسی",
+    icon: faUser,
+
+  },
+  {
+    path: 'CarInspectionType/list',
+    component: CarInspectionType,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "نوع کارشناسی",
+    icon: faUser,
+
+  },
+  {
+    path: 'CarInspectionLocation/list',
+    component: CarInspectionLocation,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "مکان کارشناسی",
+    icon: faUser,
+
+  },
+  {
+    path: 'DateAndTime/list',
+    component: DateAndTime,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "تاریخ و زمان",
     icon: faUser,
 
   },
