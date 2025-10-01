@@ -35,7 +35,14 @@ EditPieceProps
  
   const inputImageRef = useRef<any>(null);
 
-  const { register, control,getValues,reset} = useForm({});
+  const { register, control,getValues,reset} = useForm({
+    values: {
+      marketPrice:"0",
+    ourPrice:"0",
+    carGroupId:"0",
+    carInspectionTypeId:"0"
+    }
+  });
       const [groups,setGroups] = useState<any>([]);
     const [types,setTypes] = useState<any>([]);
 
@@ -48,10 +55,12 @@ EditPieceProps
     const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
   const onSubmit = () => {
     const formData = new FormData();
-    formData.append("Title",getValues()["Title"])
-    formData.append("MoreDescription",getValues()["MoreDescription"])
-    formData.append("Image",image);
-  instance.put(ApiHelper.get("EditSecretOfOurServiceQuality")+ "?id=" + secretOfOurServiceQualityId,formData).then((res:any) => {
+    formData.append("marketPrice",getValues()["marketPrice"])
+    formData.append("ourPrice",getValues()["ourPrice"])
+    formData.append("carGroupId",getValues()["carGroupId"])
+    formData.append("carInspectionTypeId",getValues()["carInspectionTypeId"])
+  
+  instance.put(ApiHelper.get("EditCarInspection")+ "?id=" + secretOfOurServiceQualityId,formData).then((res:any) => {
     if(res.data) {
         setShowEditModal(false);
     }
@@ -81,13 +90,14 @@ EditPieceProps
 
   };
   const  getBlogTagById = () => {
-    instance.get(ApiHelper.get("GetSecretOfOurServiceQuality"),{params:{id:secretOfOurServiceQualityId}}).then((res:any) => {
+    instance.get(ApiHelper.get("GetCarInspection"),{params:{id:secretOfOurServiceQualityId}}).then((res:any) => {
         reset({
-          Title:res.data.resultObject.title,
-          MoreDescription:res.data.resultObject.moreDescription,
-          imagePath:res.data.resultObject.imagePath
+          marketPrice:res.data.resultObject.marketPrice,
+          ourPrice:res.data.resultObject.ourPrice,
+          carGroupId:res.data.resultObject.carGroupId,
+          carInspectionTypeId:res.data.resultObject.carInspectionTypeId,
         })
-        setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)
+     
     })
   }
   useEffect(() => {
@@ -142,16 +152,18 @@ EditPieceProps
      <Dropdown
                     register={register}
                     control={control}
-                    title="brandId"
+                    title="carGroupId"
                     label='گروه خودرو'
                     option={groups}
+                    optionTitle='name'
                   
                     fullWidth={true}
                   />
                       <Dropdown
+                         optionTitle='name'
                     register={register}
                     control={control}
-                    title="brandId"
+                    title="carInspectionTypeId"
                     label='نوع کارشناسی خودرو'
                     option={types}
                   

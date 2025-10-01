@@ -56,7 +56,7 @@ EditPieceProps
                   control={control}
                   title="roleName"
                   label='نقش'
-                  
+                  optionTitle='name'
                   option={roles?.map((item:any) => {
                     return {
                       id: item?.Name,

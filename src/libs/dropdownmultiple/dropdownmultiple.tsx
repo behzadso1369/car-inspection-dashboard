@@ -16,7 +16,7 @@ interface DropdownProps extends React.PropsWithChildren {
   optionTitle:string;
 }
 
-export const Dropdown: React.FunctionComponent<DropdownProps> = ({
+export const DropdownMultiple: React.FunctionComponent<DropdownProps> = ({
   label,
   option,
   control,
@@ -44,6 +44,7 @@ export const Dropdown: React.FunctionComponent<DropdownProps> = ({
         render={({ field: { ref, ...field } }) => (
           <Select
             {...field}
+            multiple
             sx={{
               boxShadow:
                 '0px 0px 0px 1px rgba(134, 143, 160, 0.16), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)',
@@ -82,6 +83,7 @@ export const Dropdown: React.FunctionComponent<DropdownProps> = ({
               );
             }}
             disabled={disabled}
+            defaultValue={[1]}
            
           
           
@@ -97,4 +99,4 @@ export const Dropdown: React.FunctionComponent<DropdownProps> = ({
   );
 };
 
-export default Dropdown;
+export default DropdownMultiple;

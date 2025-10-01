@@ -23,6 +23,9 @@ import {Image} from "antd";
 import CreateSecretOfOurServiceQuality from './CreateCarGroup';
 import DeleteSecretOfOurServiceQuality from './DeleteCarGroup';
 import EditSecretOfOurServiceQuality from './EditCarGroup';
+import CreateCarGroup from './CreateCarGroup';
+import DeleteCarGroup from './DeleteCarGroup';
+import EditCarGroup from './EditCarGroup';
 const CarGroup: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -108,7 +111,18 @@ const CarGroup: React.FunctionComponent = () => {
      
        }
         },
-  
+        {
+          field: 'carBrand',
+          headerName: 'برند ',
+          cellRenderer: (params:any) => {
+            return (
+              <>
+              {params.data.carBrand.name ? <span>{params.data.carBrand.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+              </>
+            )
+         
+           }
+            },
               {
                 field: 'imagePath',
                 headerName: 'عکس',
@@ -149,8 +163,8 @@ const CarGroup: React.FunctionComponent = () => {
             setShowEditModal(true)
             setSecretOfOurServiceQualityId(params.data.id);
             setSecretOfOurServiceQualityName(params.data.title);
-            }}>ویرایش   خدمات </button>
-          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  خدمات</button>
+            }}>ویرایش    </button>
+          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  </button>
     </div>
         
         
@@ -235,14 +249,14 @@ const CarGroup: React.FunctionComponent = () => {
       </div>
       </div>
       {showAddModal && (
-        <CreateSecretOfOurServiceQuality showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
+        <CreateCarGroup showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )}
      
       {showDeleteUser && (
-       <DeleteSecretOfOurServiceQuality secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+       <DeleteCarGroup secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
        {showEditModal && (
-        <EditSecretOfOurServiceQuality secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
+        <EditCarGroup secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
      )}
    
     

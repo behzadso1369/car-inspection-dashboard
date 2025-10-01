@@ -23,6 +23,9 @@ import {Image} from "antd";
 import CreateSecretOfOurServiceQuality from './CreateCarInspection';
 import DeleteSecretOfOurServiceQuality from './DeleteCarInspection';
 import EditSecretOfOurServiceQuality from './EditCarInspection';
+import CreateCarInspection from './CreateCarInspection';
+import DeleteCarInspection from './DeleteCarInspection';
+import EditCarInspection from './EditCarInspection';
 const CarInspection: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -61,7 +64,7 @@ const CarInspection: React.FunctionComponent = () => {
     };
   }, []);
   const getAllRoles = () => {
-    instance.get(ApiHelper.get("secretOfOurServiceQualityList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+    instance.get(ApiHelper.get("CarInspectionList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
       setRowData(res?.data?.resultObject);
          setCount(res?.data?.countData);
     })
@@ -97,49 +100,54 @@ const CarInspection: React.FunctionComponent = () => {
   
    
     {
-      field: 'title',
-      headerName: 'عنوان ',
+      field: 'marketPrice',
+      headerName: 'قیمت بازار ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.title ? <span>{params.data.title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.marketPrice ? <span>{params.data.marketPrice}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
         {
-            field: 'moreDescription',
-            headerName: 'توضیحات',
+          field: 'ourPrice',
+          headerName: 'قیمت ما ',
+          cellRenderer: (params:any) => {
+            return (
+              <>
+              {params.data.ourPrice ? <span>{params.data.ourPrice}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+              </>
+            )
+         
+           }
+            },
+        {
+            field: 'carGroup',
+            headerName: 'گروه خودرو',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.moreDescription ? <span>{params.data.moreDescription}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.carGroup.name ? <span>{params.data.carGroup.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
              }
               },
               {
-                field: 'imagePath',
-                headerName: 'عکس',
-                autoHeight:true,
+                field: 'carInspectionType',
+                headerName: 'نوع کارشناسی',
                 cellRenderer: (params:any) => {
                   return (
-                    <div className="flex items-center py-2">
-                         <Image
-                    style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
-                    src={"http://45.139.11.225:5533/" + params.data.imagePath}
-                    />
-                    </div>
-                   
-                      
-                   
-                 
+                    <>
+                    {params.data.carInspectionType.name ? <span>{params.data.carInspectionType.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                    </>
                   )
                
                  }
                   },
+        
 
     
     
@@ -195,8 +203,8 @@ const CarInspection: React.FunctionComponent = () => {
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
-          <h3 className="text-base font-bold text-primary">راز خدمات ما</h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن  راز خدمات ما</button>
+          <h3 className="text-base font-bold text-primary">کارشناسی خودرو</h3>
+          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن  کارشناسی خودرو</button>
       
       </div>
         <QuickSearch  activeSearch={true}   register={register}
@@ -246,14 +254,14 @@ const CarInspection: React.FunctionComponent = () => {
       </div>
       </div>
       {showAddModal && (
-        <CreateSecretOfOurServiceQuality showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
+        <CreateCarInspection showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )}
      
       {showDeleteUser && (
-       <DeleteSecretOfOurServiceQuality secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+       <DeleteCarInspection secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
        {showEditModal && (
-        <EditSecretOfOurServiceQuality secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
+        <EditCarInspection secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
      )}
    
     

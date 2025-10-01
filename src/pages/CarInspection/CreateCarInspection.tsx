@@ -32,7 +32,14 @@ EditPieceProps
  
   const inputImageRef = useRef<any>(null);
 
-  const { register, control,getValues} = useForm({});
+  const { register, control,getValues} = useForm({
+    values: {
+      marketPrice:"0",
+    ourPrice:"0",
+    carGroupId:"0",
+    carInspectionTypeId:"0"
+    }
+  });
 
 
 
@@ -59,14 +66,12 @@ EditPieceProps
   }
   const onSubmit = () => {
     const formData = new FormData();
-    formData.append("Title",getValues()["Title"])
-    formData.append("MoreDescription",getValues()["MoreDescription"])
-    formData.append("Image",image);
-    // for (const key in getValues()) {
-    //     formData.append(key,getValues()[key])
-    
-    // }
-  instance.post(ApiHelper.get("CreateSecretOfOurServiceQuality"),formData).then((res:any) => {
+    formData.append("marketPrice",getValues()["marketPrice"])
+    formData.append("ourPrice",getValues()["ourPrice"])
+    formData.append("carGroupId",getValues()["carGroupId"])
+    formData.append("carInspectionTypeId",getValues()["carInspectionTypeId"])
+
+  instance.post(ApiHelper.get("CreateCarInspection"),formData).then((res:any) => {
     if(res.data) {
         setShowAddUserModal(false);
     }
@@ -110,7 +115,7 @@ EditPieceProps
   
   <Input
   placeholder='قیمت بازار'
-  type="text"
+  type="number"
   register={register}
   control={control}
   title="marketPrice"
@@ -119,7 +124,7 @@ EditPieceProps
 />
   <Input
   placeholder='قیمت ما'
-  type="text"
+  type="number"
   register={register}
   control={control}
   title="ourPrice"
@@ -131,18 +136,20 @@ EditPieceProps
     <Dropdown
                    register={register}
                    control={control}
-                   title="brandId"
+                   title="carGroupId"
                    label='گروه خودرو'
                    option={groups}
+                   optionTitle='name'
                  
                    fullWidth={true}
                  />
                      <Dropdown
                    register={register}
                    control={control}
-                   title="brandId"
+                   title="carInspectionTypeId"
                    label='نوع کارشناسی خودرو'
                    option={types}
+                         optionTitle='name'
                  
                    fullWidth={true}
                  />

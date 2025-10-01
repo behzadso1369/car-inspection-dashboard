@@ -23,6 +23,9 @@ import {Image} from "antd";
 import CreateSecretOfOurServiceQuality from './CreateCarInspectionType';
 import DeleteSecretOfOurServiceQuality from './DeleteCarInspectionType';
 import EditSecretOfOurServiceQuality from './EditCarInspectionType';
+import CreateCarInspectionType from './CreateCarInspectionType';
+import DeleteCarInspectionType from './DeleteCarInspectionType';
+import EditCarInspectionType from './EditCarInspectionType';
 const CarInspectionType: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -61,7 +64,7 @@ const CarInspectionType: React.FunctionComponent = () => {
     };
   }, []);
   const getAllRoles = () => {
-    instance.get(ApiHelper.get("secretOfOurServiceQualityList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+    instance.get(ApiHelper.get("CarInspectionTypeList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
       setRowData(res?.data?.resultObject);
          setCount(res?.data?.countData);
     })
@@ -90,56 +93,52 @@ const CarInspectionType: React.FunctionComponent = () => {
       rowDrag:true,
       filter: false,
       pinned: "right",
-      width:280,
+      maxWidth:80,
       wrapText:false
      
     },
   
    
     {
-      field: 'title',
-      headerName: 'عنوان ',
+      field: 'name',
+      headerName: 'نام ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.title ? <span>{params.data.title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.name ? <span>{params.data.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
         {
-            field: 'moreDescription',
+            field: 'inspectionTypeDescription',
             headerName: 'توضیحات',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.moreDescription ? <span>{params.data.moreDescription}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.inspectionTypeDescription ? <span>{params.data.inspectionTypeDescription}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
              }
               },
               {
-                field: 'imagePath',
-                headerName: 'عکس',
+                field: 'featureIds',
+                headerName: 'ویژگی ها',
                 autoHeight:true,
                 cellRenderer: (params:any) => {
                   return (
-                    <div className="flex items-center py-2">
-                         <Image
-                    style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
-                    src={"http://45.139.11.225:5533/" + params.data.imagePath}
-                    />
-                    </div>
-                   
-                      
-                   
-                 
+                    <>
+                    {params.data.inspectionTypeDescription ? <div>{params.data.features.map((item:any) => (
+                      <span>{item.name} -</span>
+                    ))}</div> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                    </>
                   )
                
                  }
                   },
+           
 
     
     
@@ -160,8 +159,8 @@ const CarInspectionType: React.FunctionComponent = () => {
             setShowEditModal(true)
             setSecretOfOurServiceQualityId(params.data.id);
             setSecretOfOurServiceQualityName(params.data.title);
-            }}>ویرایش   خدمات </button>
-          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  خدمات</button>
+            }}>ویرایش    </button>
+          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  </button>
     </div>
         
         
@@ -195,8 +194,8 @@ const CarInspectionType: React.FunctionComponent = () => {
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
-          <h3 className="text-base font-bold text-primary">راز خدمات ما</h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن  راز خدمات ما</button>
+          <h3 className="text-base font-bold text-primary">نوع کارشناسی خودرو</h3>
+          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن    نوع کارشناسی خودرو</button>
       
       </div>
         <QuickSearch  activeSearch={true}   register={register}
@@ -246,14 +245,14 @@ const CarInspectionType: React.FunctionComponent = () => {
       </div>
       </div>
       {showAddModal && (
-        <CreateSecretOfOurServiceQuality showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
+        <CreateCarInspectionType showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )}
      
       {showDeleteUser && (
-       <DeleteSecretOfOurServiceQuality secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+       <DeleteCarInspectionType secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
        {showEditModal && (
-        <EditSecretOfOurServiceQuality secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
+        <EditCarInspectionType secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
      )}
    
     

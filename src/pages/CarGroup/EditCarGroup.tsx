@@ -35,7 +35,13 @@ EditPieceProps
  
   const inputImageRef = useRef<any>(null);
 
-  const { register, control,getValues,reset} = useForm({});
+  const { register, control,getValues,reset,setValue} = useForm({
+    values: {
+      name: "",
+      carBrandId:"0",
+      image: ""
+    }
+  });
     const [brands,setBrands] = useState<any>([]);
 
 
@@ -47,12 +53,14 @@ EditPieceProps
   const onSubmit = () => {
     const formData = new FormData();
     formData.append("name",getValues()["name"])
-    formData.append("brandId",getValues()["brandId"])
-    formData.append("Image",image);
-  instance.put(ApiHelper.get("EditSecretOfOurServiceQuality")+ "?id=" + secretOfOurServiceQualityId,formData).then((res:any) => {
+    formData.append("carBrandId",getValues()["carBrandId"])
+  instance.put(ApiHelper.get("EditCarGroup")+ "?id=" + secretOfOurServiceQualityId,formData).then((res:any) => {
+    
     if(res.data) {
+      
         setShowEditModal(false);
     }
+    setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)
   })
 
     
@@ -65,11 +73,13 @@ EditPieceProps
 
   };
   const  getBlogTagById = () => {
-    instance.get(ApiHelper.get("GetSecretOfOurServiceQuality"),{params:{id:secretOfOurServiceQualityId}}).then((res:any) => {
+    instance.get(ApiHelper.get("GetCarGroup"),{params:{id:secretOfOurServiceQualityId}}).then((res:any) => {
+      console.log(typeof res.data.resultObject.carBrandId);
+      
         reset({
           name:res.data.resultObject.name,
-          brandId:res.data.resultObject.brandId,
-          imagePath:res.data.resultObject.imagePath
+          carBrandId:Number(res.data.resultObject.carBrandId),
+          image:res.data.resultObject.imagePath
         })
         setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)
     })
@@ -120,9 +130,10 @@ EditPieceProps
           <Dropdown
                        register={register}
                        control={control}
-                       title="brandId"
+                       title="carBrandId"
                        label='برند خودرو'
                        option={brands}
+                       optionTitle='name'
                      
                        fullWidth={true}
                      />

@@ -165,33 +165,7 @@ export const RoutesData = [
     icon: faUser,
 
   },
-  {
-    path: 'FlowType/list',
-    component: FlowType,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "نوع چرخه",
-    icon: faUser,
-
-  },
-  {
-    path: 'FlowState/list',
-    component: FlowState,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "وضعیت چرخه",
-    icon: faUser,
-
-  },
-  {
-    path: 'FlowLifeCycle/list',
-    component: FlowLifeCycle,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "چرخه فرآیند",
-    icon: faUser,
-
-  },
+ 
     {
     path: 'car-inspection-service/list',
     component: CarInspectionService,
@@ -279,6 +253,33 @@ export const RoutesData = [
     ID: 2,
     permission: ['admin', 'superAdmin'],
     title: "تاریخ و زمان",
+    icon: faUser,
+
+  },
+  {
+    path: 'FlowType/list',
+    component: FlowType,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "نوع چرخه",
+    icon: faUser,
+
+  },
+  {
+    path: 'FlowState/list',
+    component: FlowState,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "وضعیت چرخه",
+    icon: faUser,
+
+  },
+  {
+    path: 'FlowLifeCycle/list',
+    component: FlowLifeCycle,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "چرخه فرآیند",
     icon: faUser,
 
   },

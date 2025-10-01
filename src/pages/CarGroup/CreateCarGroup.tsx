@@ -45,9 +45,9 @@ EditPieceProps
   const onSubmit = () => {
     const formData = new FormData();
      formData.append("name",getValues()["name"])
-    formData.append("brandId",getValues()["brandId"])
-    formData.append("Image",image);
-  instance.post(ApiHelper.get("CreateSecretOfOurServiceQuality"),formData).then((res:any) => {
+    formData.append("carBrandId",getValues()["carBrandId"])
+    formData.append("image",image);
+  instance.post(ApiHelper.get("CreateCarGroup"),formData).then((res:any) => {
     if(res.data) {
         setShowAddUserModal(false);
     }
@@ -107,9 +107,10 @@ EditPieceProps
      <Dropdown
                   register={register}
                   control={control}
-                  title="brandId"
+                  title="carBrandId"
                   label='برند خودرو'
                   option={brands}
+                  optionTitle='name'
                 
                   fullWidth={true}
                 />
