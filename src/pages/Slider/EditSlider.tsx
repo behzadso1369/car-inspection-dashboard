@@ -11,6 +11,7 @@ import { ApiHelper } from '../../helper/api-request';
 import Input from '../../libs/input/input';
 import Datepicker from '../../libs/datepicker/datepicker';
 import Dropdown from '../../libs/dropdown/dropdown';
+import Button, { PrimaryButton, SecondaryButton } from '../../libs/button/button';
 
 
 
@@ -47,7 +48,7 @@ EditPieceProps
     formData.append("link",getValues()["link"])
     formData.append("durrationTime",getValues()["durrationTime"])
     formData.append("image",image);
-  instance.put(ApiHelper.get("EditSecretOfOurServiceQuality")+ "?id=" + slideId,formData).then((res:any) => {
+  instance.put(ApiHelper.get("UpdateSlider")+ "?id=" + slideId,formData).then((res:any) => {
     if(res.data) {
         setShowEditModal(false);
     }
@@ -63,11 +64,11 @@ EditPieceProps
 
   };
   const  getBlogTagById = () => {
-    instance.get(ApiHelper.get("GetSecretOfOurServiceQuality"),{params:{id:slideId}}).then((res:any) => {
+    instance.get(ApiHelper.get("getSliderById"),{params:{id:slideId}}).then((res:any) => {
         reset({
-          Title:res.data.resultObject.title,
-          DurationTime:res.data.resultObject.durationTime,
-          Link:res.data.resultObject.link,
+          text:res.data.resultObject.text,
+          durationTime:res.data.resultObject.durationTime,
+          link:res.data.resultObject.link,
           imagePath:res.data.resultObject.imagePath
         })
         setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)
@@ -103,11 +104,11 @@ EditPieceProps
       <div className="grid grid-cols-3 gap-3 pb-8 px-10 py-5">
       
       <Input
-  placeholder='عنوان'
+  placeholder='متن'
   type="text"
   register={register}
   control={control}
-  title="Title"
+  title="text"
   label='عنوان'
   width="w-full"
 />
@@ -116,7 +117,7 @@ EditPieceProps
       type="text"
       register={register}
       control={control}
-      title="Link"
+      title="link"
       label='لینک'
        
       width="w-full"
@@ -126,7 +127,7 @@ EditPieceProps
          type="text"
          register={register}
          control={control}
-         title="DurationTime"
+         title="durationTime"
          label='مدت زمان اسلایدر'
           
          width="w-full"
@@ -173,6 +174,21 @@ EditPieceProps
    </div>
  
    </div>
+   <div className='col-span-4 flex justify-end mt-8'>
+              <Button
+              title='لغو'
+              active={true}
+              style={SecondaryButton}
+              onClick={() =>setShowEditModal(false)}
+            />
+              <Button
+              title='اضافه کردن'
+              active={true}
+              style={PrimaryButton}
+              onClick={onSubmit}
+            />
+            
+              </div>
                      
             </div>
     

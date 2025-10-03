@@ -59,7 +59,7 @@ const Slider: React.FunctionComponent = () => {
   useEffect(() => {
     getAllRoles();
  
-  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal]);
+  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal]);
 
   const deleteSlider = (params:any) => {
     setSlideId(params.data.id);
@@ -147,7 +147,7 @@ const Slider: React.FunctionComponent = () => {
             setSlideId(params.data.id);
             setSlideName(params.data.text);
             }}>ویرایش   اسلاید </button>
-          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteSlider(params)}>حذف  خدمات</button>
+          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteSlider(params)}>حذف  اسلاید</button>
     </div>
         
         
