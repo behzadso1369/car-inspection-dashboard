@@ -54,7 +54,7 @@ const BlogCategories: React.FunctionComponent = () => {
     };
   }, []);
   const getAllRoles = () => {
-    instance.get(ApiHelper.get("SliderList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+    instance.get(ApiHelper.get("BlogCategoriesList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
       setRowData(res?.data?.resultObject);
          setCount(res?.data?.countData);
     })
@@ -62,11 +62,11 @@ const BlogCategories: React.FunctionComponent = () => {
   useEffect(() => {
     getAllRoles();
  
-  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal]);
+  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal]);
 
   const deleteBlog = (params:any) => {
-    setSlideId(params.data.Id);
-    setSlideName(params.data.Name);
+    setSlideId(params.data.id);
+    setSlideName(params.data.name);
     setShowDeleteUser(true);
   
   }
@@ -76,7 +76,7 @@ const BlogCategories: React.FunctionComponent = () => {
 
   const columnDefs:ColDef[] = [
     {
-      field: 'Id',
+      field: 'id',
       headerName: '#',
       sortable: true,
       unSortIcon: true,
@@ -90,36 +90,36 @@ const BlogCategories: React.FunctionComponent = () => {
   
    
     {
-      field: 'Text',
-      headerName: 'متن ',
+      field: 'name',
+      headerName: 'نام ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.Name ? <span>{params.data.Name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.name ? <span>{params.data.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
         {
-            field: 'Link',
-            headerName: 'Link',
+            field: 'slug',
+            headerName: 'slug',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.NormalizedName ? <span>{params.data.NormalizedName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.slug ? <span>{params.data.slug}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
              }
               },
               {
-                field: 'ImagePath',
-                headerName: 'عکس',
+                field: 'description',
+                headerName: 'توضیحات',
                 cellRenderer: (params:any) => {
                   return (
                     <>
-                    {params.data.NormalizedName ? <span>{params.data.NormalizedName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                    {params.data.description ? <span>{params.data.description}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                     </>
                   )
                
@@ -143,10 +143,10 @@ const BlogCategories: React.FunctionComponent = () => {
           <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' onClick={() => {
             
             setShowEditModal(true)
-            setBlogCatId(params.data.Id);
-            setBlogCatName(params.data.Roles[0]);
-            }}>ویرایش دسته بندی بلاگ </button>
-          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف دسته بندی</button>
+            setBlogCatId(params.data.id);
+            setBlogCatName(params.data.name);
+            }}>ویرایش  </button>
+          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  </button>
     </div>
         
         

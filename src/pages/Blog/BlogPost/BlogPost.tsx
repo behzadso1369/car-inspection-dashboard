@@ -14,18 +14,22 @@ import { CircularProgress } from '@mui/material';
 import CreateSlider from './CreateBlogPost';
 import DeleteSlider from './DeleteBlogPost';
 import { NavLink } from 'react-router-dom';
+import EditBlogPost from './EditBlogPost';
+import DeleteBlogPost from './DeleteBlogPost';
 const BlogPost: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [showDeleteUser, setShowDeleteUser] = useState<boolean>(false);
-  const [sliderId, setSlideId] = useState<number>(0);
-  const [slideName, setSlideName] = useState<string>("");
+  const [blogCatId, setBlogCatId] = useState<number>(0);
+  const [blogCatName,setBlogCatName] = useState<string>("");
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [search,setSearch] = useState<string>("")
   const [count, setCount] = React.useState(0);
+     
+     const [showEditModal, setShowEditModal] = React.useState<boolean>(false);
 
   const [rowData, setRowData] = useState<any>();
 
@@ -56,11 +60,11 @@ const BlogPost: React.FunctionComponent = () => {
   useEffect(() => {
     getAllRoles();
  
-  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal]);
+  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal]);
 
-  const deleteSlider = (params:any) => {
-    setSlideId(params.data.Id);
-    setSlideName(params.data.Name);
+  const deleteBlog = (params:any) => {
+    setBlogCatId(params.data.id);
+    setBlogCatName(params.data.title);
     setShowDeleteUser(true);
   
   }
@@ -70,50 +74,86 @@ const BlogPost: React.FunctionComponent = () => {
 
   const columnDefs:ColDef[] = [
     {
-      field: 'Id',
+      field: 'id',
       headerName: '#',
       sortable: true,
       unSortIcon: true,
       rowDrag:true,
       filter: false,
       pinned: "right",
-      width:280,
+      maxWidth:60,
       wrapText:false
      
     },
   
    
     {
-      field: 'Text',
-      headerName: 'متن ',
+      field: 'title',
+      headerName: 'عنوان ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.Name ? <span>{params.data.Name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.title ? <span>{params.data.title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
         {
-            field: 'Link',
-            headerName: 'Link',
+            field: 'slug',
+            headerName: 'slug',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.NormalizedName ? <span>{params.data.NormalizedName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.slug ? <span>{params.data.slug}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                </>
+              )
+           
+             }
+              },
+        {
+            field: 'isPublished',
+            headerName: 'منتشر شده است؟',
+            cellRenderer: (params:any) => {
+              return (
+                <>
+                {params.data.isPublished ? <span>{params.data.isPublished ? "بله" : "خیر"}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
              }
               },
               {
+                field: 'IsFirstPage',
+                headerName: 'نمایش در صفحه اصلی',
+                cellRenderer: (params:any) => {
+                  return (
+                    <>
+                    {params.data.IsFirstPage ? <span>{params.data.IsFirstPage ? "بله" : "خیر"}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                    </>
+                  )
+               
+                 }
+                  },
+                  {
+                    field: 'category',
+                    headerName: 'دسته بندی ',
+                    cellRenderer: (params:any) => {
+                      return (
+                        <>
+                        {params.data.category.name ? <span>{params.data.category.name }</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                        </>
+                      )
+                   
+                     }
+                      },
+              {
                 field: 'ImagePath',
                 headerName: 'عکس',
                 cellRenderer: (params:any) => {
                   return (
                     <>
-                    {params.data.NormalizedName ? <span>{params.data.NormalizedName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                    {params.data.coverImage ? <span>{params.data.coverImage}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                     </>
                   )
                
@@ -125,29 +165,29 @@ const BlogPost: React.FunctionComponent = () => {
   
   
   
-    {
-      field: 'action',
-      headerName: 'عملیات',
-     
-     
-      cellRenderer: (params:any) => {
-        return (
-   
-  <div className="flex justify-start items-start">
-         
-        
-                {/* <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' ><NavLink to={"../../users/detail/" + params.data.id}>ویرایش نقش </NavLink></button> */}
-                <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteSlider(params)}>حذف اسلاید</button>
-
-          
-           
-          </div>
-        
-        
-        );
-      },
-      filter: false
-    },
+                  {
+                    field: 'action',
+                    headerName: 'عملیات',
+                   
+                   
+                    cellRenderer: (params:any) => {
+                      return (
+                 
+                        <div className="flex justify-start items-start">
+                        <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' onClick={() => {
+                          
+                          setShowEditModal(true)
+                          setBlogCatId(params.data.id);
+                          setBlogCatName(params.data.title);
+                          }}>ویرایش  </button>
+                        <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  </button>
+                  </div>
+                      
+                      
+                      );
+                    },
+                    filter: false
+                  },
   ];
   const onFilterTextBoxChanged = useCallback(() => {
 
@@ -174,8 +214,8 @@ const BlogPost: React.FunctionComponent = () => {
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
-          <h3 className="text-base font-bold text-primary">   اسلایدها </h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن اسلاید</button>
+          <h3 className="text-base font-bold text-primary"> پست های بلاگ </h3>
+          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن پست  بلاگ</button>
       
       </div>
         <QuickSearch  activeSearch={true}   register={register}
@@ -229,10 +269,12 @@ const BlogPost: React.FunctionComponent = () => {
      )}
      
       {showDeleteUser && (
-       <DeleteSlider slideId={sliderId} slideName={slideName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+       <DeleteBlogPost slideId={blogCatId} slideName={blogCatName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
    
-    
+   {showEditModal && (
+        <EditBlogPost blogCatId={blogCatId} blogCatName={blogCatName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
+     )}
    
     </Fragment>
    

@@ -56,14 +56,15 @@ export const TextEditor: FC<InputProps> = ({
         ) : null}
 
         <Controller
-          {...register(title)}
+          name={title}
           control={control}
           render={({ field: { ref, ...field } }) => {
-            const { value } = field;
+            const { value,onChange } = field;
+            
 
             return (
               <div className="relative w-full">
-                <TinyMCEEditor     baseApi={baseUrl}  />
+                <TinyMCEEditor value={value} setValue={onChange}     baseApi={baseUrl}  />
                 {/* <input
                   {...field}
                   {...register(title)}

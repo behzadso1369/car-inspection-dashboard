@@ -14,6 +14,8 @@ import { CircularProgress } from '@mui/material';
 import CreateSlider from './CreateBlogPostTag';
 import DeleteSlider from './DeleteBlogPostTag';
 import { NavLink } from 'react-router-dom';
+import CreateBlogPostTag from './CreateBlogPostTag';
+import EditBlogPostTag from './EditBlogPostTag';
 const BlogPostTag: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -26,6 +28,7 @@ const BlogPostTag: React.FunctionComponent = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [search,setSearch] = useState<string>("")
   const [count, setCount] = React.useState(0);
+  const [showEditModal, setShowEditModal] = React.useState<boolean>(false);
 
   const [rowData, setRowData] = useState<any>();
 
@@ -48,7 +51,7 @@ const BlogPostTag: React.FunctionComponent = () => {
     };
   }, []);
   const getAllRoles = () => {
-    instance.get(ApiHelper.get("SliderList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+    instance.get(ApiHelper.get("BlogPostTagList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
       setRowData(res?.data?.resultObject);
          setCount(res?.data?.countData);
     })
@@ -56,7 +59,7 @@ const BlogPostTag: React.FunctionComponent = () => {
   useEffect(() => {
     getAllRoles();
  
-  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal]);
+  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal]);
 
   const deleteSlider = (params:any) => {
     setSlideId(params.data.Id);
@@ -70,7 +73,7 @@ const BlogPostTag: React.FunctionComponent = () => {
 
   const columnDefs:ColDef[] = [
     {
-      field: 'Id',
+      field: 'id',
       headerName: '#',
       sortable: true,
       unSortIcon: true,
@@ -84,70 +87,59 @@ const BlogPostTag: React.FunctionComponent = () => {
   
    
     {
-      field: 'Text',
-      headerName: 'متن ',
+      field: 'blogPost',
+      headerName: 'پست ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.Name ? <span>{params.data.Name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.blogPost.title ? <span>{params.data.blogPost.title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
         {
-            field: 'Link',
-            headerName: 'Link',
+            field: 'blogTag',
+            headerName: 'تگ',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.NormalizedName ? <span>{params.data.NormalizedName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.tag.name ? <span>{params.data.tag.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
              }
               },
+              
+
+    
+    
+  
+  
+  
               {
-                field: 'ImagePath',
-                headerName: 'عکس',
+                field: 'action',
+                headerName: 'عملیات',
+               
+               
                 cellRenderer: (params:any) => {
                   return (
-                    <>
-                    {params.data.NormalizedName ? <span>{params.data.NormalizedName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
-                    </>
-                  )
-               
-                 }
-                  },
-
-    
-    
-  
-  
-  
-    {
-      field: 'action',
-      headerName: 'عملیات',
-     
-     
-      cellRenderer: (params:any) => {
-        return (
-   
-  <div className="flex justify-start items-start">
-         
-        
-                {/* <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' ><NavLink to={"../../users/detail/" + params.data.id}>ویرایش نقش </NavLink></button> */}
-                <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteSlider(params)}>حذف اسلاید</button>
-
-          
-           
-          </div>
-        
-        
-        );
-      },
-      filter: false
-    },
+             
+                    <div className="flex justify-start items-start">
+                    <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' onClick={() => {
+                      
+                      setShowEditModal(true)
+                      setSlideId(params.data.id);
+                      setSlideName(params.data.name);
+                      }}>ویرایش  </button>
+                    <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteSlider(params)}>حذف  </button>
+              </div>
+                  
+                  
+                  );
+                },
+                filter: false
+              },
   ];
   const onFilterTextBoxChanged = useCallback(() => {
 
@@ -174,8 +166,8 @@ const BlogPostTag: React.FunctionComponent = () => {
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
-          <h3 className="text-base font-bold text-primary">   اسلایدها </h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن اسلاید</button>
+          <h3 className="text-base font-bold text-primary">   تگ پست بلاگ </h3>
+          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن تگ پست</button>
       
       </div>
         <QuickSearch  activeSearch={true}   register={register}
@@ -225,11 +217,14 @@ const BlogPostTag: React.FunctionComponent = () => {
       </div>
       </div>
       {showAddModal && (
-        <CreateSlider showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
+        <CreateBlogPostTag showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )}
      
       {showDeleteUser && (
        <DeleteSlider slideId={sliderId} slideName={slideName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+     )}
+      {showEditModal && (
+       <EditBlogPostTag blogPosTagId={sliderId} blogPostTagName={slideName} showEditModal={showEditModal} setShowEditModal={setShowEditModal}/>
      )}
    
     

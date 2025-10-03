@@ -1,36 +1,23 @@
 import React from 'react';
-
 import { Dialog, DialogTitle } from '@mui/material';
-
-
-
 import { Button, PrimaryButton, SecondaryButton } from '../../../libs/button/button';
 import instance from '../../../helper/interceptor';
 import { ApiHelper } from '../../../helper/api-request';
-
-
-
-
-
-
 interface EditPieceProps extends React.PropsWithChildren {
   showDeleteModal: boolean;
   slideId:number;
   slideName:string;
-
-
-
   setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DeleteBlogCategory: React.FunctionComponent<
+const DeleteBlogPostTag: React.FunctionComponent<
 EditPieceProps
 > = ({ showDeleteModal, setShowDeleteModal,slideName,slideId }) => {
 
 
 
   const onSubmit = () => {
-    instance.delete(ApiHelper.get("Slider")  + slideId).then((res:any) => {
+    instance.delete(ApiHelper.get("DeleteBlogPostTag") + "?id="  + slideId).then((res:any) => {
         if(res) {
           setShowDeleteModal(false)
     
@@ -57,12 +44,12 @@ EditPieceProps
       }}
     >
       <DialogTitle className="w-full flex items-center gap-3 border-b !pb-6">
-        <span> حذف  اسلایدر </span>
+        <span> حذف  تگ پست بلاگ </span>
         
       </DialogTitle>
       <div className="grid grid-cols-3 gap-3 pb-8 px-10 py-5">
         <div className='col-span-3'>
-            <span>آیا از حذف اسلایدر</span>
+            <span>آیا از حذف تگ پست بلاگ</span>
             <span className='text-blue-500'> {slideName} </span>
             <span> </span>
             <span>مطمئن هستید؟</span>
@@ -89,4 +76,4 @@ EditPieceProps
   );
 };
 
-export default DeleteBlogCategory;
+export default DeleteBlogPostTag;

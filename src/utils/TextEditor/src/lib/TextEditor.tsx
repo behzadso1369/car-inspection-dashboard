@@ -52,6 +52,9 @@ export interface TinyMCEEditorProps {
   uploadFileApi?: any;
   deleteFileApi?: any;
   baseApi?:any;
+  value?:any;
+  setValue?:any;
+
 }
 
 export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
@@ -59,7 +62,9 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
   createFolderApi,
   uploadFileApi,
   deleteFileApi,
-  baseApi
+  baseApi,
+  value,
+  setValue
 }:any) => {
   // const [Description, setDescription] = useState<any>("");
 
@@ -673,7 +678,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
     setSelectedModal(!selectedModal);
   };
   const handleEditorChange = (content: any) => {
-    // setValue(content);
+    setValue(content);
   };
   const i18nConfig = {
     messages: {
@@ -715,6 +720,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
     <>
       <Editor
         ref={editor}
+        value={value}
         init={{
           min_chars: 10,
           setup: function (editor:any) {

@@ -31,30 +31,9 @@ interface EditPieceProps extends React.PropsWithChildren {
 const EditBlogCategory: React.FunctionComponent<
 EditPieceProps
 > = ({ showEditModal, setShowEditModal,blogCatId,blogCatName }) => {
- 
-  const inputImageRef = useRef<any>(null);
-
-  const { register, control,getValues} = useForm({});
-
-
-
-    const [fileId,setFileId] = useState<any>(null);
-    const [files,setFiles] = useState<any>([]);
-    const [image,setImage] = useState<any>(null);
-  
-    const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
+  const { register, control,getValues,reset} = useForm({});
   const onSubmit = () => {
-    const formData = new FormData();
-    formData.append("Text",getValues()["Text"])
-    formData.append("Link",getValues()["Link"])
-    formData.append("DurationTime",getValues()["DurationTime"])
-    formData.append("Image",image);
-    debugger
-    // for (const key in getValues()) {
-    //     formData.append(key,getValues()[key])
-    
-    // }
-  instance.post(ApiHelper.get("CreateSliderWithFile"),formData).then((res:any) => {
+  instance.put(ApiHelper.get("EditBlogCategories") + "?id=" + blogCatId,getValues()).then((res:any) => {
     if(res.data) {
         setShowEditModal(false);
     }
@@ -63,13 +42,21 @@ EditPieceProps
     
    
   };
-  const uploadImageFile = async () => {
-    console.log(fileId);
-    const file = inputImageRef.current?.files[0];
-    setImage(file);
+  const  getBlogCategoriesById = () => { 
+    instance.get(ApiHelper.get("getBlogCategoriesById"),{params:{id:blogCatId}}).then((res:any) => {
 
-  };
+      
+      
+        reset({
+          name:res.data.resultObject.name,
+          slug:res.data.resultObject.slug,
+          description:res.data.resultObject.description,
+        })
+   
+    })
+  }
   useEffect(() => {
+    getBlogCategoriesById();
   
   },[])
   return (
@@ -101,33 +88,26 @@ EditPieceProps
   type="text"
   register={register}
   control={control}
-  title="Name"
+  title="name"
   label='نام'
   width="w-full"
 />
   <Input
-      
          type="text"
          register={register}
          control={control}
-         title="Slug"
-         label='Slug'
+         title="slug"
+         label='slug'
           
          width="w-full"
        />
-         
      <TextArea
       register={register}
       control={control}
-      title="Description"
+      title="description"
       label='توضیحات'
 
     />
-    
-
-
-        
-     
    <div className='col-span-4 flex justify-end mt-8'>
               <Button
               title='لغو'
@@ -140,32 +120,10 @@ EditPieceProps
               active={true}
               style={PrimaryButton}
               onClick={onSubmit}
-            />
-            
+              />
+
               </div>
-    
-   
 
-
-      {/* <div className='col-span-3 mt-6'>
-      <Uploader  />
-      </div> */}
-    
- 
-   
-
-
-           
-        
-
-     
-       
-      
-    
-
-
-        
-     
 </div>
     
    

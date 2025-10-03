@@ -30,7 +30,7 @@ EditPieceProps
 
 
   const onSubmit = () => {
-    instance.delete(ApiHelper.get("Slider")  + slideId).then((res:any) => {
+    instance.delete(ApiHelper.get("DeleteBlogCategories") + "?id=" +   slideId).then((res:any) => {
         if(res) {
           setShowDeleteModal(false)
     

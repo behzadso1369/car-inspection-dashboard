@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 console.log(window.location.pathname);
 const instance = axios.create({
-  baseURL: "http://45.139.11.225:5533/api/",
+  baseURL: "http://45.139.11.225:5533/api/admin/",
 });
 const AxiosInterceptor = ({ children }: any) => {
   const [open, setOpen] = React.useState(false);

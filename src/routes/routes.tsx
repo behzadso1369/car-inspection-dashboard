@@ -2,7 +2,7 @@
 
 import HomeMainPage from '../pages/Home/HomeRoute';
 
-import OrderRoute from '../pages/Order/OrderRoute';
+
 
 import {
   faHouse,
@@ -15,13 +15,6 @@ import {
 
 } from '@fortawesome/free-solid-svg-icons';
 import UserRoute from '../pages/User/UserRoute';
-
-import ServicesRoute from '../pages/Services/ServicesRoute';
-import BankRoute from '../pages/Banks/BankRoutes';
-
-import TransactionRoute from '../pages/Transactions/TransactionRoute';
-import WithdrawRoute from '../pages/Withdraw/WithdrawRoute';
-import RoleRoute from '../pages/Role/RoleRoute';
 import Role from '../pages/Role/Role';
 import Slider from '../pages/Slider/Slider';
 import BlogRoute from '../pages/Blog/BlogRoute';
@@ -40,6 +33,8 @@ import CarInspectionFeature from '../pages/CarInspectionFeature/CarInspectionFea
 import CarInspectionLocation from '../pages/CarInspectionLocation/CarInspectionLocation';
 import CarInspectionType from '../pages/CarInspectionType/CarInspectionType';
 import DateAndTime from '../pages/DateAndTime/DateAndTime';
+import { Children } from 'react';
+import CarRoute from '../pages/Car/CarRoute';
 
 
 export const RoutesData = [
@@ -116,12 +111,12 @@ export const RoutesData = [
         ID: 2,
         title: "دسته بندی بلاگ",
       },
-      {
-        path: 'blog/blog-comments',
-        permission: ['admin', 'superAdmin' ,'customer'],
-        ID: 3,
-        title: "کامنت های بلاگ",
-      },
+      // {
+      //   path: 'blog/blog-comments',
+      //   permission: ['admin', 'superAdmin' ,'customer'],
+      //   ID: 3,
+      //   title: "کامنت های بلاگ",
+      // },
       {
         path: 'blog/tags',
         permission: ['admin', 'superAdmin' ,'customer'],
@@ -137,6 +132,83 @@ export const RoutesData = [
       
     ],
   },
+  {
+  path: 'car-inspection',
+  component: CarRoute,
+  ID: 3,
+  permission: ['admin', 'superAdmin' ,'customer'],
+  title: "کارشناسی خودرو",
+  icon: faTruckRampBox,
+  children: [
+    {
+      path: 'car-inspection/car-inspection-service/list',
+      ID: 1,
+      permission: ['admin', 'superAdmin'],
+      title: "خدمات خودرویی",
+
+  
+    },
+    {
+      path: 'car-inspection/CarGroup/list',
+      ID: 2,
+      permission: ['admin', 'superAdmin'],
+      title: "گروه خودرو",
+
+  
+    },
+    {
+      path: 'car-inspection/CarBrand/list',
+      ID: 3,
+      permission: ['admin', 'superAdmin'],
+      title: "برند خودرو",
+
+  
+    },
+    {
+      path: 'car-inspection/CarInspection/list',
+      ID: 4,
+      permission: ['admin', 'superAdmin'],
+      title: "کارشناسی خودرو",
+  
+    },
+    {
+      path: 'car-inspection/CarInspectionDateType/list',
+      ID: 5,
+      permission: ['admin', 'superAdmin'],
+      title: "نوع تاریخ کارشناسی",
+  
+    },
+    {
+      path: 'car-inspection/CarInspectionFeature/list',
+      ID: 6,
+      permission: ['admin', 'superAdmin'],
+      title: "ویژگیهای کارشناسی",
+  
+    },
+    {
+      path: 'car-inspection/CarInspectionLocation/list',
+      ID: 7,
+      permission: ['admin', 'superAdmin'],
+      title: "مکان کارشناسی",
+  
+    },
+    {
+      path: 'car-inspection/CarInspectionType/list',
+      ID: 8,
+      permission: ['admin', 'superAdmin'],
+      title: "نوع کارشناسی",
+  
+    },
+    {
+      path: 'car-inspection/CarInspectionLocation/list',
+      ID: 9,
+      permission: ['admin', 'superAdmin'],
+      title: "مکان کارشناسی",
+  
+    },
+  ]
+
+},
 
   {
     path: 'secretOfOurServicequality/list',
@@ -166,102 +238,14 @@ export const RoutesData = [
 
   },
  
-    {
-    path: 'car-inspection-service/list',
-    component: CarInspectionService,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "خدمات خودرویی",
-    icon: faUser,
+    
 
-  },
-  {
-    path: 'CarGroup/list',
-    component: CarGroup,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "گروه خودرو",
-    icon: faUser,
-
-  },
-  {
-    path: 'CarBrand/list',
-    component: CarBrand,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "برند خودرو",
-    icon: faUser,
-
-  },
-  {
-    path: 'CarInspection/list',
-    component: CarInspection,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "کارشناسی خودرو",
-    icon: faUser,
-
-  },
-  {
-    path: 'CarInspectionDateType/list',
-    component: CarInspectionDateType,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "نوع تاریخ کارشناسی",
-    icon: faUser,
-
-  },
-  {
-    path: 'CarInspectionFeature/list',
-    component: CarInspectionFeature,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "ویژگیهای کارشناسی",
-    icon: faUser,
-
-  },
-  {
-    path: 'CarInspectionLocation/list',
-    component: CarInspectionLocation,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "مکان کارشناسی",
-    icon: faUser,
-
-  },
-  {
-    path: 'CarInspectionType/list',
-    component: CarInspectionType,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "نوع کارشناسی",
-    icon: faUser,
-
-  },
-  {
-    path: 'CarInspectionLocation/list',
-    component: CarInspectionLocation,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "مکان کارشناسی",
-    icon: faUser,
-
-  },
-  {
-    path: 'DateAndTime/list',
-    component: DateAndTime,
-    ID: 2,
-    permission: ['admin', 'superAdmin'],
-    title: "تاریخ و زمان",
-    icon: faUser,
-
-  },
   {
     path: 'FlowType/list',
     component: FlowType,
     ID: 2,
     permission: ['admin', 'superAdmin'],
-    title: "نوع چرخه",
+    title: "نوع فرآیند",
     icon: faUser,
 
   },
@@ -270,7 +254,7 @@ export const RoutesData = [
     component: FlowState,
     ID: 2,
     permission: ['admin', 'superAdmin'],
-    title: "وضعیت چرخه",
+    title: "مرحله فرآیند",
     icon: faUser,
 
   },
@@ -279,7 +263,7 @@ export const RoutesData = [
     component: FlowLifeCycle,
     ID: 2,
     permission: ['admin', 'superAdmin'],
-    title: "چرخه فرآیند",
+    title: "چرخه فرآیند ساز",
     icon: faUser,
 
   },

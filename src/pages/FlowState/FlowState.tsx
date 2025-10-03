@@ -23,6 +23,9 @@ import {Image} from "antd";
 import CreateSecretOfOurServiceQuality from './CreateFlowState';
 import DeleteSecretOfOurServiceQuality from './DeleteFlowState';
 import EditSecretOfOurServiceQuality from './EdiFlowState';
+import CreateFlowState from './CreateFlowState';
+import DeleteFlowState from './DeleteFlowState';
+import EditFlowState from './EdiFlowState';
 const FlowState: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -61,7 +64,7 @@ const FlowState: React.FunctionComponent = () => {
     };
   }, []);
   const getAllRoles = () => {
-    instance.get(ApiHelper.get("secretOfOurServiceQualityList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+    instance.get(ApiHelper.get("FlowStateList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
       setRowData(res?.data?.resultObject);
          setCount(res?.data?.countData);
     })
@@ -97,49 +100,42 @@ const FlowState: React.FunctionComponent = () => {
   
    
     {
-      field: 'title',
-      headerName: 'عنوان ',
+      field: 'name',
+      headerName: 'نام ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.title ? <span>{params.data.title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.name ? <span>{params.data.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
         {
-            field: 'moreDescription',
-            headerName: 'توضیحات',
+            field: 'title',
+            headerName: 'عنوان',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.moreDescription ? <span>{params.data.moreDescription}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.title ? <span>{params.data.title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
              }
               },
               {
-                field: 'imagePath',
-                headerName: 'عکس',
-                autoHeight:true,
+                field: 'flowTypeName',
+                headerName: 'نوع فرآیند',
                 cellRenderer: (params:any) => {
                   return (
-                    <div className="flex items-center py-2">
-                         <Image
-                    style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
-                    src={"http://45.139.11.225:5533/" + params.data.imagePath}
-                    />
-                    </div>
-                   
-                      
-                   
-                 
+                    <>
+                    {params.data.flowTypeName ? <span>{params.data.flowTypeName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                    </>
                   )
                
                  }
                   },
+
 
     
     
@@ -160,8 +156,8 @@ const FlowState: React.FunctionComponent = () => {
             setShowEditModal(true)
             setSecretOfOurServiceQualityId(params.data.id);
             setSecretOfOurServiceQualityName(params.data.title);
-            }}>ویرایش   خدمات </button>
-          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  خدمات</button>
+            }}>ویرایش    </button>
+          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  </button>
     </div>
         
         
@@ -195,8 +191,8 @@ const FlowState: React.FunctionComponent = () => {
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
-          <h3 className="text-base font-bold text-primary">راز خدمات ما</h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن  راز خدمات ما</button>
+          <h3 className="text-base font-bold text-primary">مرحله فرآیند</h3>
+          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن  مرحله فرآیند</button>
       
       </div>
         <QuickSearch  activeSearch={true}   register={register}
@@ -246,14 +242,14 @@ const FlowState: React.FunctionComponent = () => {
       </div>
       </div>
       {showAddModal && (
-        <CreateSecretOfOurServiceQuality showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
+        <CreateFlowState showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )}
      
       {showDeleteUser && (
-       <DeleteSecretOfOurServiceQuality secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+       <DeleteFlowState secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
        {showEditModal && (
-        <EditSecretOfOurServiceQuality secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
+        <EditFlowState secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
      )}
    
     

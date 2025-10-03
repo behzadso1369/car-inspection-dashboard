@@ -30,7 +30,7 @@ EditPieceProps
 
 
   const onSubmit = () => {
-    instance.delete(ApiHelper.get("DeleteSecretOfOurServiceQuality")+ "?id=" + secretOfOurServiceQualityId).then((res:any) => {
+    instance.delete(ApiHelper.get("DeleteFlowType")+ "?id=" + secretOfOurServiceQualityId).then((res:any) => {
         if(res) {
           setShowDeleteModal(false)
     
@@ -57,12 +57,12 @@ EditPieceProps
       }}
     >
       <DialogTitle className="w-full flex items-center gap-3 border-b !pb-6">
-        <span> حذف  راز کیفیت خدمات ما </span>
+        <span> حذف     نوع فرآیند </span>
         
       </DialogTitle>
       <div className="grid grid-cols-3 gap-3 pb-8 px-10 py-5">
         <div className='col-span-3'>
-            <span>آیا از حذف راز کیفیت خدمات ما</span>
+            <span>آیا از حذف نوع فرآیند</span>
             <span className='text-blue-500'> {secretOfOurServiceQualityName} </span>
             <span> </span>
             <span>مطمئن هستید؟</span>

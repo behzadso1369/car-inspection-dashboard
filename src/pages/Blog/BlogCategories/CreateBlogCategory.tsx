@@ -1,75 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
-import { Dialog, DialogTitle, Switch } from '@mui/material';
+import { Dialog, DialogTitle } from '@mui/material';
 
 import { useForm } from 'react-hook-form';
 import instance from '../../../helper/interceptor';
 import { ApiHelper } from '../../../helper/api-request';
 import Input from '../../../libs/input/input';
-import Datepicker from '../../../libs/datepicker/datepicker';
-import Dropdown from '../../../libs/dropdown/dropdown';
 import TextArea from '../../../libs/text-area/text-area';
 import Button, { PrimaryButton, SecondaryButton } from '../../../libs/button/button';
-import { Link } from 'react-router-dom';
-
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
-
-
-
-
-
 interface EditPieceProps extends React.PropsWithChildren {
   showAddUserModal: boolean;
-
-
-
   setShowAddUserModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
 const CreateBlogCategory: React.FunctionComponent<
 EditPieceProps
 > = ({ showAddUserModal, setShowAddUserModal }) => {
- 
-  const inputImageRef = useRef<any>(null);
-
   const { register, control,getValues} = useForm({});
-
-
-
-    const [fileId,setFileId] = useState<any>(null);
-    const [files,setFiles] = useState<any>([]);
-    const [image,setImage] = useState<any>(null);
-  
-    const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
   const onSubmit = () => {
-    const formData = new FormData();
-    formData.append("Text",getValues()["Text"])
-    formData.append("Link",getValues()["Link"])
-    formData.append("DurationTime",getValues()["DurationTime"])
-    formData.append("Image",image);
-    debugger
-    // for (const key in getValues()) {
-    //     formData.append(key,getValues()[key])
-    
-    // }
-  instance.post(ApiHelper.get("CreateSliderWithFile"),formData).then((res:any) => {
+  instance.post(ApiHelper.get("CreateBlogCategories"),getValues()).then((res:any) => {
     if(res.data) {
         setShowAddUserModal(false);
     }
   })
-
-    
-   
   };
-  const uploadImageFile = async () => {
-    console.log(fileId);
-    const file = inputImageRef.current?.files[0];
-    setImage(file);
-
-  };
-  useEffect(() => {
-  
-  },[])
   return (
     <Dialog
       className="w-full  "
@@ -119,11 +72,6 @@ EditPieceProps
       label='توضیحات'
 
     />
-    
-
-
-        
-     
    <div className='col-span-4 flex justify-end mt-8'>
               <Button
               title='لغو'
@@ -137,31 +85,7 @@ EditPieceProps
               style={PrimaryButton}
               onClick={onSubmit}
             />
-            
               </div>
-    
-   
-
-
-      {/* <div className='col-span-3 mt-6'>
-      <Uploader  />
-      </div> */}
-    
- 
-   
-
-
-           
-        
-
-     
-       
-      
-    
-
-
-        
-     
 </div>
     
    
