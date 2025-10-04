@@ -56,11 +56,11 @@ EditPieceProps
                   control={control}
                   title="roleName"
                   label='نقش'
-                  optionTitle='name'
+                  optionTitle='Name'
                   option={roles?.map((item:any) => {
                     return {
-                      id: item?.Name,
-                      title:item?.Name
+                      id: item?.Id,
+                      Name:item?.Name
                     }
                   })}
                   fullWidth={true}

@@ -141,7 +141,7 @@ const User: React.FunctionComponent = () => {
                   setUserId(params.data.Id);
                   setRoleName(params.data.Roles[0]);
                   }}>ویرایش نقش </button>
-                <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteUser(params)}>حذف کاربر</button>
+                {/* <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteUser(params)}>حذف کاربر</button> */}
           </div>
         );
       },
