@@ -727,7 +727,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
             setMyEditor(editor);
             editor.ui.registry.addButton('uploadBTN', {
               text: `آپلود فایل`,
-              onAction: function (_) {
+              onAction: function (_:any) {
                 openModal();
               },
             });

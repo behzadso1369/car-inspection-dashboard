@@ -78,7 +78,7 @@ EditPieceProps
       
         reset({
           name:res.data.resultObject.name,
-          carBrandId:Number(res.data.resultObject.carBrandId),
+          carBrandId:res.data.resultObject.carBrandId,
           image:res.data.resultObject.imagePath
         })
         setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)

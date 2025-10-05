@@ -264,6 +264,7 @@ setImage({image: imageUrl});
            width="w-full"
          />
              <Dropdown
+             optionTitle='name'
                   register={register}
                   control={control}
                   title="landing_template"
@@ -276,6 +277,7 @@ setImage({image: imageUrl});
                   fullWidth={true}
                 />
                     <Dropdown
+                    optionTitle='name'
                   register={register}
                   control={control}
                   title="gateway"

@@ -9,7 +9,6 @@ import "./Login.scss";
 import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import PasswordInput from '../../libs/password-input/password-input';
-import { type } from './../../@types/api.type';
 const Login: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, control,getValues,reset } = useForm();

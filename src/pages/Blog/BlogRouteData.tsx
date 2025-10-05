@@ -1,6 +1,5 @@
 
 import BlogCategories from "./BlogCategories/BlogCategories";
-import BlogComment from "./BlogComment/BlogComment";
 import BlogPost from "./BlogPost/BlogPost";
 import BlogPostTag from "./BlogPostTag/BlogPostTag";
 import BlogTag from "./BlogTag/BlogTag";
@@ -27,12 +26,6 @@ export const RoutesData = [
   {
     path: 'blog-categories',
     component: BlogCategories,
-    ID: 1,
-    permission: ['MANAGER', 'SUPERVISE'],
-  },
-  {
-    path: 'blog-comments',
-    component: BlogComment,
     ID: 1,
     permission: ['MANAGER', 'SUPERVISE'],
   },

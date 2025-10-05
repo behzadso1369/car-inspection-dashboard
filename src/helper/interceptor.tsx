@@ -59,6 +59,7 @@ instance.interceptors.response.use(
         window.location.href = "/login";
       }else {
       setOpen(true);
+      debugger
       setError(
         error?.response?.data?.message
           ? error?.response?.data?.message

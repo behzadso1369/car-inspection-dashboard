@@ -128,6 +128,7 @@ EditPieceProps
                
               />  */}
                <Dropdown
+               optionTitle='name'
                   register={register}
                   control={control}
                   title="customerId"
@@ -200,6 +201,7 @@ EditPieceProps
                     title={"birthDate"}
                   />
                     <Dropdown
+                    optionTitle='name'
                   register={register}
                   control={control}
                   title="roleId"

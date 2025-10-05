@@ -70,9 +70,9 @@ const App: React.FunctionComponent = () => {
             <Route
               path="/"
               element={
-                // <Auth>
+                <Auth>
                     <Layout />
-                // </Auth>
+                 </Auth>
               
            
              

@@ -13,7 +13,6 @@ import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import QuickSearch from '../../libs/quick-search/quick-search';
 import { CircularProgress } from '@mui/material';
-import AddUser from './AddUser';
 import EditUser from './EditUser';
 import Switch from '@mui/material/Switch';
 import DeleteUser from './DeleteUser';
@@ -248,7 +247,6 @@ const UnverifiedUsers: React.FunctionComponent = () => {
         className="absolute right-0 bottom-0 bg-white w-full"
         style={{ boxShadow: '0px -2px 7px 0px rgba(0, 0, 0, 0.05)' }}
       >
- <PaginationLib page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
       </div>
       <div style={containerStyle}>
       <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-32 pt-6">
@@ -285,9 +283,6 @@ const UnverifiedUsers: React.FunctionComponent = () => {
         />
       </div>
       </div>
-      {showAddModal && (
-        <AddUser showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
-     )}
       {showEditModal && (
         <EditUser  userId={userId} userName={userName} showEditUserModal={showEditModal} setShowEditUserModal={setShowEditModal}  />
      )}

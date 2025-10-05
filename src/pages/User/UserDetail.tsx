@@ -307,6 +307,7 @@ const UserDetail: React.FunctionComponent = () => {
            width="w-full"
          />
             <Dropdown
+                         optionTitle='name'
                   register={register}
                   control={control}
                   title="referral_rank"
@@ -328,6 +329,7 @@ const UserDetail: React.FunctionComponent = () => {
            width="w-full"
          />
           <Dropdown
+          optionTitle='name'
                   register={register}
                   control={control}
                   title="scan_type"
@@ -340,6 +342,7 @@ const UserDetail: React.FunctionComponent = () => {
                   fullWidth={true}
                 />
                  <Dropdown
+                 optionTitle='name'
                   register={register}
                   control={control}
                   title="scan_front"
@@ -348,6 +351,7 @@ const UserDetail: React.FunctionComponent = () => {
                   fullWidth={true}
                 />
                  <Dropdown
+                              optionTitle='name'
                   register={register}
                   control={control}
                   title="scan_back"
@@ -365,6 +369,7 @@ const UserDetail: React.FunctionComponent = () => {
            width="w-full"
          />
            <Dropdown
+                        optionTitle='name'
                   register={register}
                   control={control}
                   title="status"
@@ -387,6 +392,7 @@ const UserDetail: React.FunctionComponent = () => {
            width="w-full"
          />
             <Dropdown
+                         optionTitle='name'
                   register={register}
                   control={control}
                   title="trade_rank"

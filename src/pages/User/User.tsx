@@ -12,7 +12,6 @@ import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import QuickSearch from '../../libs/quick-search/quick-search';
 import { CircularProgress } from '@mui/material';
-import AddUser from './AddUser';
 import Switch from '@mui/material/Switch';
 import DeleteUser from './DeleteUser';
 import EditUserRole from './EditUserRole';
@@ -207,9 +206,9 @@ const User: React.FunctionComponent = () => {
         />
       </div>
       </div>
-      {showAddModal && (
+      {/* {showAddModal && (
         <AddUser showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
-     )}
+     )} */}
       {showEditModal && (
         <EditUserRole userId={userId} roleName={roleName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
      )}
