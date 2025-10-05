@@ -96,16 +96,11 @@ EditPieceProps
       className="w-full  "
       onClose={() => setShowAddUserModal(false)}
       open={showAddUserModal}
-      maxWidth={false}
+      maxWidth="xl"
     
       
       PaperProps={{ sx: { borderRadius: '12px', background: '#fff' } }}
-      sx={{
-        '& .MuiPaper-elevation': {
-        
-          width: "80% "
-        },
-      }}
+    
     >
       <DialogTitle className="w-full flex items-center gap-3 border-b !py-3 px-4">
         <span>اضافه کردن کارشناسی جدید      </span>

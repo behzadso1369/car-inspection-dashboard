@@ -99,6 +99,7 @@ EditPieceProps
   title="title"
   label='عنوان'
   width="w-full"
+  className='w-full'
 />
   <Input
       

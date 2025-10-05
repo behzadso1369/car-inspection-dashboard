@@ -64,7 +64,7 @@ const WhyWe: React.FunctionComponent = () => {
     };
   }, []);
   const getAllRoles = () => {
-    instance.get(ApiHelper.get("secretOfOurServiceQualityList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+    instance.get(ApiHelper.get("WhyWeList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
       setRowData(res?.data?.resultObject);
          setCount(res?.data?.countData);
     })
@@ -100,24 +100,24 @@ const WhyWe: React.FunctionComponent = () => {
   
    
     {
-      field: 'title',
+      field: 't1Title',
       headerName: 'عنوان ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.title ? <span>{params.data.title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.t1Title ? <span>{params.data.t1Title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
         {
-            field: 'moreDescription',
+            field: 't1Desc',
             headerName: 'توضیحات',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.moreDescription ? <span>{params.data.moreDescription}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.t1Desc ? <span>{params.data.t1Desc}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
@@ -198,7 +198,7 @@ const WhyWe: React.FunctionComponent = () => {
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
-          <h3 className="text-base font-bold text-primary">راز خدمات ما</h3>
+          <h3 className="text-base font-bold text-primary"> چرا ما</h3>
           <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن  راز خدمات ما</button>
       
       </div>

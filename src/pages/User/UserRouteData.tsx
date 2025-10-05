@@ -1,4 +1,4 @@
-import UnverifiedUsers from "./UnverifiedUsers";
+
 import User from "./User";
 import UserDetail from "./UserDetail";
 
@@ -9,12 +9,7 @@ export const RoutesData = [
     ID: 1,
     permission: ['MANAGER', 'SUPERVISE'],
   },
-  {
-    path: 'unverified-users',
-    component: UnverifiedUsers,
-    ID: 1,
-    permission: ['MANAGER', 'SUPERVISE'],
-  },
+ 
   {
     path: 'detail/:id',
     component: UserDetail,

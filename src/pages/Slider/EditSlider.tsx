@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Dialog, DialogTitle } from '@mui/material';
+import { Dialog, DialogTitle, useMediaQuery, useTheme } from '@mui/material';
 
 import { useForm } from 'react-hook-form';
 
@@ -30,6 +30,8 @@ interface EditPieceProps extends React.PropsWithChildren {
 const EditSlider: React.FunctionComponent<
 EditPieceProps
 > = ({ showEditModal, setShowEditModal,slideId,slideName }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
    
   const inputImageRef = useRef<any>(null);
 

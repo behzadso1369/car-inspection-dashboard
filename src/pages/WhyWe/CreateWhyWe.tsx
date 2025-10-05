@@ -43,14 +43,16 @@ EditPieceProps
     const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
   const onSubmit = () => {
     const formData = new FormData();
-    formData.append("Title",getValues()["Title"])
-    formData.append("MoreDescription",getValues()["MoreDescription"])
-    formData.append("Image",image);
-    // for (const key in getValues()) {
-    //     formData.append(key,getValues()[key])
-    
-    // }
-  instance.post(ApiHelper.get("CreateSecretOfOurServiceQuality"),formData).then((res:any) => {
+    formData.append("t1Title",getValues()["t1Title"])
+    formData.append("t1Desc",getValues()["t1Desc"])
+    formData.append("t2Title",getValues()["t2Title"])
+    formData.append("t2Desc",getValues()["t2Desc"])
+    formData.append("t3Title",getValues()["t3Title"])
+    formData.append("t3Desc",getValues()["t3Desc"])
+    formData.append("t4Title",getValues()["t4Title"])
+    formData.append("t4Desc",getValues()["t4Desc"])
+    formData.append("image",image);
+  instance.post(ApiHelper.get("CreateWhyWe"),formData).then((res:any) => {
     if(res.data) {
         setShowAddUserModal(false);
     }
@@ -91,12 +93,12 @@ EditPieceProps
       <div className="grid grid-cols-4 gap-3 !py-3 px-4">
   
   <Input
-  placeholder='عنوان'
+  placeholder='عنوان قسمت اول'
   type="text"
   register={register}
   control={control}
-  title="Title"
-  label='عنوان'
+  title="t1Title"
+  label='عنوان قسمت اول'
   width="w-full"
 />
  
@@ -104,8 +106,62 @@ EditPieceProps
      <TextArea
       register={register}
       control={control}
-      title="MoreDescription"
-      label='توضیحات'
+      title="t1Desc"
+      label='توضیحات قسمت اول'
+
+    />
+  <Input
+  placeholder='عنوان قسمت دوم'
+  type="text"
+  register={register}
+  control={control}
+  title="t2Title"
+  label='عنوان قسمت دوم'
+  width="w-full"
+/>
+ 
+         
+     <TextArea
+      register={register}
+      control={control}
+      title="t2Desc"
+      label='توضیحات قسمت دوم'
+
+    />
+  <Input
+  placeholder='عنوان قسمت سوم'
+  type="text"
+  register={register}
+  control={control}
+  title="t3title"
+  label='عنوان قسمت سوم'
+  width="w-full"
+/>
+ 
+         
+     <TextArea
+      register={register}
+      control={control}
+      title="t3Desc"
+      label='توضیحات قسمت سوم'
+
+    />
+  <Input
+  placeholder='عنوان قسمت چهارم'
+  type="text"
+  register={register}
+  control={control}
+  title="t4Tit"
+  label='عنوان قسمت چهارم'
+  width="w-full"
+/>
+ 
+         
+     <TextArea
+      register={register}
+      control={control}
+      title="t5Desc"
+      label='توضیحات قسمت چهارم'
 
     />
         <div className='mt-8 col-span-2 flex'>

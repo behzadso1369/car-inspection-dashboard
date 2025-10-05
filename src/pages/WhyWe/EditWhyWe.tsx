@@ -46,10 +46,16 @@ EditPieceProps
     const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
   const onSubmit = () => {
     const formData = new FormData();
-    formData.append("Title",getValues()["Title"])
-    formData.append("MoreDescription",getValues()["MoreDescription"])
-    formData.append("Image",image);
-  instance.put(ApiHelper.get("EditSecretOfOurServiceQuality")+ "?id=" + secretOfOurServiceQualityId,formData).then((res:any) => {
+    formData.append("t1Title",getValues()["t1Title"])
+    formData.append("t1Desc",getValues()["t1Desc"])
+    formData.append("t2Title",getValues()["t2Title"])
+    formData.append("t2Desc",getValues()["t2Desc"])
+    formData.append("t3Title",getValues()["t3Title"])
+    formData.append("t3Desc",getValues()["t3Desc"])
+    formData.append("t4Title",getValues()["t4Title"])
+    formData.append("t4Desc",getValues()["t4Desc"])
+    formData.append("image",image);
+  instance.put(ApiHelper.get("EditWhyWe")+ "?id=" + secretOfOurServiceQualityId,formData).then((res:any) => {
     if(res.data) {
         setShowEditModal(false);
     }
@@ -65,11 +71,18 @@ EditPieceProps
 
   };
   const  getBlogTagById = () => {
-    instance.get(ApiHelper.get("GetSecretOfOurServiceQuality"),{params:{id:secretOfOurServiceQualityId}}).then((res:any) => {
+    instance.get(ApiHelper.get("GetWhyWe"),{params:{id:secretOfOurServiceQualityId}}).then((res:any) => {
         reset({
-          Title:res.data.resultObject.title,
-          MoreDescription:res.data.resultObject.moreDescription,
-          imagePath:res.data.resultObject.imagePath
+          t1Title:res.data.resultObject.t1Title,
+          t1Desc:res.data.resultObject.t1Desc,
+          t2Title:res.data.resultObject.t2Title,
+          t2Desc:res.data.resultObject.t2Desc,
+          t3Title:res.data.resultObject.t3Title,
+          t3Desc:res.data.resultObject.t3Desc,
+          t4Title:res.data.resultObject.t4Title,
+          t4Desc:res.data.resultObject.t4Desc
+         
+       
         })
         setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)
     })
@@ -101,21 +114,75 @@ EditPieceProps
       </DialogTitle>
       <div className="grid grid-cols-4 gap-3 !py-3 px-4">
       <Input
-  placeholder='عنوان'
+  placeholder='عنوان قسمت اول'
   type="text"
   register={register}
   control={control}
-  title="Title"
-  label='عنوان'
+  title="t1Title"
+  label='عنوان قسمت اول'
   width="w-full"
 />
-
+ 
          
      <TextArea
       register={register}
       control={control}
-      title="MoreDescription"
-      label='توضیحات'
+      title="t1Desc"
+      label='توضیحات قسمت اول'
+
+    />
+  <Input
+  placeholder='عنوان قسمت دوم'
+  type="text"
+  register={register}
+  control={control}
+  title="t2Title"
+  label='عنوان قسمت دوم'
+  width="w-full"
+/>
+ 
+         
+     <TextArea
+      register={register}
+      control={control}
+      title="t2Desc"
+      label='توضیحات قسمت دوم'
+
+    />
+  <Input
+  placeholder='عنوان قسمت سوم'
+  type="text"
+  register={register}
+  control={control}
+  title="t3Title"
+  label='عنوان قسمت سوم'
+  width="w-full"
+/>
+ 
+         
+     <TextArea
+      register={register}
+      control={control}
+      title="t3Desc"
+      label='توضیحات قسمت سوم'
+
+    />
+  <Input
+  placeholder='عنوان قسمت چهارم'
+  type="text"
+  register={register}
+  control={control}
+  title="t4Title"
+  label='عنوان قسمت چهارم'
+  width="w-full"
+/>
+ 
+         
+     <TextArea
+      register={register}
+      control={control}
+      title="t5Desc"
+      label='توضیحات قسمت چهارم'
 
     />
         <div className='mt-8 col-span-2 flex'>

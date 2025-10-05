@@ -30,7 +30,7 @@ EditPieceProps
 
 
   const onSubmit = () => {
-    instance.delete(ApiHelper.get("DeleteSecretOfOurServiceQuality")+ "?id=" + secretOfOurServiceQualityId).then((res:any) => {
+    instance.delete(ApiHelper.get("DeleteWhyWe")+ "?id=" + secretOfOurServiceQualityId).then((res:any) => {
         if(res) {
           setShowDeleteModal(false)
     

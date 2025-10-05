@@ -110,16 +110,11 @@ EditPieceProps
       className="w-full  "
       onClose={() => setShowEditModal(false)}
       open={showEditModal}
-      maxWidth={false}
+        maxWidth="xl"
     
       
       PaperProps={{ sx: { borderRadius: '12px', background: '#fff' } }}
-      sx={{
-        '& .MuiPaper-elevation': {
-        
-          width: "80% "
-        },
-      }}
+     
     >
        <DialogTitle className="w-full flex items-center gap-3 border-b !pb-6">
         <span> ویرایش    راز کیفیت خدمات ما </span>

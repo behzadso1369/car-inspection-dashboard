@@ -43,14 +43,15 @@ EditPieceProps
     const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
   const onSubmit = () => {
     const formData = new FormData();
-    formData.append("Title",getValues()["Title"])
-    formData.append("MoreDescription",getValues()["MoreDescription"])
+    formData.append("CompanyName",getValues()["CompanyName"])
+    formData.append("Slogan",getValues()["Slogan"])
+    formData.append("NavbarPhoneNumber",getValues()["NavbarPhoneNumber"])
+    formData.append("PhoneNumbers",getValues()["PhoneNumbers"])
+    formData.append("WorkingHours",getValues()["WorkingHours"])
+    formData.append("Address",getValues()["Address"])
     formData.append("Image",image);
-    // for (const key in getValues()) {
-    //     formData.append(key,getValues()[key])
-    
-    // }
-  instance.post(ApiHelper.get("CreateSecretOfOurServiceQuality"),formData).then((res:any) => {
+  
+  instance.post(ApiHelper.get("CreateMasterSiteDetail"),formData).then((res:any) => {
     if(res.data) {
         setShowAddUserModal(false);
     }
@@ -91,23 +92,66 @@ EditPieceProps
       <div className="grid grid-cols-4 gap-3 !py-3 px-4">
   
   <Input
-  placeholder='عنوان'
+  placeholder='نام شرکت'
   type="text"
   register={register}
   control={control}
-  title="Title"
+  title="CompanyName"
   label='عنوان'
   width="w-full"
 />
- 
-         
-     <TextArea
+  
+  <Input
+  placeholder='اسلوگان'
+  type="text"
+  register={register}
+  control={control}
+  title="Slogan"
+  label='عنوان'
+  width="w-full"
+/>
+  
+  <Input
+  placeholder='شماره تلفن بالا'
+  type="text"
+  register={register}
+  control={control}
+  title="NavbarPhoneNumber"
+  label='شماره تلفن بالا'
+  width="w-full"
+/>
+  
+  <Input
+  placeholder='تلفن ها'
+  type="text"
+  register={register}
+  control={control}
+  title="PhoneNumbers"
+  label='تلفن ها'
+  width="w-full"
+/>
+  
+  
+  <Input
+  placeholder='ساعات کاری'
+  type="text"
+  register={register}
+  control={control}
+  title="WorkingHours"
+  label='ساعات کاری'
+  width="w-full"
+/>
+<TextArea
       register={register}
       control={control}
-      title="MoreDescription"
-      label='توضیحات'
+      title="Address"
+      label='آدرس'
 
     />
+
+ 
+         
+    
         <div className='mt-8 col-span-2 flex'>
    <div className="flex ">
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dialog, DialogTitle, Switch } from '@mui/material';
+import { Dialog, DialogTitle, Switch, useMediaQuery, useTheme } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
@@ -15,6 +15,8 @@ interface EditPieceProps extends React.PropsWithChildren {
 const EditUserRole: React.FunctionComponent<
 EditPieceProps
 > = ({ showEditModal, setShowEditModal,roleName,userId }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
       const { register, control,getValues} = useForm({ 
     values: {
         roleName:roleName
@@ -43,7 +45,7 @@ EditPieceProps
       PaperProps={{ sx: { borderRadius: '12px', background: '#fff' } }}
       sx={{
         '& .MuiPaper-elevation': {
-          width: "30% "
+             width: isMobile ? "90%" : "30%"
         },
       }}
     >

@@ -15,6 +15,7 @@ import { CircularProgress } from '@mui/material';
 import Switch from '@mui/material/Switch';
 import DeleteUser from './DeleteUser';
 import EditUserRole from './EditUserRole';
+import Register from './Register';
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 const User: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
@@ -165,7 +166,7 @@ const User: React.FunctionComponent = () => {
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
           <h3 className="text-base font-bold text-primary">  کاربران </h3>
-          <button disabled className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن کاربر</button>
+          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}> ثبت نام کاربر</button>
       </div>
         <QuickSearch  activeSearch={true}   register={register}
                 control={control}   onSubmit={onFilterTextBoxChanged}/>
@@ -215,6 +216,12 @@ const User: React.FunctionComponent = () => {
      
       {showDeleteUser && (
        <DeleteUser userId={userId} username={userName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+     )}
+       {showDeleteUser && (
+       <DeleteUser userId={userId} username={userName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
+     )}
+      {showAddModal && (
+       <Register showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal}/>
      )}
     </Fragment>
    

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { ComponentPropsWithoutRef, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
-interface TextAreaProps extends React.PropsWithChildren {
+type TextAreaProps = ComponentPropsWithoutRef<'textarea'> & {
   label: string;
   control: any;
   title:string;
@@ -16,7 +16,8 @@ export const TextArea: React.FunctionComponent<TextAreaProps> = ({
   control,
   title,
   disabled,
-  register
+  register,
+  ...props
   // description,
   // setDescription,
 }) => {
@@ -32,6 +33,7 @@ export const TextArea: React.FunctionComponent<TextAreaProps> = ({
         control={control}
         render={({ field }) => (
           <textarea
+          
             {...field}
             className="w-full rounded-md outline-none p-2 h-32 text-sm text-primary"
             style={{

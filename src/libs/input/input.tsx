@@ -28,7 +28,7 @@ export const Input: FC<InputProps> = ({
   const [focused, setFocused] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col"  {...props}>
       {label ? (
         <span className=" text-[#464F60] text-xs font-normal">{label}</span>
       ) : null}
@@ -67,7 +67,7 @@ export const Input: FC<InputProps> = ({
                   onFocus={() => setFocused(true)}
                   onBlur={() => setFocused(false)}
                   id={title}
-                  {...props}
+                 
                 />
                 {!value && (
                   <label
