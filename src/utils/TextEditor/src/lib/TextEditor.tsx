@@ -22,6 +22,7 @@ import { getFileData } from 'chonky';
 import { FilePdfOutlined } from "@ant-design/icons";
 
 import { debug } from 'console';
+console.log(__dirname)
 
 // import {ToolbarButton} from 'chonky/src/components/external/ToolbarButton';
 
