@@ -1,31 +1,19 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path';
-// https://vitejs.dev/config/
-export default defineConfig({
-     base: './',
-    root: resolve(__dirname), // Use resolve for root path
-    cacheDir: resolve('../../node_modules/.vite/apps/org'), // Use resolve for cache directory
+import { resolve } from 'path'
 
-    server: {
-      port: 4200,
-      host: 'localhost',
-    },
+export default defineConfig({
   plugins: [react()],
-     build: {
-      emptyOutDir: true,
-      rollupOptions: {
-        input: {
-          main: resolve(__dirname, 'index.html'),
-        },
-        output: {
-          manualChunks: undefined,
-        },
-      },
+  base: './',
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+      'tinymce': resolve(__dirname, './public/tinymce'), // ensure self-hosted TinyMCE assets
     },
-    resolve: {
-      alias: {
-        '@': resolve(__dirname, './src'),
-      },
+  },
+  build: {
+    commonjsOptions: {
+      include: [/tinymce/, /node_modules/],
     },
+  },
 })

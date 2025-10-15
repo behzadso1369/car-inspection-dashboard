@@ -21,8 +21,8 @@ import { defineFileAction } from 'chonky';
 import { getFileData } from 'chonky';
 import { FilePdfOutlined } from "@ant-design/icons";
 
-import { debug } from 'console';
-console.log(__dirname)
+
+
 
 // import {ToolbarButton} from 'chonky/src/components/external/ToolbarButton';
 
@@ -719,16 +719,18 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
 
   return (
     <>
-      <Editor
-        ref={editor}
-        value={value}
-        init={{
+  <Editor
+  ref={editor}
+        tinymceScriptSrc="/tinymce/tinymce.min.js"
+           licenseKey='gpl'
+  value={value}
+  init={{
           min_chars: 10,
-          setup: function (editor:any) {
+          setup: function (editor) {
             setMyEditor(editor);
             editor.ui.registry.addButton('uploadBTN', {
               text: `آپلود فایل`,
-              onAction: function (_:any) {
+              onAction: function (_) {
                 openModal();
               },
             });
@@ -745,41 +747,11 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
           menubar: 'file edit view insert format tools table tc help',
           image_advtab: true,
           image_title: true,
-                // فقط PNG پذیرفته شود
-                images_upload_handler: (blobInfo:any) => {
-                  return new Promise((resolve, reject) => {
-                    const file = blobInfo.blob();
-        
-                    if (file.type !== "image/png") {
-                      reject("فقط فایل PNG پذیرفته می‌شود");
-                      return;
-                    }
-        
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => {
-                      const base64 = reader.result as string;
-        
-                      // بعد از insert، Alt و Title خودکار پر می‌شوند
-                      setTimeout(() => {
-                        const imgElm = editor?.current.dom.select("img")[0];
-                        if (imgElm) {
-                          editor.current.dom.setAttrib(imgElm, "alt", "تصویر PNG");
-                          editor.current.dom.setAttrib(imgElm, "title", "تصویر PNG");
-                        }
-                      }, 100);
-        
-                      resolve(base64);
-                    };
-                    reader.onerror = () => reject("خطا در خواندن فایل");
-                  });
-                },
-        
-              
+          image_caption: true,
           base_url: '/tinymce',
 
           toolbar:
-            "uploadBTN redo undo| blocks | fontfamily | fontsize  | fullscreen | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
+            "uploadBTN redo undo| blocks | fontfamily | fontsize  | fullscreen' | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
           content_style:
           `@font-face {
             font-family: 'IRANSharp';
@@ -795,9 +767,9 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
 }`+
             'height:500px ',
         }}
-        onEditorChange={handleEditorChange}
-        onInit={(editor: any) => (editor.current = editor)}
-      />
+  onEditorChange={handleEditorChange}
+  onInit={(editor: any) => (editor.current = editor)}
+/>
       {/* <Modal
         open={selectedModal}
         onOk={handleOk}
