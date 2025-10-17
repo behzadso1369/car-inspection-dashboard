@@ -58,7 +58,7 @@ const BlogPost: React.FunctionComponent = () => {
     })
   }
   useEffect(() => {
-    getAllRoles();
+    // getAllRoles();
  
   }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal]);
 
@@ -215,7 +215,7 @@ const BlogPost: React.FunctionComponent = () => {
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
           <h3 className="text-base font-bold text-primary"> پست های بلاگ </h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن پست  بلاگ</button>
+          <NavLink to="./create"  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white'>اضافه کردن پست  بلاگ</NavLink>
       
       </div>
         <QuickSearch  activeSearch={true}   register={register}

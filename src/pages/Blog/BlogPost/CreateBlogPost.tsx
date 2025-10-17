@@ -29,7 +29,7 @@ interface EditPieceProps extends React.PropsWithChildren {
 
 const CreateBlogPost: React.FunctionComponent<
 EditPieceProps
-> = ({ showAddUserModal, setShowAddUserModal }) => {
+> = () => {
  
   const inputImageRef = useRef<any>(null);
 
@@ -56,7 +56,7 @@ EditPieceProps
       
   instance.post(ApiHelper.get("CreateBlogPost"),formData).then((res:any) => {
     if(res.data) {
-        setShowAddUserModal(false);
+        // setShowAddUserModal(false);
     }
   })
 
@@ -77,29 +77,29 @@ EditPieceProps
     })
   }
   useEffect(() => {
-    getBlogCategories();
+    // getBlogCategories();
   
   },[])
   return (
-    <Dialog
-      className="w-full  "
-      onClose={() => setShowAddUserModal(false)}
-      open={showAddUserModal}
-      maxWidth={false}
+    // <Dialog
+    //   className="w-full  "
+    //   onClose={() => setShowAddUserModal(false)}
+    //   open={showAddUserModal}
+    //   maxWidth={false}
     
       
-      PaperProps={{ sx: { borderRadius: '12px', background: '#fff' } }}
-      sx={{
-        '& .MuiPaper-elevation': {
+    //   PaperProps={{ sx: { borderRadius: '12px', background: '#fff' } }}
+    //   sx={{
+    //     '& .MuiPaper-elevation': {
         
-          width: "80% "
-        },
-      }}
-    >
-      <DialogTitle className="w-full flex items-center gap-3 border-b !py-3 px-4">
-        <span>اضافه کردن  اسلاید </span>
+    //       width: "80% "
+    //     },
+    //   }}
+    // >
+    //   <DialogTitle className="w-full flex items-center gap-3 border-b !py-3 px-4">
+    //     <span>اضافه کردن  اسلاید </span>
         
-      </DialogTitle>
+    //   </DialogTitle>
       <div className="grid grid-cols-4 gap-3 !py-3 px-4">
   
   <Input
@@ -212,7 +212,7 @@ EditPieceProps
               title='لغو'
               active={true}
               style={SecondaryButton}
-              onClick={() =>setShowAddUserModal(false)}
+              // onClick={() =>setShowAddUserModal(false)}
             />
               <Button
               title='اضافه کردن'
@@ -248,7 +248,7 @@ EditPieceProps
 </div>
     
    
-    </Dialog>
+    // </Dialog>
   );
 };
 
