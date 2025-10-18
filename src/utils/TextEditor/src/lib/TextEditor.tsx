@@ -425,12 +425,12 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
           const files = Array.from(target.files);
           for (const file of files) {
             const formData = new FormData();
-            formData.append('files', file);
+            formData.append('file', file);
             formData.append('path', currentPath);
 
             axios
               .post(
-                `${baseApi}Browse/Upload/v1`,
+                `${baseApi}/FileManager/upload`,
                 formData,
                 {
                   headers: {
@@ -712,49 +712,35 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
         tinymceScriptSrc="/tinymce/tinymce.min.js"
            licenseKey='gpl'
   value={value}
-  init={{
-          min_chars: 10,
-          setup: function (editor) {
-            setMyEditor(editor);
-            editor.ui.registry.addButton('uploadBTN', {
-              text: `آپلود فایل`,
-              onAction: function (_) {
-                openModal();
-              },
-            });
-          },
-          language: 'fa',
-          
-
-          skin: 'oxide', // Use the default TinyMCE skin locally
-          content_langs: [{ title: 'Persian', code: 'fa' }],
-          font_family_formats:
-            'Dana=dana-fanum;Nazanin=B Nazanin;Mitra=B Mitra; Iransharp=IRANSharp',
-          plugins:
-            ' preview autolink autosave save directionality  visualblocks visualchars fullscreen image link media   codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists  wordcount  help  quickbars emoticons ',
-          menubar: 'file edit view insert format tools table tc help',
-          image_advtab: true,
-          image_title: true,
-          image_caption: true,
-          base_url: '/tinymce',
-
-          toolbar:
-            "uploadBTN redo undo| blocks | fontfamily | fontsize  | fullscreen' | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
-          content_style:
-          `@font-face {
-            font-family: 'IRANSharp';
-            font-display: swap;
-            src: url('../../assets/fonts/iransharp.woff') format('woff');
-            }`+
-            'figure.image { display: inline-block} ' +
-            'figcaption { background-color: #f3f3f3;font-size: 11px;padding: 5px;color: #7e7e7e;margin-top: -7px;text-align: center; }' +
-     
+  init={{min_chars: 10,
+        setup: function (editor) {
+            setMyEditor(editor); 
+            editor.ui.registry.addButton('uploadBTN', 
+              {              
+                text: `آپلود فایل`,              
+                onAction: function (_) {                
+                  openModal();              
+                },            
+              });          
+            },          
+            language: 'fa',                    
+            skin: 'oxide',
+             // Use the default TinyMCE skin locally         
+            content_langs: [{ title: 'Persian', code: 'fa' }],          
+            font_family_formats:'Dana=dana-fanum;Nazanin=B Nazanin;Mitra=B Mitra; Iransharp=IRANSharp',
+            plugins:' preview autolink autosave save directionality  visualblocks visualchars fullscreen image link media   codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists  wordcount  help  quickbars emoticons ',
+            menubar: 'file edit view insert format tools table tc help',
+            image_advtab: true, 
+            image_title: true,
+            image_caption: true,
+            base_url: '/tinymce',
+            toolbar:"uploadBTN redo undo| blocks | fontfamily | fontsize  | fullscreen' | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
+            content_style:`@font-face {font-family: 'IRANSharp';font-display: swap;src: url('../../assets/fonts/iransharp.woff') format('woff');}`+
+            'figure.image { display: inline-block}'+
+            'figcaption { background-color: #f3f3f3;font-size: 11px;padding: 5px;color: #7e7e7e;margin-top: -7px;text-align: center; }' + 
             "body { font-family: IRANSharp; direction: rtl; }" +
-            `.tinymce-editor {
-  font-family: 'IRANSharp !important', sans-serif;
-}`+
-            'height:500px ',
-        }}
+            `.tinymce-editor {  font-family: 'IRANSharp !important', sans-serif;}`+            
+            'height:500px ',}}
   onEditorChange={handleEditorChange}
   onInit={(editor: any) => (editor.current = editor)}
 />

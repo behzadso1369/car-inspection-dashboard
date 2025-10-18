@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 const instance = axios.create({
   baseURL: "https://api.carmacheck.com/api/admin/",
-  withCredentials: true, // ✅ include cookies in every request
+  withCredentials: true
 });
 
 const AxiosInterceptor = ({ children }: any) => {
@@ -27,26 +27,21 @@ const AxiosInterceptor = ({ children }: any) => {
     (error) => Promise.reject(error)
   );
 
-  // --- Refresh token logic ---
-  let isRefreshing = false;
-  let failedQueue: any[] = [];
-
-  const processQueue = (error: any, token: string | null = null) => {
-    failedQueue.forEach((prom) => {
-      if (error) prom.reject(error);
-      else prom.resolve(token);
-    });
-    failedQueue = [];
-  };
+ 
 
   const refreshAccessToken = async () => {
     try {
-      const res = await axios.post(
-        "https://api.carmacheck.com/api/admin/Auth/refresh-token",
+      console.log('🔄 Attempting to refresh token...');
+      console.log('📍 Current cookies:', document.cookie);
+      const res = await axios.get(
+        "https://api.carmacheck.com/api/admin/Auth/refreshToken",
         {
-          accessToken: localStorage.getItem("accessToken")
-        },
-        { withCredentials: true } // ✅ send the cookie automatically
+          withCredentials: true,
+          headers: {
+            Authorization:localStorage.getItem("accessToken")
+          },
+         
+        }
       );
 
       const newAccessToken = res.data.accessToken;
@@ -75,6 +70,7 @@ const AxiosInterceptor = ({ children }: any) => {
     },
     async (error) => {
       setIsSuccess(false);
+      
 
       if (!error.response) {
         setError("اتصال اینترنت شما قطع شده است");
@@ -85,38 +81,22 @@ const AxiosInterceptor = ({ children }: any) => {
       const originalRequest = error.config;
 
       // Handle expired access token
-      if (error.response.status === 401 && !originalRequest._retry) {
+      if (error.response.status === 401) {
         debugger
-        if (isRefreshing) {
-          debugger
-          return new Promise(function (resolve, reject) {
-            failedQueue.push({ resolve, reject });
-          })
-            .then((token) => {
-              debugger
-              originalRequest.headers["Authorization"] = "Bearer " + token;
-              return instance(originalRequest);
-            })
-            .catch((err) => Promise.reject(err));
-        }
-
-        originalRequest._retry = true;
-        isRefreshing = true;
+      
 
         try {
           const newToken = await refreshAccessToken();
-          processQueue(null, newToken);
-          isRefreshing = false;
+     
 
           originalRequest.headers["Authorization"] = "Bearer " + newToken;
           return instance(originalRequest);
         } catch (err) {
-          processQueue(err, null);
-          isRefreshing = false;
-          localStorage.clear();
-          setError("نشست شما منقضی شده است. لطفاً دوباره وارد شوید.");
-          setOpen(true);
-          window.location.href = "/login";
+         
+          // localStorage.clear();
+          // setError("نشست شما منقضی شده است. لطفاً دوباره وارد شوید.");
+          // setOpen(true);
+          // window.location.href = "/login";
           return Promise.reject(err);
         }
       }

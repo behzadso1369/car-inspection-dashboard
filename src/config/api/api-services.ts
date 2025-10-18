@@ -6,6 +6,8 @@ export default {
 login: "Auth/login",
 //register
 register: "Auth/register",
+//RefreshToken
+refreshToken: "Auth/refreshToken",
 //Role
 createRole: "Auth/CreateRole",
 AssignRole: "Auth/AssignRole",
