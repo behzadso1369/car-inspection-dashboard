@@ -20,6 +20,8 @@ import axios from 'axios';
 import { defineFileAction } from 'chonky';
 import { getFileData } from 'chonky';
 import { FilePdfOutlined } from "@ant-design/icons";
+import instance from '../../../../helper/interceptor';
+import { ApiHelper } from '../../../../helper/api-request';
 
 
 
@@ -121,21 +123,13 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
 
     try {
       
-      axios
-        .get(
-          `${baseApi}Browse/Directory/v1?directoryPath=${path}`,
-          {
-            headers: {
-              Authorization: `  Bearer  ${localStorage.getItem('token')} `,
-            },
-          },
-        )
+        instance.get(ApiHelper.get("FileManagerList") + "?path=" +  path )
         .then((res) => {
-          const dirOrFiles = res.data;
+             const dirOrFiles = res.data.resultObject.filter((item:any) => item.type === "Folder");
 
           const chonkyFiles: FileData[] = dirOrFiles.map((folder: any) => ({
-            id: folder,
-            name: folder,
+            id: folder.name,
+            name: folder.name,
             isDir: true,
             modDate: new Date(folder.modifiedTime),
             size: 1000,
@@ -172,23 +166,15 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
     }
   };
   const fetchFiles = (path: string) => {
-    axios
-      .get(
-        `${baseApi}Browse/files/v1?directoryPath=${path}`,
-        {
-          headers: {
-            Authorization: `  Bearer  ${localStorage.getItem('token')} `,
-          },
-        },
-      )
+    instance.get(ApiHelper.get("FileManagerList") + "?path=" +  path)
       .then((res: any) => {
-        const dirOrFiles = res.data;
+        const dirOrFiles = res.data.resultObject.filter((item:any) => item.type === "File");
+        
 
         const chonkyFiles: FileData[] = dirOrFiles.map((file: any) => ({
-          id: file,
-          name: file,
+          id: file.name,
+          name: file.name,
           isDir: false,
-          modDate: new Date(file.modifiedTime),
           size: 1000,
           parentDir: path,
         }));
@@ -226,7 +212,9 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
           fetchFiles(newPath);
           fecthDirectories(newPath);
         } else if (fileToOpen && fileToOpen?.isDir === false) {
+          
           const fileUrl = `${baseApi}uploads/${targetFile.id}`;
+          
 
           const fileExtension = fileToOpen.id.split('.').pop()?.toLowerCase();
 
@@ -566,7 +554,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
   }, [selectedModal]);
   const getThumbnail = (type:string,currentPath:string,isParent:boolean,fileId:any):any => {
     if(type.endsWith(".jpeg") || type.endsWith(".webp") || type.endsWith(".gif") || type.endsWith(".png") || type.endsWith(".jpg")) {
-      return isParent ?   `${baseApi}uploads${currentPath}/${fileId}` : `${baseApi}uploads/${currentPath}/${fileId}`
+      return isParent ?   `${baseApi}/blog${currentPath}/${fileId}` : `${baseApi}/blog/${currentPath}/${fileId}`
       
 
     }else if(type.endsWith(".webm") || type.endsWith(".mp4") || type.endsWith(".ogg")) {
@@ -770,7 +758,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
   onEditorChange={handleEditorChange}
   onInit={(editor: any) => (editor.current = editor)}
 />
-      {/* <Modal
+       <Modal
         open={selectedModal}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -803,7 +791,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
             <FileContextMenu />
           </FileBrowser>
         </div>
-      </Modal> */}
+      </Modal> 
     </>
   );
 };

@@ -64,7 +64,7 @@ export const TextEditor: FC<InputProps> = ({
 
             return (
               <div className="relative w-full">
-                <TinyMCEEditor value={value} setValue={onChange}     baseApi={baseUrl}  />
+                <TinyMCEEditor  value={value} setValue={onChange}     baseApi={baseUrl}  />
                 {/* <input
                   {...field}
                   {...register(title)}

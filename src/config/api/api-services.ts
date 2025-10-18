@@ -141,6 +141,12 @@ DeleteWhyWe: "WhyWe/Delete",
 EditWhyWe: "WhyWe/UpdateWithFile",
 GetWhyWe: "WhyWe/Get",
 
+//File manager
+FileManagerList: "FileManager/list",
+FileManagerCreateFolder: "FileManager/CreateFolder",
+FileManagerUploadFile: "FileManager/upload",
+FileManagerDelete: "FileManager/delete",
+
 
 
 

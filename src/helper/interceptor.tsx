@@ -1,92 +1,150 @@
 import { Alert, Snackbar } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
-console.log(window.location.pathname);
+
 const instance = axios.create({
-  baseURL: "http://45.139.11.225:5533/api/admin/",
+  baseURL: "https://api.carmacheck.com/api/admin/",
+  withCredentials: true, // ✅ include cookies in every request
 });
+
 const AxiosInterceptor = ({ children }: any) => {
-  const [open, setOpen] = React.useState(false);
-  const [error, setError] = React.useState("");
-  const [isSuccess,setIsSuccess] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
   const handleClose = (event: any, reason: any) => {
-    console.log(event)
-    if (reason === "clickaway") {
-      return;
-    }
+    if (reason === "clickaway") return;
     setOpen(false);
   };
+
+  // --- Add access token to headers ---
   instance.interceptors.request.use(
-  (config:any) => {
-    
-    const token =  localStorage.getItem("token");
-    return {
-      ...config,
-      headers: {
-        ...(token !== null && { Authorization: `Bearer ${token}` }),
-        ...config.headers,
-      },
-    };
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-instance.interceptors.response.use(
-  (response) => {
-    if(response.data.isSuccess) {
-      setOpen(true);
-      setIsSuccess(true);
-      setError(response.data.statusMessage);
+    (config: any) => {
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
 
-    }else {
-      setIsSuccess(false);
-      setError(response.data.statusMessage);
-    }
-    return response;
-  },
-  (error) => {
-    setIsSuccess(false);
-    if(!error.response) {
-      setOpen(true);
-      setError("اینترنت شما قظع شده است")
+  // --- Refresh token logic ---
+  let isRefreshing = false;
+  let failedQueue: any[] = [];
 
-    }else {
-      if (error.response.status === 401) {
-        setOpen(true);
-        setError("نشست شما منقضی شده است")
-        localStorage.clear();
-        window.location.href = "/login";
-      }else {
-      setOpen(true);
-      
-      setError(
-        error?.response?.data?.message
-          ? error?.response?.data?.message
-          : 'مشکلی به وجود آمده است'
+  const processQueue = (error: any, token: string | null = null) => {
+    failedQueue.forEach((prom) => {
+      if (error) prom.reject(error);
+      else prom.resolve(token);
+    });
+    failedQueue = [];
+  };
+
+  const refreshAccessToken = async () => {
+    try {
+      const res = await axios.post(
+        "https://api.carmacheck.com/api/admin/Auth/refresh-token",
+        {
+          accessToken: localStorage.getItem("accessToken")
+        },
+        { withCredentials: true } // ✅ send the cookie automatically
       );
+
+      const newAccessToken = res.data.accessToken;
+      if (newAccessToken) {
+        localStorage.setItem("accessToken", newAccessToken);
       }
+
+      return newAccessToken;
+    } catch (err) {
+      throw err;
     }
-    return Promise.reject(error);
-  }
-);
+  };
+
+  // --- Response interceptor ---
+  instance.interceptors.response.use(
+    (response) => {
+      if (response.data?.isSuccess) {
+        setIsSuccess(true);
+        setError(response.data.statusMessage || "عملیات موفقیت‌آمیز بود");
+      } else {
+        setIsSuccess(false);
+        setError(response.data?.statusMessage || "خطایی رخ داده است");
+      }
+      setOpen(true);
+      return response;
+    },
+    async (error) => {
+      setIsSuccess(false);
+
+      if (!error.response) {
+        setError("اتصال اینترنت شما قطع شده است");
+        setOpen(true);
+        return Promise.reject(error);
+      }
+
+      const originalRequest = error.config;
+
+      // Handle expired access token
+      if (error.response.status === 401 && !originalRequest._retry) {
+        debugger
+        if (isRefreshing) {
+          debugger
+          return new Promise(function (resolve, reject) {
+            failedQueue.push({ resolve, reject });
+          })
+            .then((token) => {
+              debugger
+              originalRequest.headers["Authorization"] = "Bearer " + token;
+              return instance(originalRequest);
+            })
+            .catch((err) => Promise.reject(err));
+        }
+
+        originalRequest._retry = true;
+        isRefreshing = true;
+
+        try {
+          const newToken = await refreshAccessToken();
+          processQueue(null, newToken);
+          isRefreshing = false;
+
+          originalRequest.headers["Authorization"] = "Bearer " + newToken;
+          return instance(originalRequest);
+        } catch (err) {
+          processQueue(err, null);
+          isRefreshing = false;
+          localStorage.clear();
+          setError("نشست شما منقضی شده است. لطفاً دوباره وارد شوید.");
+          setOpen(true);
+          window.location.href = "/login";
+          return Promise.reject(err);
+        }
+      }
+
+      // Other errors
+      setError(
+        error?.response?.data?.message ||
+          "مشکلی به وجود آمده است، لطفاً دوباره تلاش کنید."
+      );
+      setOpen(true);
+      return Promise.reject(error);
+    }
+  );
+
   return (
     <>
       {children}
-      <>
-        <Snackbar
-          open={open}
-          onClose={handleClose}
-          autoHideDuration={3000}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <Alert severity={isSuccess ? "success" : "error"}>{error}</Alert>
-        </Snackbar>
-      </>
+      <Snackbar
+        open={open}
+        onClose={handleClose}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity={isSuccess ? "success" : "error"}>{error}</Alert>
+      </Snackbar>
     </>
   );
 };
+
 export default instance;
 export { AxiosInterceptor };
-
-

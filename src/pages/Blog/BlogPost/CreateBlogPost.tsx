@@ -140,7 +140,7 @@ EditPieceProps
                 />
                             <div className="col-span-4">
     <TextEditor 
-    baseUrl='' 
+    baseUrl='https://api.carmacheck.com' 
     register={register}
       control={control}
       title="Content"

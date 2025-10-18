@@ -16,7 +16,7 @@ const Login: React.FunctionComponent = () => {
 
     instance.post(ApiHelper.get("login"),getValues()).then(res => {
       if(res.data) {
-        localStorage.setItem("token",res.data.resultObject.token);
+        localStorage.setItem("accessToken",res.data.resultObject.accessToken);
         navigate("/home");
       }
 
