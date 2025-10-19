@@ -213,7 +213,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
           fecthDirectories(newPath);
         } else if (fileToOpen && fileToOpen?.isDir === false) {
           
-          const fileUrl = `${baseApi}uploads/${targetFile.id}`;
+          const fileUrl = `${baseApi}/blog/${targetFile.id}`;
           
 
           const fileExtension = fileToOpen.id.split('.').pop()?.toLowerCase();
@@ -227,7 +227,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
             case 'png':
             case 'gif':
             case 'webp':
-              content = `<img src="${fileUrl}" alt="${fileToOpen.name}" style="max-width: 100%; height: auto;" />`;
+              content = `<img  src="${fileUrl}" alt="${fileToOpen.name}" style="max-width: 100%; height: auto;" />`;
               break;
 
             case 'pdf':
@@ -727,19 +727,21 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
             skin: 'oxide',
              // Use the default TinyMCE skin locally         
             content_langs: [{ title: 'Persian', code: 'fa' }],          
-            font_family_formats:'Dana=dana-fanum;Nazanin=B Nazanin;Mitra=B Mitra; Iransharp=IRANSharp',
+            font_family_formats:'Dana=dana-fanum;Nazanin=B Nazanin;Mitra=B Mitra; Iransharp=IRANSharp;Iransans=IRANSans',
             plugins:' preview autolink autosave save directionality  visualblocks visualchars fullscreen image link media   codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists  wordcount  help  quickbars emoticons ',
             menubar: 'file edit view insert format tools table tc help',
             image_advtab: true, 
             image_title: true,
             image_caption: true,
+            paste_data_images: true,
             base_url: '/tinymce',
             toolbar:"uploadBTN redo undo| blocks | fontfamily | fontsize  | fullscreen' | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
             content_style:`@font-face {font-family: 'IRANSharp';font-display: swap;src: url('../../assets/fonts/iransharp.woff') format('woff');}`+
             'figure.image { display: inline-block}'+
+            '@font-face {font-family: IRANSans;font-style: normal;font-weight: normal;src: url("/assets/fonts/iran-sans/eot/IRANSansWeb\(FaNum\).eot");src: local(IRANSans),url("/assets/fonts/iran-sans/eot/IRANSansWeb\(FaNum\).eot")format("embedded-opentype"),url("/assets/fonts/iran-sans/woff/IRANSansWeb\(FaNum\).woff")format("woff2"),font-display: swap;unicode-range: U+?????;}'+
             'figcaption { background-color: #f3f3f3;font-size: 11px;padding: 5px;color: #7e7e7e;margin-top: -7px;text-align: center; }' + 
             "body { font-family: IRANSharp; direction: rtl; }" +
-            `.tinymce-editor {  font-family: 'IRANSharp !important', sans-serif;}`+            
+            `.tinymce-editor {  font-family: 'IRANSans !important', sans-serif}`+            
             'height:500px ',}}
   onEditorChange={handleEditorChange}
   onInit={(editor: any) => (editor.current = editor)}
@@ -773,6 +775,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
             <FileToolbar
                 
              />
+           
             <FileList />
             <FileContextMenu />
           </FileBrowser>

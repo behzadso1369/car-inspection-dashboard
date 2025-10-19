@@ -38,13 +38,13 @@ const AxiosInterceptor = ({ children }: any) => {
         {
           withCredentials: true,
           headers: {
-            Authorization:localStorage.getItem("accessToken")
+            Authorization:` Bearer ${localStorage.getItem("accessToken")}`
           },
          
         }
       );
 
-      const newAccessToken = res.data.accessToken;
+      const newAccessToken = res.data.resultObject.accessToken;
       if (newAccessToken) {
         localStorage.setItem("accessToken", newAccessToken);
       }
@@ -93,10 +93,10 @@ const AxiosInterceptor = ({ children }: any) => {
           return instance(originalRequest);
         } catch (err) {
          
-          // localStorage.clear();
-          // setError("نشست شما منقضی شده است. لطفاً دوباره وارد شوید.");
-          // setOpen(true);
-          // window.location.href = "/login";
+          localStorage.clear();
+          setError("نشست شما منقضی شده است. لطفاً دوباره وارد شوید.");
+          setOpen(true);
+          window.location.href = "/login";
           return Promise.reject(err);
         }
       }
