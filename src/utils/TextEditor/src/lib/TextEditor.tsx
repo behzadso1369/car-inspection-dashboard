@@ -219,6 +219,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
           const fileExtension = fileToOpen.id.split('.').pop()?.toLowerCase();
 
           let content = '';
+          debugger
 
           // Handle different file types
           switch (fileExtension) {
@@ -339,10 +340,11 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
           if (file?.isDir) {
             const path =
             currentPath !== '' ? currentPath + '/' + file?.name : file?.name;
+            
 
-            await axios
+            await instance
               .delete(
-                `${baseApi}Browse/Directory/Delete/v1`,
+                ApiHelper.get("FileManagerDelete"),
                 {
                   data: {
                     path: path,
@@ -366,7 +368,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
             await axios
               .delete(`${baseApi}Browse/File/Delete/v1`, {
                 data: {
-                  filePath: path,
+                  path: path,
                 },
                 headers: {
                   accept: 'application/json',
@@ -392,10 +394,10 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
           const path =
             currentPath !== '' ? currentPath + '/' + folderName : folderName;
 
-          await axios
+          await instance
             .post(
-              `${baseApi}Browse/Directory/Create/v1`,
-              { path: path },
+             ApiHelper.get("FileManagerCreateFolder") + "?parentPath=" + currentPath + "&name=" + folderName,
+              null,
               {
                 headers: {
                   accept: 'application/json',
@@ -428,9 +430,9 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
             formData.append('file', file);
             formData.append('path', currentPath);
 
-            axios
+            instance
               .post(
-                `${baseApi}/FileManager/upload`,
+              ApiHelper.get("FileManagerUploadFile"),
                 formData,
                 {
                   headers: {
@@ -707,42 +709,215 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
 
   return (
     <>
-  <Editor
+<Editor
   ref={editor}
-        tinymceScriptSrc="/tinymce/tinymce.min.js"
-           licenseKey='gpl'
+  tinymceScriptSrc="/tinymce/tinymce.min.js"
+  licenseKey='gpl'
   value={value}
-  init={{min_chars: 10,
-        setup: function (editor) {
-            setMyEditor(editor); 
-            editor.ui.registry.addButton('uploadBTN', 
-              {              
-                text: `آپلود فایل`,              
-                onAction: function (_) {                
-                  openModal();              
-                },            
-              });          
-            },          
-            language: 'fa',                    
-            skin: 'oxide',
-             // Use the default TinyMCE skin locally         
-            content_langs: [{ title: 'Persian', code: 'fa' }],          
-            font_family_formats:'Dana=dana-fanum;Nazanin=B Nazanin;Mitra=B Mitra; Iransharp=IRANSharp;Iransans=IRANSans',
-            plugins:' preview autolink autosave save directionality  visualblocks visualchars fullscreen image link media   codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists  wordcount  help  quickbars emoticons ',
-            menubar: 'file edit view insert format tools table tc help',
-            image_advtab: true, 
-            image_title: true,
-            image_caption: true,
-            paste_data_images: true,
-            base_url: '/tinymce',
-            toolbar:"uploadBTN redo undo| blocks | fontfamily | fontsize  | fullscreen' | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
-            content_style:`@font-face {font-family: 'IRANSharp';font-display: swap;src: url('../../assets/fonts/iransharp.woff') format('woff');}`+
-            'figure.image { display: inline-block}'+
-            '@font-face {font-family: IRANSans;font-style: normal;font-weight: normal;src: url("/assets/fonts/iran-sans/eot/IRANSansWeb\(FaNum\).eot");src: local(IRANSans),url("/assets/fonts/iran-sans/eot/IRANSansWeb\(FaNum\).eot")format("embedded-opentype"),url("/assets/fonts/iran-sans/woff/IRANSansWeb\(FaNum\).woff")format("woff2"),font-display: swap;unicode-range: U+?????;}'+
-            'figcaption { background-color: #f3f3f3;font-size: 11px;padding: 5px;color: #7e7e7e;margin-top: -7px;text-align: center; }' + 
-            "body { font-family: IRANSharp; direction: rtl; }" +
-            `.tinymce-editor {  font-family: 'IRANSans !important', sans-serif}`+            
-            'height:500px ',}}
+  init={{
+    min_chars: 10,
+    setup: (ed) => {
+      setMyEditor(ed);
+      
+      ed.ui.registry.addButton('uploadBTN', {
+        text: 'آپلود فایل',
+        onAction: () => openModal(),
+      });
+      // ✅ Register formats INSIDE setup
+      ed.on('init', () => {
+        // Register inline heading formats
+        ed.formatter.register('h1inline', {
+          inline: 'span',
+          styles: { 
+            'font-size': '32px',
+            'font-weight': 'bold'
+          }
+        });
+        
+        ed.formatter.register('h2inline', {
+          inline: 'span',
+          styles: { 
+            'font-size': '24px',
+            'font-weight': 'bold'
+          }
+        });
+        
+        ed.formatter.register('h3inline', {
+          inline: 'span',
+          styles: { 
+            'font-size': '20px',
+            'font-weight': 'bold'
+          }
+        });
+        
+        ed.formatter.register('h4inline', {
+          inline: 'span',
+          styles: { 
+            'font-size': '18px',
+            'font-weight': 'bold'
+          }
+        });
+      });
+
+      // ✅ Custom inline heading buttons
+      ed.ui.registry.addMenuButton('inlineFormats', {
+        text: 'فرمت متن',
+        fetch: (callback) => {
+          const items = [
+            {
+              type: 'menuitem' as const,
+              text: 'پاراگراف',
+              onAction: () => {
+                ed.formatter.remove('h1inline');
+                ed.formatter.remove('h2inline');
+                ed.formatter.remove('h3inline');
+                ed.formatter.remove('h4inline');
+              }
+            },
+            {
+              type: 'menuitem' as const,
+              text: 'سرتیتر 1',
+              onAction: () => {
+                // Remove other formats first
+                ed.formatter.remove('h2inline');
+                ed.formatter.remove('h3inline');
+                ed.formatter.remove('h4inline');
+                // Apply h1
+                ed.formatter.apply('h1inline');
+              }
+            },
+            {
+              type: 'menuitem' as const,
+              text: 'سرتیتر 2',
+              onAction: () => {
+                ed.formatter.remove('h1inline');
+                ed.formatter.remove('h3inline');
+                ed.formatter.remove('h4inline');
+                ed.formatter.apply('h2inline');
+              }
+            },
+            {
+              type: 'menuitem' as const,
+              text: 'سرتیتر 3',
+              onAction: () => {
+                ed.formatter.remove('h1inline');
+                ed.formatter.remove('h2inline');
+                ed.formatter.remove('h4inline');
+                ed.formatter.apply('h3inline');
+              }
+            },
+            {
+              type: 'menuitem' as const,
+              text: 'سرتیتر 4',
+              onAction: () => {
+                ed.formatter.remove('h1inline');
+                ed.formatter.remove('h2inline');
+                ed.formatter.remove('h3inline');
+                ed.formatter.apply('h4inline');
+              }
+            },
+          ];
+          callback(items);
+        }
+      });
+      // ✅ Force px after font size change
+      ed.on('ExecCommand', (e) => {
+        if (e.command === 'FontSize') {
+          const node = ed.selection.getNode();
+          if (node && node.style) {
+            // Replace any pt/em with px
+            const fontSize = node.style.fontSize;
+            if (fontSize && !fontSize.includes('px')) {
+              // If it's not px, force it
+              const value = e.value || '14px';
+              node.style.fontSize = value.includes('px') ? value : value + 'px';
+            }
+          }
+        }
+      });
+    },
+    
+    language: 'fa',
+    skin: 'oxide',
+    base_url: '/tinymce',
+    
+    // ✅ This is the key setting
+    font_size_formats: '10px 12px 14px 16px 18px 20px 24px 32px 36px 44px',
+    
+    // ✅ Force inline styles
+    formats: {
+      fontsize: {
+        inline: 'span',
+        styles: { 'font-size': '%value' }
+      }
+    },
+    
+    // ✅ Additional settings to preserve px
+    extended_valid_elements: 'span[style]',
+    valid_styles: {
+      '*': 'font-size'
+    },
+    
+    content_langs: [{ title: 'Persian', code: 'fa' }],
+    
+    font_family_formats: 'Dana=dana-fanum;Nazanin=B Nazanin;Mitra=B Mitra;Iransharp=IRANSharp;Iransans=IRANSans',
+    
+    plugins: 'preview autolink autosave save directionality visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help quickbars emoticons',
+    
+    menubar: 'file edit view insert format tools table tc help',
+     // ✅ ADD THESE to prevent URL conversion
+  convert_urls: false,           // Don't convert URLs to relative
+  relative_urls: false,          // Keep absolute URLs
+  remove_script_host: false,     // Keep the full URL with domain
+  
+  // ✅ Prevent image processing
+  automatic_uploads: false,      // Don't auto-upload images
+  images_reuse_filename: true,   // Keep original filenames
+    
+    image_advtab: true,
+    image_title: true,
+    image_caption: true,
+    paste_data_images: false,
+    
+    toolbar: "uploadBTN redo undo | inlineFormats | fontfamily | fontsize | fullscreen | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
+    
+    content_style: `
+      @font-face {
+        font-family: 'IRANSharp';
+        font-display: swap;
+        src: url('../../assets/fonts/iransharp.woff') format('woff');
+      }
+      
+      @font-face {
+        font-family: IRANSans;
+        font-style: normal;
+        font-weight: normal;
+        src: url("/assets/fonts/iran-sans/woff/IRANSansWeb(FaNum).woff") format("woff");
+        font-display: swap;
+      }
+      
+      body {
+        font-family: 'IRANSans', sans-serif;
+        direction: rtl;
+        text-align: right;
+        font-size: 14px;
+      }
+      
+      figure.image {
+        display: inline-block;
+      }
+      
+      figcaption {
+        background-color: #f3f3f3;
+        font-size: 11px;
+        padding: 5px;
+        color: #7e7e7e;
+        margin-top: -7px;
+        text-align: center;
+      }
+    `,
+  }}
+  
   onEditorChange={handleEditorChange}
   onInit={(editor: any) => (editor.current = editor)}
 />

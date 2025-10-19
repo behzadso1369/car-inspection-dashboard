@@ -148,7 +148,12 @@ FileManagerList: "FileManager/list",
 FileManagerCreateFolder: "FileManager/CreateFolder",
 FileManagerUploadFile: "FileManager/upload",
 FileManagerDelete: "FileManager/delete",
-
+//AboutUs
+AboutUsList: "AboutUs/List",
+CreateAboutUs: "AboutUs/Create",
+DeleteAboutUs: "AboutUs/Delete",
+EdtiAboutUs: "AboutUs/Update",
+GetAboutUs: "AboutUs/Get",
 
 
 

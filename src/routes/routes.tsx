@@ -35,6 +35,8 @@ import CarInspectionType from '../pages/CarInspectionType/CarInspectionType';
 import DateAndTime from '../pages/DateAndTime/DateAndTime';
 import { Children } from 'react';
 import CarRoute from '../pages/Car/CarRoute';
+import AboutUs from '../pages/AboutUs/AboutUs';
+import AboutUsRoute from '../pages/AboutUs/AboutUsRoute';
 
 
 export const RoutesData = [
@@ -226,6 +228,16 @@ export const RoutesData = [
     permission: ['admin', 'superAdmin'],
     title: "چرا ما",
     icon: faUser,
+
+  },
+ 
+  {
+    path: 'about-us',
+    component: AboutUsRoute,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "درباره ما",
+    icon: faUser
 
   },
   {
