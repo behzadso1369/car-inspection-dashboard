@@ -117,7 +117,7 @@ const AxiosInterceptor = ({ children }: any) => {
       <Snackbar
         open={open}
         onClose={handleClose}
-        autoHideDuration={3000}
+        autoHideDuration={1000}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert severity={isSuccess ? "success" : "error"}>{error}</Alert>

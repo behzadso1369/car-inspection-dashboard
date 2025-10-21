@@ -86,8 +86,8 @@ const CarInspectionService: React.FunctionComponent = () => {
       unSortIcon: true,
       rowDrag:true,
       filter: false,
-      pinned: "right",
-      width:280,
+      pinned: "right", 
+      maxWidth:80,
       wrapText:false
      
     },

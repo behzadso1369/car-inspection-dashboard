@@ -28,7 +28,7 @@ export const Input: FC<InputProps> = ({
   const [focused, setFocused] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col"  {...props}>
+    <div className="flex flex-col col-span-4 lg:col-span-1"  {...props}>
       {label ? (
         <span className=" text-[#464F60] text-xs font-normal">{label}</span>
       ) : null}

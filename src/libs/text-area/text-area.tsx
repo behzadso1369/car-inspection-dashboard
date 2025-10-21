@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithoutRef, useState } from 'react';
+import React, { ComponentPropsWithoutRef, FC, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 type TextAreaProps = ComponentPropsWithoutRef<'textarea'> & {
@@ -7,24 +7,25 @@ type TextAreaProps = ComponentPropsWithoutRef<'textarea'> & {
   title:string;
   register:any;
   disabled?:boolean;
+  className?:string;
   // description: string;
   // setDescription: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const TextArea: React.FunctionComponent<TextAreaProps> = ({
+export const TextArea: FC<TextAreaProps> = ({
   label,
   control,
   title,
   disabled,
   register,
-  ...props
+className
   // description,
   // setDescription,
 }) => {
   const [focused, setFocused] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col w-full gap-3">
+    <div className={`flex flex-col w-full gap-3 ${className} col-span-4 lg:col-span-1`} >
       <label className="text-black-opacity-70 text-xs font-normal">
         {label}
       </label>

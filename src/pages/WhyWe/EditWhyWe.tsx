@@ -165,6 +165,7 @@ EditPieceProps
       control={control}
       title="t3Desc"
       label='توضیحات قسمت سوم'
+      
 
     />
   <Input
@@ -175,6 +176,7 @@ EditPieceProps
   title="t4Title"
   label='عنوان قسمت چهارم'
   width="w-full"
+       className='col-span-4 lg:col-span-1'
 />
  
          
@@ -183,6 +185,7 @@ EditPieceProps
       control={control}
       title="t5Desc"
       label='توضیحات قسمت چهارم'
+      className='col-span-4 lg:col-span-1'
 
     />
         <div className='mt-8 col-span-2 flex'>

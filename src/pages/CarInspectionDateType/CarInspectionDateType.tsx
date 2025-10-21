@@ -93,7 +93,7 @@ const CarInspectionDateType: React.FunctionComponent = () => {
       rowDrag:true,
       filter: false,
       pinned: "right",
-      width:280,
+maxWidth:80,
       wrapText:false
      
     },

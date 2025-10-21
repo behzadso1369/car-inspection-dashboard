@@ -77,7 +77,7 @@ const Role: React.FunctionComponent = () => {
       rowDrag:true,
       filter: false,
       pinned: "right",
-      width:280,
+      width:70,
       wrapText:false
      
     },

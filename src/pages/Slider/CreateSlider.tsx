@@ -95,6 +95,7 @@ EditPieceProps
   title="text"
   label='متن'
   width="w-full"
+  className='col-span-4 lg:col-span-1'
 />
   <Input
       
@@ -104,6 +105,7 @@ EditPieceProps
          title="link"
          label='لینک'
          width="w-full"
+           className='col-span-4 lg:col-span-1'
        />
          
      <Input
@@ -114,6 +116,7 @@ EditPieceProps
       title="durationTime"
       label='زمان عوض شدن'
       width="w-full"
+        className='col-span-4 lg:col-span-1'
     />
     
 
