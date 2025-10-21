@@ -76,8 +76,7 @@ const Role: React.FunctionComponent = () => {
       unSortIcon: true,
       rowDrag:true,
       filter: false,
-      pinned: "right",
-      width:70,
+      width:280,
       wrapText:false
      
     },

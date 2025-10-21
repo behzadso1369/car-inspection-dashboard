@@ -58,7 +58,7 @@ const BlogPost: React.FunctionComponent = () => {
     })
   }
   useEffect(() => {
-    // getAllRoles();
+    getAllRoles();
  
   }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal]);
 

@@ -77,10 +77,10 @@ const Login: React.FunctionComponent = () => {
             
             />
           </div>
-          <div className="flex w-full my-4 justify-between ">
+          {/* <div className="flex w-full my-4 justify-between ">
           <span>آیا حساب کاربری ندارید؟</span>
           <NavLink className="text-blue-600" to={"/register"}>ثبت نام</NavLink>
-        </div>
+        </div> */}
         </form>
        
       </div>
