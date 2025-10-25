@@ -37,6 +37,7 @@ import { Children } from 'react';
 import CarRoute from '../pages/Car/CarRoute';
 import AboutUs from '../pages/AboutUs/AboutUs';
 import AboutUsRoute from '../pages/AboutUs/AboutUsRoute';
+import FinancialExpenditure from '../pages/FinancialExpenditure/FinancialExpenditure';
 
 
 export const RoutesData = [
@@ -276,6 +277,15 @@ export const RoutesData = [
     ID: 2,
     permission: ['admin', 'superAdmin'],
     title: "چرخه فرآیند ساز",
+    icon: faUser,
+
+  },
+  {
+    path: 'FinancialExpenditure/list',
+    component: FinancialExpenditure,
+    ID: 3,
+    permission: ['admin', 'superAdmin'],
+    title: "خرجکرد مالی",
     icon: faUser,
 
   },

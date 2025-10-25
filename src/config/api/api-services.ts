@@ -154,6 +154,13 @@ CreateAboutUs: "AboutUs/Create",
 DeleteAboutUs: "AboutUs/Delete",
 EdtiAboutUs: "AboutUs/Update",
 GetAboutUs: "AboutUs/Get",
+//FinancialExpenditure
+FinancialExpenditureList: "FinancialExpenditure/List",
+CreateFinancialExpenditure: "FinancialExpenditure/Create",
+DeleteFinancialExpenditure: "FinancialExpenditure/Delete",
+EdtiFinancialExpenditure: "FinancialExpenditure/Update",
+GetFinancialExpenditure: "FinancialExpenditure/Get",
+
 
 
 

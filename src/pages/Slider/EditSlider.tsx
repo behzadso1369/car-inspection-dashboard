@@ -73,7 +73,7 @@ EditPieceProps
           link:res.data.resultObject.link,
           imagePath:res.data.resultObject.imagePath
         })
-        setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)
+        setFiles("https://api.carmacheck.com/" + res.data.resultObject.imagePath)
     })
   }
   useEffect(() => {

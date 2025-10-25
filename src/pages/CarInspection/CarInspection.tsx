@@ -129,7 +129,7 @@ maxWidth:80,
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.carGroup.name ? <span>{params.data.carGroup.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.carInspectionType.name ? <span>{params.data.carGroup.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            

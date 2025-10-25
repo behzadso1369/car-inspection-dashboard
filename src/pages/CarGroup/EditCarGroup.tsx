@@ -60,7 +60,7 @@ EditPieceProps
       
         setShowEditModal(false);
     }
-    setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)
+    setFiles("https://api.carmacheck.com/" + res.data.resultObject.imagePath)
   })
 
     
@@ -81,7 +81,7 @@ EditPieceProps
           carBrandId:res.data.resultObject.carBrandId,
           image:res.data.resultObject.imagePath
         })
-        setFiles("http://45.139.11.225:5533/" + res.data.resultObject.imagePath)
+        setFiles("https://api.carmacheck.com/" + res.data.resultObject.imagePath)
     })
   }
    const getBrands = () => {

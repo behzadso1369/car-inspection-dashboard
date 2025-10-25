@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+import App from './App'
 import './styles.scss'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid

@@ -130,7 +130,7 @@ const AboutUs: React.FunctionComponent = () => {
         return (
    
           <div className="flex justify-start items-start">
-          <NavLink to={`./${params.data.id}`} className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' o>ویرایش    </NavLink>
+          <NavLink to={`./${params.data.id}`} className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' >ویرایش    </NavLink>
           <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  خدمات</button>
     </div>
         
