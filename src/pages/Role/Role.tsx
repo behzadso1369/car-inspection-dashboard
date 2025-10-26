@@ -15,6 +15,7 @@ import AddRole from './AddRole';
 import DeleteRole from './DeleteRole';
 import { NavLink } from 'react-router-dom';
 const Role: React.FunctionComponent = () => {
+  
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
@@ -44,7 +45,7 @@ const Role: React.FunctionComponent = () => {
       flex: 1,
       minWidth: 150,
       filter: 'agTextColumnFilter',
-      menuTabs: ['filterMenuTab'],
+      menuTabs: ['filterMenuTab']
     };
   }, []);
   const getAllRoles = () => {
@@ -76,8 +77,18 @@ const Role: React.FunctionComponent = () => {
       unSortIcon: true,
       rowDrag:true,
       filter: false,
-      width:280,
-      wrapText:false
+      width:150,
+      cellRenderer:(params:any) => {
+         var string = String(params.data.Id);
+         var length = 30;
+         
+
+        var trimmedString = string.length > length ? 
+                    string.substring(0, length - 3) + "..." : 
+                    string;
+        return <>{trimmedString}</>
+
+      }
      
     },
   
@@ -85,6 +96,7 @@ const Role: React.FunctionComponent = () => {
     {
       field: 'Name',
       headerName: 'نام ',
+      width:10,
       cellRenderer: (params:any) => {
         return (
           <>
@@ -96,6 +108,7 @@ const Role: React.FunctionComponent = () => {
         },
         {
             field: 'NormalizedName',
+             width:10,
             headerName: 'normalizedName ',
             cellRenderer: (params:any) => {
               return (
@@ -140,6 +153,7 @@ const Role: React.FunctionComponent = () => {
 
     allgridRef.current!.api!.setGridOption(
       'quickFilterText',
+      
       
 
       getValues().search

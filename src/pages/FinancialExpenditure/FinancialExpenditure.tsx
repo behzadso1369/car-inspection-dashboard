@@ -136,14 +136,12 @@ maxWidth:80,
                   
                   return (
                     <div className="flex items-center py-2">
-                       <Image
-                         onError={(e) => {
-                          
-        // e. = image; // Fallback if image fails to load
-      }}
+                       <NavLink
+       
                     style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
-                    src={imagePath ? "https://api.carmacheck.com/" + imagePath : image}
-                    /> 
+                    to={ "https://api.carmacheck.com/" + imagePath }
+                    target='_blank'
+                    >مشاهده لینک</NavLink> 
                         
                     </div>
                    
