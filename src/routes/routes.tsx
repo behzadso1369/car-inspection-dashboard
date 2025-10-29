@@ -38,6 +38,7 @@ import CarRoute from '../pages/Car/CarRoute';
 import AboutUs from '../pages/AboutUs/AboutUs';
 import AboutUsRoute from '../pages/AboutUs/AboutUsRoute';
 import FinancialExpenditure from '../pages/FinancialExpenditure/FinancialExpenditure';
+import Order from '../pages/Order/Order';
 
 
 export const RoutesData = [
@@ -66,7 +67,7 @@ export const RoutesData = [
           title: "کاربران ادمین",
         },
         {
-          path: 'site-users/list',
+          path: 'users/site-users/list',
           permission: ['admin', 'superAdmin' ,'customer'],
           ID: 2,
           title: "کاربران سایت",
@@ -189,13 +190,6 @@ export const RoutesData = [
   
     },
     {
-      path: 'car-inspection/CarInspectionLocation/list',
-      ID: 7,
-      permission: ['admin', 'superAdmin'],
-      title: "مکان کارشناسی",
-  
-    },
-    {
       path: 'car-inspection/CarInspectionType/list',
       ID: 8,
       permission: ['admin', 'superAdmin'],
@@ -247,6 +241,15 @@ export const RoutesData = [
     ID: 2,
     permission: ['admin', 'superAdmin'],
     title: "اطلاعات سایت",
+    icon: faUser,
+
+  },
+  {
+    path: 'Order/list',
+    component: Order,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "سفارش از طرق پشتیبان",
     icon: faUser,
 
   },

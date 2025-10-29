@@ -99,37 +99,14 @@ maxWidth:80,
     },
   
    
-    {
-      field: 'marketPrice',
-      headerName: 'قیمت بازار ',
-      cellRenderer: (params:any) => {
-        return (
-          <>
-          {params.data.marketPrice ? <span>{params.data.marketPrice}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
-          </>
-        )
-     
-       }
-        },
-        {
-          field: 'ourPrice',
-          headerName: 'قیمت ما ',
-          cellRenderer: (params:any) => {
-            return (
-              <>
-              {params.data.ourPrice ? <span>{params.data.ourPrice}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
-              </>
-            )
-         
-           }
-            },
+   
         {
             field: 'carGroup',
             headerName: 'گروه خودرو',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.carInspectionType.name ? <span>{params.data.carInspectionType.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.carGroup.name ? <span>{params.data.carGroup.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
@@ -147,6 +124,30 @@ maxWidth:80,
                
                  }
                   },
+                   {
+      field: 'marketPrice',
+      headerName: 'قیمت بازار ',
+      cellRenderer: (params:any) => {
+        return (
+          <>
+          {params.data.marketPrice ? <span>{params.data.marketPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          </>
+        )
+     
+       }
+        },
+        {
+          field: 'ourPrice',
+          headerName: 'قیمت ما ',
+          cellRenderer: (params:any) => {
+            return (
+              <>
+              {params.data.ourPrice ? <span>{params.data.ourPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+              </>
+            )
+         
+           }
+            },
         
 
     

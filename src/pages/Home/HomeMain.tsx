@@ -4,13 +4,18 @@ import { ApiHelper } from '../../helper/api-request';
 import OrderChart from './OrderChart';
 import UserChart from './UserChart';
 import TransactionChart from './TransactionChart';
+import OrderPattern from './OrderPattern';
+import OtpSends from './OtpSends';
 
 
 const HomePage: React.FunctionComponent = () => {
+  
   const [data,setData] = useState<any>([])
   const getAllUser = () => {
-    instance.get(ApiHelper.get("Stats")).then((res:any) => {
-      setData(res?.data)
+    instance.get(ApiHelper.get("GetChart")).then((res:any) => {
+      setData(res?.data?.resultObject)
+
+      
     })
   }
   useEffect(() => {
@@ -21,17 +26,11 @@ const HomePage: React.FunctionComponent = () => {
   return (
     <div>
       <div className="grid grid-cols-1  lg:grid-cols-2 xl:grid-cols-2">
-        <UserChart piceName={'کاربران'} allData={{accounts_count:data?.accounts_count,accounts_accepted_count:data?.accounts_accepted_count,accounts_confirmation_count:data?.accounts_confirmation_count,accounts_pending_count:data?.accounts_pending_count}} />
-        <OrderChart piceName={'سفارشات'} allData={{orders_count: data?.orders_count,orders_delivered_count:data.orders_delivered_count,orders_deposit_count:data.orders_deposit_count,orders_purchase_count: data.orders_purchase_count,orders_sell_count:data.orders_sell_count,orders_suspended_count:data.orders_suspended_count}}  />
-        <TransactionChart piceName={'تراکنش ها'} allData={{
-transactions_count: data?.
-transactions_count,
-transactions_accepted_count: data?.transactions_accepted_count,
-
-transactions_withdraw_count:data?.
-transactions_withdraw_count
-
-}}  />
+        
+        <UserChart piceName={'کاربران'} allData={data?.UsersSite} />
+        <OrderChart piceName={'سفارشات'} allData={data}  />
+        <OtpSends piceName={'پیام های ارسال شده'} allData={data} />
+        <OrderPattern piceName={'روند سفارشات'} allData={data?.Orders}  />
      
        
       </div>

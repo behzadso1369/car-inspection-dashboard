@@ -29,6 +29,7 @@ export const Dropdown: React.FunctionComponent<DropdownProps> = ({
   
   width,
 }) => {
+  
   return (
     <div className="flex flex-col gap-3">
       <label
@@ -87,7 +88,7 @@ export const Dropdown: React.FunctionComponent<DropdownProps> = ({
           
           >
             {option && option.map((item: any) => (
-              <MenuItem key={Number(item.id)} value={Number(item.id)}>{item[optionTitle]}</MenuItem>
+              <MenuItem key={Number(item.id)} value={item.id}>{item[optionTitle]}</MenuItem>
             ))}
           
           </Select>

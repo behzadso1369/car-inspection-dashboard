@@ -20,6 +20,8 @@ GetAllRolse: "Auth/GetAllRolse",
 DeleteRole: "Auth/DeleteRole",
 DeActiveUser: "Auth/DeActiveUser",
 ActiveUser: "Auth/ActiveUser",
+//Site User
+GetSiteUserList: "Auth/GetAllSiteUsers",
 //Slider
 CreateSlider: "/Slider/CreateWithFile",
 UpdateSlider: "/Slider/UpdateWithFile",
@@ -160,7 +162,15 @@ CreateFinancialExpenditure: "FinancialExpenditure/Create",
 DeleteFinancialExpenditure: "FinancialExpenditure/Delete",
 EdtiFinancialExpenditure: "FinancialExpenditure/Update",
 GetFinancialExpenditure: "FinancialExpenditure/Get",
+//Order
 
+OrderList: "Order/GetAllOrder",
+CreateOrder: "Order/Create",
+DeleteOrder: "Order/Delete",
+EdtiOrder: "Order/Update",
+GetOrder: "Order/GetOrderWithDetails",
+//Chart
+GetChart: "Auth/ChartInformation"
 
 
 

@@ -12,6 +12,8 @@ type InputProps = ComponentPropsWithoutRef<'input'> & {
   title: string;
   register: any;
   control: any;
+  type: any;
+
 };
 
 export const Input: FC<InputProps> = ({
@@ -23,6 +25,7 @@ export const Input: FC<InputProps> = ({
   control,
   width,
   error,
+  type,
   ...props
 }) => {
   const [focused, setFocused] = useState<boolean>(false);
@@ -67,6 +70,7 @@ export const Input: FC<InputProps> = ({
                   onFocus={() => setFocused(true)}
                   onBlur={() => setFocused(false)}
                   id={title}
+                  type={type}
                  
                 />
                 {!value && (

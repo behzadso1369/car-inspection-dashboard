@@ -72,12 +72,11 @@ EditPieceProps
   const getBlogCategories = () => {
     instance.get(ApiHelper.get("BlogCategoriesList"),{params: {skip:0,take:10000}}).then((res:any) => {
       setBlogCategories(res.data.resultObject);
-      debugger
 
     })
   }
   useEffect(() => {
-    // getBlogCategories();
+    getBlogCategories();
   
   },[])
   return (

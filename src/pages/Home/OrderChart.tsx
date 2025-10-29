@@ -54,17 +54,19 @@ const OrderChart: React.FunctionComponent<PieceName> = ({piceName,allData}) => {
 
   const data = {
     labels: [
-      ' تحویل داده شده',
+      'کل سفارشات',
 
-      'خرید',
-      'فروش',
+      'شفارشات تکمیل شده',
+      'سفارشات تکمیل نشده',
     ],
     datasets: [
       {
         label: 'تعداد',
         data: [allData?.
-    orders_delivered_count
-            , allData?.orders_purchase_count, allData?.orders_sell_count
+    AllOrders?.[0].Count
+            , allData?.
+    AllOrders?.[0].Count, allData?.
+    AllOrders?.[0].Count
             ],
         backgroundColor: [
           '#2C3C51',
@@ -97,7 +99,7 @@ const OrderChart: React.FunctionComponent<PieceName> = ({piceName,allData}) => {
       ctx.textBaseline = 'middle';
       
         ctx.fillText(
-            'کل سفارشات:' + '\n' + allData?.orders_count,
+            'کل سفارشات:' + '\n' + allData?.AllOrders?.[0]?.Count,
             chart.getDatasetMeta(0).data[0].x,
             chart.getDatasetMeta(0).data[0].y
           );
@@ -123,7 +125,7 @@ const OrderChart: React.FunctionComponent<PieceName> = ({piceName,allData}) => {
         </div>
         <div className="flex flex-wrap items-center justify-around">
           <div className="h-80 flex justify-center items-center w-full   2xl:w-64 lg:w-64 xl:w-64">
-            {allData?.orders_count && <Doughnut data={data} options={options} plugins={[textCenter]} />}
+            {allData?.AllOrders?.length > 0 && <Doughnut data={data} options={options} plugins={[textCenter]} />}
             
           </div>
 

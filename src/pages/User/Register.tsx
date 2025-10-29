@@ -17,7 +17,7 @@ EditPieceProps
 
   const { register, control,getValues} = useForm({ });
   const onSubmit = () => {
-  instance.post(ApiHelper.get("createRole"),getValues()).then((res:any) => {
+  instance.post(ApiHelper.get("register"),getValues()).then((res:any) => {
     if(res.data) {
         setShowAddUserModal(false);
     }

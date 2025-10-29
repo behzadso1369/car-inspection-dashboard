@@ -61,7 +61,7 @@ EditPieceProps
                   optionTitle='Name'
                   option={roles?.map((item:any) => {
                     return {
-                      id: item?.Id,
+                      id: item?.Name,
                       Name:item?.Name
                     }
                   })}
