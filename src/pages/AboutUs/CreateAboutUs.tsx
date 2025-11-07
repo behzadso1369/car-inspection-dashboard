@@ -46,11 +46,11 @@ EditPieceProps
     const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
   const onSubmit = () => {
     console.log(getValues())
-  // instance.post(ApiHelper.get("CreateAboutUs"),getValues()).then((res:any) => {
-  //   if(res.data) {
-  //       setShowAddUserModal(false);
-  //   }
-  // })
+  instance.post(ApiHelper.get("CreateAboutUs"),getValues()).then((res:any) => {
+    if(res.data) {
+        setShowAddUserModal(false);
+    }
+  })
 
     
    

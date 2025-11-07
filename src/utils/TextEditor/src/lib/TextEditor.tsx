@@ -862,7 +862,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
     
     font_family_formats: 'Dana=dana-fanum;Nazanin=B Nazanin;Mitra=B Mitra;Iransharp=IRANSharp;Iransans=IRANSans',
     
-    plugins: 'preview autolink autosave save directionality visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help quickbars emoticons',
+    plugins: 'preview autolink autosave save directionality visualblocks visualchars fullscreen image link  codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help quickbars emoticons',
     
     menubar: 'file edit view insert format tools table tc help',
      // ✅ ADD THESE to prevent URL conversion

@@ -215,16 +215,16 @@ const AboutUs: React.FunctionComponent = () => {
         />
       </div>
       </div>
-      {showAddModal && (
+      {/* {showAddModal && (
         <CreateAboutUs showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
-     )}
+     )} */}
      
       {showDeleteUser && (
        <DeleteAboutUs secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
-       {showEditModal && (
+       {/* {showEditModal && (
         <EditAboutUs secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
-     )}
+     )} */}
    
     
    

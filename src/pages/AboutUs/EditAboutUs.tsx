@@ -10,7 +10,7 @@ import Datepicker from '../../libs/datepicker/datepicker';
 import Dropdown from '../../libs/dropdown/dropdown';
 import TextArea from '../../libs/text-area/text-area';
 import Button, { PrimaryButton, SecondaryButton } from '../../libs/button/button';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Image } from 'antd';
 import TextEditor from '../../libs/text-editor/text-editor';
 
@@ -20,19 +20,12 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 
 
-interface EditPieceProps extends React.PropsWithChildren {
-  showEditModal: boolean;
-  secretOfOurServiceQualityId:number;
-  secretOfOurServiceQualityName:string;
 
-
-
-  setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 const EditAboutUs: React.FunctionComponent<
-EditPieceProps
-> = ({ showEditModal, setShowEditModal,secretOfOurServiceQualityId,secretOfOurServiceQualityName }) => {
+any
+> = () => {
+  const {id} = useParams();
  
   const inputImageRef = useRef<any>(null);
 
@@ -46,19 +39,10 @@ EditPieceProps
   
     const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
   const onSubmit = () => {
-    const formData = new FormData();
-    formData.append("t1Title",getValues()["t1Title"])
-    formData.append("t1Desc",getValues()["t1Desc"])
-    formData.append("t2Title",getValues()["t2Title"])
-    formData.append("t2Desc",getValues()["t2Desc"])
-    formData.append("t3Title",getValues()["t3Title"])
-    formData.append("t3Desc",getValues()["t3Desc"])
-    formData.append("t4Title",getValues()["t4Title"])
-    formData.append("t4Desc",getValues()["t4Desc"])
-    formData.append("image",image);
-  instance.put(ApiHelper.get("GetAboutUs")+ "?id=" + secretOfOurServiceQualityId,formData).then((res:any) => {
+
+  instance.put(ApiHelper.get("EdtiAboutUs")+ "?id=" + id,getValues()).then((res:any) => {
     if(res.data) {
-        setShowEditModal(false);
+       
     }
   })
 
@@ -72,20 +56,15 @@ EditPieceProps
 
   };
   const  getBlogTagById = () => {
-    instance.get(ApiHelper.get("GetWhyWe"),{params:{id:secretOfOurServiceQualityId}}).then((res:any) => {
+    instance.get(ApiHelper.get("GetAboutUs") + "?id=" + id).then((res:any) => {
         reset({
-          t1Title:res.data.resultObject.t1Title,
-          t1Desc:res.data.resultObject.t1Desc,
-          t2Title:res.data.resultObject.t2Title,
-          t2Desc:res.data.resultObject.t2Desc,
-          t3Title:res.data.resultObject.t3Title,
-          t3Desc:res.data.resultObject.t3Desc,
-          t4Title:res.data.resultObject.t4Title,
-          t4Desc:res.data.resultObject.t4Desc
+          content: res?.data?.resultObject?.content
+      
          
        
         })
-        setFiles("https://api.carmacheck.com/" + res.data.resultObject.imagePath)
+        debugger
+  
     })
   }
   useEffect(() => {
