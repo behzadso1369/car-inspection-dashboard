@@ -1,37 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Dialog, DialogTitle, Switch } from '@mui/material';
+import { Switch } from '@mui/material';
 
 import { useForm } from 'react-hook-form';
-
-
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 import instance from '../../../helper/interceptor';
 import { ApiHelper } from '../../../helper/api-request';
 import Input from '../../../libs/input/input';
-import Datepicker from '../../../libs/datepicker/datepicker';
 import Dropdown from '../../../libs/dropdown/dropdown';
 import TextEditor from '../../../libs/text-editor/text-editor';
 import Button, { PrimaryButton, SecondaryButton } from '../../../libs/button/button';
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-
-
-
-
-interface EditPieceProps extends React.PropsWithChildren {
-  showEditModal: boolean;
-  blogCatId:number;
-  blogCatName:string;
-
-
-
-  setShowEditModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const EditBlogPost: React.FunctionComponent<
-EditPieceProps
-> = ({ showEditModal, setShowEditModal,blogCatId,blogCatName }) => {
+const EditBlogPost: React.FunctionComponent = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const blogPostId = searchParams.get('id');
   const inputImageRef = useRef<any>(null);
   const [blogCategories,setBlogCategories] = useState<any>([]);
   const [fileId,setFileId] = useState<any>(null);
@@ -53,6 +38,8 @@ EditPieceProps
         
     });
     const onSubmit = () => {
+      if (!blogPostId) return;
+      
       const formData = new FormData();
       formData.append("Title",getValues("Title"));
       formData.append("CategoryId",getValues("CategoryId"));
@@ -63,9 +50,9 @@ EditPieceProps
       formData.append("CoverImage",image);
       formData.append("Title",getValues("Title"));
       
-  instance.put(ApiHelper.get("EditBlogPost") + "?id=" + blogCatId,formData).then((res:any) => {
+  instance.put(ApiHelper.get("EditBlogPost") + "?id=" + blogPostId,formData).then((res:any) => {
     if(res.data) {
-        setShowEditModal(false);
+        navigate(-1); // Go back to previous page
     }
   })
 
@@ -79,10 +66,9 @@ EditPieceProps
       })
     }
     const  getBlogPostById = () => { 
-      instance.get(ApiHelper.get("getBlogPostById"),{params:{id:blogCatId}}).then((res:any) => {
-  
-        
-        
+      if (!blogPostId) return;
+      
+      instance.get(ApiHelper.get("getBlogPostById"),{params:{id:blogPostId}}).then((res:any) => {
           reset({
             CategoryId: res.data.resultObject.categoryId,
             Excerpt: res.data.resultObject.excerpt,
@@ -92,8 +78,6 @@ EditPieceProps
             IsPublished:res.data.resultObject.isPublished,
             Content:res.data.resultObject.content
           })
-          debugger
-     
       })
     }
     const uploadImageFile = async () => {
@@ -103,33 +87,16 @@ EditPieceProps
   
     };
     useEffect(() => {
-      getBlogPostById();
+      if (blogPostId) {
+        getBlogPostById();
+      }
       getBlogCategories();
-    
-    },[])
+    },[blogPostId])
   return (
-    <Dialog
-      className="w-full  !overflow-hidden"
-      onClose={() => setShowEditModal(false)}
-      open={showEditModal}
-     
-      maxWidth="xl"
-      
-      PaperProps={{ sx: { borderRadius: '12px', background: '#fff' } }}
-      sx={{
-        '& .MuiPaper-elevation': {
-          overflow: 'hidden',
-        },
-      }}
-    >
-      <DialogTitle className="w-full flex items-center gap-3 border-b !pb-6">
-        <span> ویرایش  کاربر </span>
-        <span> </span>
-        <span>{blogCatName}</span>
-        
-      </DialogTitle>
-
-    
+    <div className="w-full">
+      <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
+        <h3 className="text-base font-bold text-primary">ویرایش پست بلاگ</h3>
+      </div>
       <div className="grid grid-cols-4 gap-3 !py-3 px-4">
   
   <Input
@@ -242,10 +209,10 @@ EditPieceProps
               title='لغو'
               active={true}
               style={SecondaryButton}
-              onClick={() =>setShowEditModal(false)}
+              onClick={() => navigate(-1)}
             />
               <Button
-              title='اضافه کردن'
+              title='ذخیره'
               active={true}
               style={PrimaryButton}
               onClick={onSubmit}
@@ -276,7 +243,7 @@ EditPieceProps
         
      
 </div>
-    </Dialog>
+</div>
   );
 };
 

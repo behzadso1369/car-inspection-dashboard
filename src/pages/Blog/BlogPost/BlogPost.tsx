@@ -13,10 +13,10 @@ import QuickSearch from '../../../libs/quick-search/quick-search';
 import { CircularProgress } from '@mui/material';
 import CreateSlider from './CreateBlogPost';
 import DeleteSlider from './DeleteBlogPost';
-import { NavLink } from 'react-router-dom';
-import EditBlogPost from './EditBlogPost';
+import { NavLink, useNavigate } from 'react-router-dom';
 import DeleteBlogPost from './DeleteBlogPost';
 const BlogPost: React.FunctionComponent = () => {
+  const navigate = useNavigate();
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
@@ -28,8 +28,6 @@ const BlogPost: React.FunctionComponent = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [search,setSearch] = useState<string>("")
   const [count, setCount] = React.useState(0);
-     
-     const [showEditModal, setShowEditModal] = React.useState<boolean>(false);
 
   const [rowData, setRowData] = useState<any>();
 
@@ -60,7 +58,7 @@ const BlogPost: React.FunctionComponent = () => {
   useEffect(() => {
     getAllRoles();
  
-  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal]);
+  }, [page,rowsPerPage,showAddModal,showDeleteUser,search]);
 
   const deleteBlog = (params:any) => {
     setBlogCatId(params.data.id);
@@ -175,10 +173,7 @@ const BlogPost: React.FunctionComponent = () => {
                  
                         <div className="flex justify-start items-start">
                         <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' onClick={() => {
-                          
-                          setShowEditModal(true)
-                          setBlogCatId(params.data.id);
-                          setBlogCatName(params.data.title);
+                          navigate(`./edit?id=${params.data.id}`);
                           }}>ویرایش  </button>
                         <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  </button>
                   </div>
@@ -270,10 +265,6 @@ const BlogPost: React.FunctionComponent = () => {
      
       {showDeleteUser && (
        <DeleteBlogPost slideId={blogCatId} slideName={blogCatName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
-     )}
-   
-   {showEditModal && (
-        <EditBlogPost blogCatId={blogCatId} blogCatName={blogCatName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
      )}
    
     </Fragment>

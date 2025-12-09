@@ -169,6 +169,12 @@ CreateOrder: "Order/Create",
 DeleteOrder: "Order/Delete",
 EdtiOrder: "Order/Update",
 GetOrder: "Order/GetOrderWithDetails",
+//OrderReport
+OrderReportList: "OrderReport/List",
+CreateOrderReport: "OrderReport/CreateWithFile",
+DeleteOrderReport: "OrderReport/Delete",
+EdtiOrderReport: "OrderReport/UpdateWithFile",
+GetOrderReport: "Order/Get",
 //Chart
 GetChart: "Auth/ChartInformation"
 

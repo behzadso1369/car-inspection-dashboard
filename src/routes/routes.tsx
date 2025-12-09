@@ -18,6 +18,7 @@ import UserRoute from '../pages/User/UserRoute';
 import Role from '../pages/Role/Role';
 import Slider from '../pages/Slider/Slider';
 import BlogRoute from '../pages/Blog/BlogRoute';
+import OrderReportRoute from '../pages/OrderReport/OrderRoute';
 import CarInspectionService from '../pages/CarInspectionService/CarInspectionService';
 import SecretOfOurServiceQuality from '../pages/SecretOfOurServiceQuality/SecretOfOurServiceQuality';
 import WhyWe from '../pages/WhyWe/WhyWe';
@@ -134,6 +135,22 @@ export const RoutesData = [
         title: "تگ های پست بلاگ",
       },
       
+    ],
+  },
+  {
+    path: 'order-report',
+    component: OrderReportRoute,
+    ID: 4,
+    permission: ['admin', 'superAdmin', 'customer'],
+    title: "گزارش کارشناسی",
+    icon: faTruckRampBox,
+    children: [
+      {
+        path: 'order-report/list',
+        permission: ['admin', 'superAdmin', 'customer'],
+        ID: 1,
+        title: "گزارش کارشناسی",
+      },
     ],
   },
   {
