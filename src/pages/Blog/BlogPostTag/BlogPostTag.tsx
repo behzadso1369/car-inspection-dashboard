@@ -62,8 +62,8 @@ const BlogPostTag: React.FunctionComponent = () => {
   }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal]);
 
   const deleteSlider = (params:any) => {
-    setSlideId(params.data.Id);
-    setSlideName(params.data.Name);
+    setSlideId(params.data.id);
+    setSlideName(params.data.tag.name);
     setShowDeleteUser(true);
   
   }

@@ -15,6 +15,7 @@ import CreateSlider from './CreateBlogPost';
 import DeleteSlider from './DeleteBlogPost';
 import { NavLink, useNavigate } from 'react-router-dom';
 import DeleteBlogPost from './DeleteBlogPost';
+import { Image } from 'antd';
 const BlogPost: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
@@ -127,7 +128,7 @@ const BlogPost: React.FunctionComponent = () => {
                 cellRenderer: (params:any) => {
                   return (
                     <>
-                    {params.data.IsFirstPage ? <span>{params.data.IsFirstPage ? "بله" : "خیر"}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                    {params.data.isFirstPage ? <span>{params.data.isFirstPage ? "بله" : "خیر"}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                     </>
                   )
                
@@ -150,9 +151,12 @@ const BlogPost: React.FunctionComponent = () => {
                 headerName: 'عکس',
                 cellRenderer: (params:any) => {
                   return (
-                    <>
-                    {params.data.coverImage ? <span>{params.data.coverImage}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
-                    </>
+                     <div className="flex items-center py-2">
+                         <Image
+                    style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
+                    src={"https://api.carmacheck.com/" + params.data.imagePath}
+                    />
+                    </div>
                   )
                
                  }

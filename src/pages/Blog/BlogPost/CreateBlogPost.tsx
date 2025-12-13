@@ -51,7 +51,7 @@ EditPieceProps
       formData.append("IsPublished",getValues("IsPublished"));
       formData.append("IsFirstPage",getValues("IsFirstPage"));
       formData.append("Slug",getValues("Slug"));
-      formData.append("CoverImage",image);
+      formData.append("Image",image);
       formData.append("Title",getValues("Title"));
       
   instance.post(ApiHelper.get("CreateBlogPost"),formData).then((res:any) => {

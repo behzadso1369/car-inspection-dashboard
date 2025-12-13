@@ -43,9 +43,9 @@ EditPieceProps
     const [progressImageBar,setProgressImageBar] = useState<boolean>(false);
   const onSubmit = () => {
     const formData = new FormData();
-    formData.append("text",getValues()["Text"])
-    formData.append("link",getValues()["Link"])
-    formData.append("durationTime",getValues()["DurationTime"])
+    formData.append("text",getValues()["text"])
+    formData.append("link",getValues()["link"])
+    formData.append("durationTime",getValues()["durationTime"])
     formData.append("image",image);
   instance.post(ApiHelper.get("CreateSliderWithFile"),formData).then((res:any) => {
     if(res.data) {

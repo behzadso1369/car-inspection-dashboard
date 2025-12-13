@@ -47,7 +47,7 @@ const EditBlogPost: React.FunctionComponent = () => {
       formData.append("IsPublished",getValues("IsPublished"));
       formData.append("IsFirstPage",getValues("IsFirstPage"));
       formData.append("Slug",getValues("Slug"));
-      formData.append("CoverImage",image);
+      formData.append("Image",image);
       formData.append("Title",getValues("Title"));
       
   instance.put(ApiHelper.get("EditBlogPost") + "?id=" + blogPostId,formData).then((res:any) => {
