@@ -31,7 +31,7 @@ export const Dropdown: React.FunctionComponent<DropdownProps> = ({
 }) => {
   
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 col-span-4 lg:col-span-1">
       <label
         className={` text-xs ${
           disabled ? '!text-black' : 'text-black-opacity-80'

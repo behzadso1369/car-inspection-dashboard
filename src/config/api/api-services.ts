@@ -85,7 +85,7 @@ DeleteCarGroup: "CarGroup/Delete",
 EditCarGroup: "CarGroup/UpdateWithFile",
 GetCarGroup: "CarGroup/Get",
 //CarInspection
-CarInspectionList: "CarInspection/List",
+CarInspectionList: "CarInspection/SearchByCarGroupName",
 CreateCarInspection: "CarInspection/CreateWithFile",
 DeleteCarInspection: "CarInspection/Delete",
 EditCarInspection: "CarInspection/UpdateWithFile",
@@ -176,7 +176,8 @@ DeleteOrderReport: "OrderReport/Delete",
 EdtiOrderReport: "OrderReport/UpdateWithFile",
 GetOrderReport: "Order/Get",
 //Chart
-GetChart: "Auth/ChartInformation"
+GetChart: "Auth/ChartInformation",
+GetOrderReportDropDown: "Order/List"
 
 
 

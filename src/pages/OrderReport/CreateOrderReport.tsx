@@ -5,7 +5,7 @@ import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import Input from '../../libs/input/input';
 import Dropdown from '../../libs/dropdown/dropdown';
-import Button, { PrimaryButton, SecondaryButton } from '../../libs/button/button';
+import Button, { PrimaryButton, SecondaryButton, DisabledPrimaryButton } from '../../libs/button/button';
 
 const CreateOrderReport: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const CreateOrderReport: React.FunctionComponent = () => {
   const [users, setUsers] = useState<any>([]);
   const [orders, setOrders] = useState<any>([]);
   const [image, setImage] = useState<any>(null);
-  const [progressImageBar, setProgressImageBar] = useState<boolean>(false);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const onSubmit = () => {
     const formData = new FormData();
@@ -33,7 +33,14 @@ const CreateOrderReport: React.FunctionComponent = () => {
 
   const uploadImageFile = async () => {
     const file = inputImageRef.current?.files[0];
-    setImage(file);
+    if (file) {
+      setIsUploading(true);
+      // شبیه‌سازی آپلود عکس
+      setTimeout(() => {
+        setImage(file);
+        setIsUploading(false);
+      }, 1000);
+    }
   };
 
   const getUsers = () => {
@@ -49,7 +56,7 @@ const CreateOrderReport: React.FunctionComponent = () => {
   }
 
   const getOrders = () => {
-    instance.get(ApiHelper.get("OrderList"), { params: { skip: 0, take: 10000 } }).then((res: any) => {
+    instance.get(ApiHelper.get("GetOrderReportDropDown"), { params: { skip: 0, take: 10000 } }).then((res: any) => {
       const newOrders = res.data.resultObject?.map((item: any) => {
         return {
           id: item.id,
@@ -91,7 +98,7 @@ const CreateOrderReport: React.FunctionComponent = () => {
         />
         <div className='mt-8 col-span-2 flex'>
           <div className="flex ">
-            <div className='w-1/2'>
+            <div className='w-full md:w-1/2'>
               <label
                 htmlFor="Image"
                 className=" rounded-md px-3 py-1 text-sm bg-gray-700 text-white hover:bg-blue-700 focus:bg-blue-opacity-90 focus:shadow-primary-focus whitespace-nowrap cursor-pointer"
@@ -107,11 +114,16 @@ const CreateOrderReport: React.FunctionComponent = () => {
                 style={{ visibility: 'hidden' }}
               />
             </div>
-            {progressImageBar ? <span>فایل عکس در حال آپلود است</span> : <div>
-              {image && <div className='w-auto relative p-2 border-2 border-slate-400 flex flex-col items-center'>
+            {isUploading ? (
+              <div className='w-auto relative p-2 border-2 border-slate-400 flex flex-col items-center justify-center' style={{ minWidth: '50px', minHeight: '50px' }}>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-700"></div>
+                <span className="text-xs mt-2 text-gray-600">در حال آپلود عکس...</span>
+              </div>
+            ) : image ? (
+              <div className='w-auto relative p-2 border-2 border-slate-400 flex flex-col items-center'>
                 <img width="50px" height="50px" src={URL.createObjectURL(image)} alt="Preview" />
-              </div>}
-            </div>}
+              </div>
+            ) : null}
             <div className="flex "></div>
           </div>
         </div>
@@ -124,8 +136,9 @@ const CreateOrderReport: React.FunctionComponent = () => {
           />
           <Button
             title='اضافه کردن'
-            active={true}
+            active={!!image && !isUploading}
             style={PrimaryButton}
+            disableStyle={DisabledPrimaryButton}
             onClick={onSubmit}
           />
         </div>

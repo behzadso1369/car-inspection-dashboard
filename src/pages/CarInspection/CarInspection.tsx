@@ -50,7 +50,6 @@ const CarInspection: React.FunctionComponent = () => {
   const { register, control,getValues } =
   useForm({
     defaultValues: {
-      filterOrder: 1,
       search: ""
     }
  
@@ -63,16 +62,16 @@ const CarInspection: React.FunctionComponent = () => {
       menuTabs: ['filterMenuTab'],
     };
   }, []);
-  const getAllRoles = () => {
-    instance.get(ApiHelper.get("CarInspectionList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+  const getAllRoles = (search:string) => {
+    instance.get(ApiHelper.get("CarInspectionList"),{params: {pageNumber:page,pageSize:rowsPerPage, carGroupName:search}}).then((res:any) => {
       setRowData(res?.data?.resultObject);
          setCount(res?.data?.countData);
     })
   }
   useEffect(() => {
-    getAllRoles();
+    getAllRoles(search);
  
-  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal]);
+  }, [page,rowsPerPage,showAddModal,showDeleteUser,search,showAddModal,showEditModal,search]);
 
   const deleteBlog = (params:any) => {
     setSecretOfOurServiceQualityId(params.data.id);
@@ -180,13 +179,7 @@ maxWidth:80,
     },
   ];
   const onFilterTextBoxChanged = useCallback(() => {
-
-    allgridRef.current!.api!.setGridOption(
-      'quickFilterText',
-      
-
-      getValues().search
-    );
+setSearch(getValues().search)
   }, []);
   const overlayComponent = () => {
     return (
