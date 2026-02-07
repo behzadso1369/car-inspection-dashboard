@@ -128,6 +128,7 @@ EditPieceProps
          label='گزیده'
          width="w-full"
        />
+
            <Dropdown
       optionTitle='name'
                   register={register}
@@ -137,6 +138,38 @@ EditPieceProps
                   option={blogCategories}
                   fullWidth={true}
                 />
+                  <Input
+      
+         type="text"
+         register={register}
+         control={control}
+         title="blogPostTitle"
+         label='Title'
+         width="w-full"
+       />
+  <Input
+      
+         type="text"
+         register={register}
+         control={control}
+         title="blogPostCanonical"
+         label='canonical'
+         width="w-full"
+       />
+  <TextArea
+         register={register}
+         control={control}
+         title="blogPostKeyword"
+         label='keywords'
+       />
+  <TextArea
+        
+         register={register}
+         control={control}
+         title="blogPostDescription"
+         label='description'
+         
+       />
                             <div className="col-span-4">
     <TextEditor 
     baseUrl='https://api.carmacheck.com' 

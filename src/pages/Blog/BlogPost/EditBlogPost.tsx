@@ -11,6 +11,7 @@ import Input from '../../../libs/input/input';
 import Dropdown from '../../../libs/dropdown/dropdown';
 import TextEditor from '../../../libs/text-editor/text-editor';
 import Button, { PrimaryButton, SecondaryButton } from '../../../libs/button/button';
+import TextArea from '../../../libs/text-area/text-area';
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const EditBlogPost: React.FunctionComponent = () => {
@@ -32,8 +33,11 @@ const EditBlogPost: React.FunctionComponent = () => {
         Title: "",
         IsFirstPage:"",
         IsPublished:"",
-        Content:""
-        
+        Content:"",
+        blogPostTitle:"",
+        blogPostCanonical:"",
+        blogPostKeyword:"",
+        blogPostDescription:""
       }
         
     });
@@ -76,7 +80,11 @@ const EditBlogPost: React.FunctionComponent = () => {
             Title: res.data.resultObject.title,
             IsFirstPage:res.data.resultObject.isFirstPage,
             IsPublished:res.data.resultObject.isPublished,
-            Content:res.data.resultObject.content
+            Content:res.data.resultObject.content,
+            blogPostTitle:res.data.resultObject.blogPostTitle,
+            blogPostCanonical:res.data.resultObject.blogPostCanonical,
+            blogPostKeyword:res.data.resultObject.blogPostKeyword,
+            blogPostDescription:res.data.resultObject.blogPostDescription
           })
       })
     }
@@ -135,9 +143,44 @@ const EditBlogPost: React.FunctionComponent = () => {
                   option={blogCategories}
                   fullWidth={true}
                 />
+                                  <Input
+                      
+                         type="text"
+                         register={register}
+                         control={control}
+                         title="blogPostTitle"
+                         label='Title'
+                         width="w-full"
+                       />
+                  <Input
+                      
+                         type="text"
+                         register={register}
+                         control={control}
+                         title="blogPostCanonical"
+                         label='canonical'
+                         width="w-full"
+                       />
+                  <TextArea
+                      
+                  
+                         register={register}
+                         control={control}
+                         title="blogPostKeyword"
+                         label='keywords'
+                         
+                       />
+                  <TextArea
+                        
+                         register={register}
+                         control={control}
+                         title="blogPostDescription"
+                         label='description'
+                         
+                       />
                             <div className="col-span-4">
     <TextEditor 
-    baseUrl='' 
+    baseUrl='https://api.carmacheck.com'
     register={register}
       control={control}
       title="Content"
