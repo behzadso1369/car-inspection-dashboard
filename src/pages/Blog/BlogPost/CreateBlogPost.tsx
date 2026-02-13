@@ -53,6 +53,10 @@ EditPieceProps
       formData.append("Slug",getValues("Slug"));
       formData.append("Image",image);
       formData.append("Title",getValues("Title"));
+      formData.append("blogPostTitle",getValues("blogPostTitle"));
+      formData.append("blogPostDescription",getValues("blogPostDescription"));
+      formData.append("blogPostKeyword",getValues("blogPostKeyword"));
+      formData.append("blogPostCanonical",getValues("blogPostCanonical"));
       
   instance.post(ApiHelper.get("CreateBlogPost"),formData).then((res:any) => {
     if(res.data) {

@@ -877,6 +877,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
     image_advtab: true,
     image_title: true,
     image_caption: true,
+    image_description: true,
     paste_data_images: false,
     
     toolbar: "uploadBTN redo undo | inlineFormats | fontfamily | fontsize | fullscreen | forecolor backcolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent",
