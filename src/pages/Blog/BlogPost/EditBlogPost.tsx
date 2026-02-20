@@ -48,6 +48,7 @@ const EditBlogPost: React.FunctionComponent = () => {
       formData.append("Title",getValues("Title"));
       formData.append("CategoryId",getValues("CategoryId"));
       formData.append("Content",getValues("Content"));
+       formData.append("Excerpt",getValues("Excerpt"));
       formData.append("IsPublished",getValues("IsPublished"));
       formData.append("IsFirstPage",getValues("IsFirstPage"));
       formData.append("Slug",getValues("Slug"));
