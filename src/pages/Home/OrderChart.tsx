@@ -54,8 +54,6 @@ const OrderChart: React.FunctionComponent<PieceName> = ({piceName,allData}) => {
 
   const data = {
     labels: [
-      'کل سفارشات',
-
       'شفارشات تکمیل شده',
       'سفارشات تکمیل نشده',
     ],
@@ -63,10 +61,8 @@ const OrderChart: React.FunctionComponent<PieceName> = ({piceName,allData}) => {
       {
         label: 'تعداد',
         data: [allData?.
-    AllOrders?.[0].Count
-            , allData?.
-    AllOrders?.[0].Count, allData?.
-    AllOrders?.[0].Count
+    OrdersCompleted?.[0].Count, allData?.
+    OrdersNotCompleted?.[0].Count
             ],
         backgroundColor: [
           '#2C3C51',

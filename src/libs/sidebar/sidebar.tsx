@@ -29,7 +29,7 @@ export function Sidebar({
   
 
   const buttonLink =
-    'p-3 flex items-center gap-3 rounded-md duration-200 min-h-[3rem]';
+    'p-3 flex items-center gap-3 rounded-md duration-200 min-h-[3rem] overflow-auto';
   return (
     <div className="relative" style={{ direction: 'ltr' }}>
       <div

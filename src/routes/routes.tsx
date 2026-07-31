@@ -10,8 +10,8 @@ import {
   faUser,
   faWallet,
   faCreditCard,
-  faTruckRampBox
- 
+  faTruckRampBox,
+  faUserTie,
 
 } from '@fortawesome/free-solid-svg-icons';
 import UserRoute from '../pages/User/UserRoute';
@@ -40,6 +40,9 @@ import AboutUs from '../pages/AboutUs/AboutUs';
 import AboutUsRoute from '../pages/AboutUs/AboutUsRoute';
 import FinancialExpenditure from '../pages/FinancialExpenditure/FinancialExpenditure';
 import Order from '../pages/Order/Order';
+import SiteOrder from '../pages/SiteOrder/SiteOrder';
+import FAQRoute from '../pages/FAQ/FAQRoute';
+import ExpertRoute from '../pages/Expert/ExpertRoute';
 
 
 export const RoutesData = [
@@ -270,9 +273,62 @@ export const RoutesData = [
     icon: faUser,
 
   },
+  {
+    path: 'SiteOrder/list',
+    component: SiteOrder,
+    ID: 2,
+    permission: ['admin', 'superAdmin'],
+    title: "سفارش   های سایت",
+    icon: faUser,
+
+  },
  
     
 
+  {
+    path: 'faq',
+    component: FAQRoute,
+    ID: 5,
+    permission: ['admin', 'superAdmin'],
+    title: 'سوالات متداول',
+    icon: faUser,
+    children: [
+      {
+        path: 'faq/categories',
+        permission: ['admin', 'superAdmin'],
+        ID: 1,
+        title: 'دسته بندی سوالات',
+      },
+      {
+        path: 'faq/list',
+        permission: ['admin', 'superAdmin'],
+        ID: 2,
+        title: 'سوالات متداول',
+      },
+    ],
+  },
+  {
+    path: 'expert',
+    component: ExpertRoute,
+    ID: 6,
+    permission: ['admin', 'superAdmin'],
+    title: 'کارشناسان',
+    icon: faUserTie,
+    children: [
+      {
+        path: 'expert/list',
+        permission: ['admin', 'superAdmin'],
+        ID: 1,
+        title: 'تعریف کارشناسان',
+      },
+      {
+        path: 'expert/assignment',
+        permission: ['admin', 'superAdmin'],
+        ID: 2,
+        title: 'تخصیص کارشناس',
+      },
+    ],
+  },
   {
     path: 'FlowType/list',
     component: FlowType,

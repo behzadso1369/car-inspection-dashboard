@@ -177,7 +177,34 @@ EdtiOrderReport: "OrderReport/UpdateWithFile",
 GetOrderReport: "Order/Get",
 //Chart
 GetChart: "Auth/ChartInformation",
-GetOrderReportDropDown: "Order/List"
+GetOrderReportDropDown: "Order/List",
+//FAQ_Categories
+CreateFAQCategories: "FAQ_Categories/Create",
+FAQCategoriesList: "FAQ_Categories/List",
+DeleteFAQCategories: "FAQ_Categories/Delete",
+EditFAQCategories: "FAQ_Categories/Update",
+getFAQCategoriesById: "FAQ_Categories/Get",
+//FAQ
+CreateFAQ: "FAQ/Create",
+FAQList: "FAQ/List",
+DeleteFAQ: "FAQ/Delete",
+EditFAQ: "FAQ/Update",
+getFAQById: "FAQ/Get",
+//Expert
+ExpertList: "Expert/List",
+CreateExpert: "Expert/Create",
+EditExpert: "Expert/Update",
+GetExpert: "Expert/Get",
+DeleteExpert: "Expert/Delete",
+//ExpertCoverageArea
+ExpertCoverageAreaList: "ExpertCoverageArea/List",
+CreateExpertCoverageArea: "ExpertCoverageArea/Create",
+DeleteExpertCoverageArea: "ExpertCoverageArea/Delete",
+//OrderExpertAssignment
+UnassignedOnSiteOrders: "OrderExpertAssignment/UnassignedOnSiteOrders",
+SuggestExperts: "OrderExpertAssignment/SuggestExperts",
+AssignExpert: "OrderExpertAssignment/AssignExpert",
+OrderReportDetail: "OrderExpertAssignment/OrderReportDetail",
 
 
 

@@ -11,29 +11,9 @@ import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import QuickSearch from '../../libs/quick-search/quick-search';
 import { Box, CircularProgress } from '@mui/material';
-import CreateSlider from './CreateOrder';
-import DeleteSlider from './DeleteOrder';
-import { NavLink } from 'react-router-dom';
-import CreateBlogCategory from './CreateOrder';
-import EditBlogCategory from './EditOrder';
-import CreateCarInspectionSrvice from './CreateOrder';
-import DeleteCarInspectionSrvice from './DeleteOrder';
-import EditCarInspectionSrvice from './EditOrder';
-import {Image} from "antd";
-import CreateSecretOfOurServiceQuality from './CreateOrder';
-import DeleteSecretOfOurServiceQuality from './DeleteOrder';
-import EditSecretOfOurServiceQuality from './EditOrder';
-import CreateWhyWe from './CreateOrder';
-import DeleteWhyWe from './DeleteOrder';
-import EditWhyWe from './EditOrder';
-import CreateFinancialExpenditure from './CreateOrder';
-import DeleteFinancialExpenditure from './DeleteOrder';
-import EditFinancialExpenditure from './EditOrder';
-import image from "../../assets/images/Login.jpg"
-import CreateOrder from './CreateOrder';
-import DeleteOrder from './DeleteOrder';
-import EditOrder from './EditOrder';
-const Order: React.FunctionComponent = () => {
+import DeleteOrder from '../Order/DeleteOrder';
+import moment from 'jalali-moment';
+const SiteOrder: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
@@ -71,7 +51,7 @@ const Order: React.FunctionComponent = () => {
     };
   }, []);
   const getAllRoles = () => {
-    instance.get(ApiHelper.get("OrderList"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
+    instance.get(ApiHelper.get("GetOrderReportDropDown"),{params: {pageNumber:page,pageSize:rowsPerPage}}).then((res:any) => {
       setRowData(res?.data?.resultObject);
          setCount(res?.data?.countData);
     })
@@ -107,24 +87,37 @@ maxWidth:80,
   
    
     {
-      field: 'userName',
+      field: 'userId',
       headerName: 'کاربر ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.userName ? <span>{params.data.userName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.userId ? <span>{params.data.userId}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
     {
-      field: 'userPhone',
-      headerName: 'شماره موبایل ',
+      field: 'createdOn',
+      headerName: ' تاریخ ثبت سفارش ',
+      cellRenderer: (params:any) => {
+        debugger
+        return (
+          <>
+          {params.data.createdOn ? <span>{moment(params.data.createdOn).locale("fa").format("YYYY-MM-DD ساعت HH:mm:ss")}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          </>
+        )
+     
+       }
+        },
+    {
+      field: 'price',
+      headerName: 'قیمت سفارش',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.userPhone ? <span>{params.data.userPhone}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.price ? <span>{params.data.price.toLocaleString() + "  " + " تومان"}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
@@ -132,24 +125,24 @@ maxWidth:80,
         },
 
     {
-      field: 'carInspectionType',
-      headerName: 'نوع کارشناسی ',
+      field: 'lastLevel',
+      headerName: 'آخرین مرحله',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params?.data?.inspectionType ? <span>{params?.data?.inspectionType}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params?.data?.flowState?.title ? <span>{params?.data?.flowState?.title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
        }
         },
     {
-      field: 'flowState',
-      headerName: 'مرحله فرآیند ',
+      field: 'paymentStatusTitle',
+      headerName: 'وضعیت پرداخت',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params?.data?.flowState ? <span>{params?.data?.flowState}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params?.data?.paymentStatusTitle ? <span>{params?.data?.paymentStatusTitle}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
@@ -157,18 +150,7 @@ maxWidth:80,
         },
     
    
-        {
-            field: 'createdDate',
-            headerName: 'تاریخ کارشناسی',
-            cellRenderer: (params:any) => {
-              return (
-                <>
-                {params.data.createdDate ? <span>{params.data.createdDate}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
-                </>
-              )
-           
-             }
-              },
+  
         
       
 
@@ -186,12 +168,6 @@ maxWidth:80,
         return (
    
           <div className="flex justify-start items-start">
-          <button className='bg-yellow-500 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black' onClick={() => {
-            
-            setShowEditModal(true)
-            setSecretOfOurServiceQualityId(params.data.id);
-            setSecretOfOurServiceQualityName(params.data.title);
-            }}>ویرایش   سفارش </button>
           <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  سفارش</button>
     </div>
         
@@ -226,8 +202,7 @@ maxWidth:80,
     
        <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
         
-          <h3 className="text-base font-bold text-primary">سفارشات پشتیبان</h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن  سفارش   </button>
+          <h3 className="text-base font-bold text-primary">سفارشات سایت</h3>
       
       </div>
         <QuickSearch  activeSearch={true}   register={register}
@@ -276,16 +251,12 @@ maxWidth:80,
         />
       </div>
       </div>
-      {showAddModal && (
-        <CreateOrder showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
-     )}
+   
      
       {showDeleteUser && (
        <DeleteOrder secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
-       {showEditModal && (
-        <EditOrder secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
-     )}
+      
    
     
    
@@ -294,4 +265,4 @@ maxWidth:80,
   );
 };
 
-export default Order;
+export default SiteOrder;
