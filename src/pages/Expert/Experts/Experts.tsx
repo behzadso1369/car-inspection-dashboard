@@ -15,6 +15,11 @@ import CreateExpert from './CreateExpert';
 import EditExpert from './EditExpert';
 import DeleteExpert from './DeleteExpert';
 import ExpertCoverageAreas from './ExpertCoverageAreas';
+import { ListPageShell } from '../../../components/list/ListPageShell';
+import { ResponsiveDataView } from '../../../components/list/ResponsiveDataView';
+import { FixedPaginationBar } from '../../../components/list/FixedPaginationBar';
+import { CardAction, CardField } from '../../../types/list';
+import { formatMoney, payoutTypeLabel } from '../expertFinance';
 
 const Experts: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
@@ -60,6 +65,95 @@ const Experts: React.FunctionComponent = () => {
     getAllExperts();
   }, [page, rowsPerPage, showAddModal, showDeleteModal, showEditModal]);
 
+  const openCoverage = (row: any) => {
+    setExpertId(row.id);
+    setExpertName(row.fullName);
+    setShowCoverageModal(true);
+  };
+
+  const openEdit = (row: any) => {
+    setExpertId(row.id);
+    setExpertName(row.fullName);
+    setShowEditModal(true);
+  };
+
+  const openDelete = (row: any) => {
+    setExpertId(row.id);
+    setExpertName(row.fullName);
+    setShowDeleteModal(true);
+  };
+
+  const cardFields: CardField[] = useMemo(
+    () => [
+      {
+        key: 'fullName',
+        label: 'نام کامل',
+        primary: true,
+        getValue: (row) => row.fullName || '—',
+      },
+      {
+        key: 'isActive',
+        label: 'وضعیت',
+        badge: true,
+        badgeTone: (row) => (row.isActive ? 'success' : 'default'),
+        getValue: (row) => (row.isActive ? 'فعال' : 'غیرفعال'),
+      },
+      {
+        key: 'phoneNumber',
+        label: 'موبایل',
+        getValue: (row) => row.phoneNumber || '—',
+      },
+      {
+        key: 'nationalCode',
+        label: 'کد ملی',
+        getValue: (row) => row.nationalCode || '—',
+      },
+      {
+        key: 'baseCity',
+        label: 'شهر پایگاه',
+        getValue: (row) => row.baseCity || '—',
+      },
+      {
+        key: 'payoutType',
+        label: 'قرارداد مالی',
+        getValue: (row) => {
+          if (row.payoutType === 1) {
+            return `درصدی (${row.commissionPercent ?? '—'}٪)`;
+          }
+          if (row.payoutType === 2) {
+            return `ثابت (${formatMoney(row.fixedAmountPerOrder)})`;
+          }
+          return payoutTypeLabel(row.payoutType);
+        },
+      },
+    ],
+    []
+  );
+
+  const cardActions: CardAction[] = useMemo(
+    () => [
+      {
+        key: 'coverage',
+        label: 'محدوده پوشش',
+        variant: 'primary',
+        onClick: (row) => openCoverage(row),
+      },
+      {
+        key: 'edit',
+        label: 'ویرایش',
+        variant: 'secondary',
+        onClick: (row) => openEdit(row),
+      },
+      {
+        key: 'delete',
+        label: 'حذف',
+        variant: 'danger',
+        onClick: (row) => openDelete(row),
+      },
+    ],
+    []
+  );
+
   const columnDefs: ColDef[] = [
     {
       field: 'id',
@@ -73,6 +167,20 @@ const Experts: React.FunctionComponent = () => {
     { field: 'phoneNumber', headerName: 'موبایل' },
     { field: 'nationalCode', headerName: 'کد ملی' },
     { field: 'baseCity', headerName: 'شهر پایگاه' },
+    {
+      field: 'payoutType',
+      headerName: 'قرارداد مالی',
+      minWidth: 140,
+      cellRenderer: (params: any) => {
+        if (params.data.payoutType === 1) {
+          return `درصدی (${params.data.commissionPercent ?? '—'}٪)`;
+        }
+        if (params.data.payoutType === 2) {
+          return `ثابت (${formatMoney(params.data.fixedAmountPerOrder)})`;
+        }
+        return payoutTypeLabel(params.data.payoutType);
+      },
+    },
     {
       field: 'isActive',
       headerName: 'وضعیت',
@@ -138,53 +246,68 @@ const Experts: React.FunctionComponent = () => {
     </div>
   );
 
-  return (
-    <Fragment>
-      <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
-        <h3 className="text-base font-bold text-primary">کارشناسان</h3>
-        <button
-          className="bg-[#0047bc] px-2 text-sm py-2 cursor-pointer mr-2 rounded-md outline-none text-white"
-          onClick={() => setShowAddModal(true)}
-        >
-          اضافه کردن کارشناس
-        </button>
-      </div>
-      <QuickSearch
-        activeSearch={true}
-        register={register}
-        control={control}
-        onSubmit={onFilterTextBoxChanged}
-      />
-      <div
-        className="absolute right-0 bottom-0 bg-white w-full"
-        style={{ boxShadow: '0px -2px 7px 0px rgba(0, 0, 0, 0.05)' }}
-      >
-        <PaginationLib
-          count={count}
-          page={page}
-          setPage={setPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
+  const desktopView = (
+    <div style={containerStyle}>
+      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-4 pt-2">
+        <AgGridReact
+          ref={allgridRef}
+          animateRows={true}
+          rowHeight={60}
+          headerHeight={50}
+          domLayout="autoHeight"
+          rowData={rowData}
+          enableRtl={true}
+          defaultColDef={defaultColDef}
+          columnDefs={columnDefs}
+          pagination={false}
+          localeText={AG_GRID_LOCALE_FN}
+          loadingOverlayComponent={overlayComponent}
         />
       </div>
-      <div style={containerStyle}>
-        <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-32 pt-6">
-          <AgGridReact
-            ref={allgridRef}
-            animateRows={true}
-            rowHeight={60}
-            headerHeight={50}
-            domLayout="autoHeight"
-            rowData={rowData}
-            enableRtl={true}
-            defaultColDef={defaultColDef}
-            columnDefs={columnDefs}
-            pagination={false}
-            localeText={AG_GRID_LOCALE_FN}
-            loadingOverlayComponent={overlayComponent}
+    </div>
+  );
+
+  return (
+    <Fragment>
+      <ListPageShell
+        title="کارشناسان"
+        headerAction={
+          <button
+            className="bg-brand w-full sm:w-auto min-h-[44px] px-4 rounded-xl text-white"
+            onClick={() => setShowAddModal(true)}
+          >
+            اضافه کردن کارشناس
+          </button>
+        }
+        searchSlot={
+          <QuickSearch
+            activeSearch={true}
+            register={register}
+            control={control}
+            onSubmit={onFilterTextBoxChanged}
           />
-        </div>
-      </div>
+        }
+        pagination={
+          <FixedPaginationBar>
+            <PaginationLib
+              count={count}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+            />
+          </FixedPaginationBar>
+        }
+      >
+        <ResponsiveDataView
+          rowData={rowData ?? []}
+          fields={cardFields}
+          actions={cardActions}
+          emptyMessage="کارشناسی وجود ندارد"
+          getRowKey={(row) => row.id}
+          desktopView={desktopView}
+        />
+      </ListPageShell>
       {showAddModal && (
         <CreateExpert showAddModal={showAddModal} setShowAddModal={setShowAddModal} />
       )}

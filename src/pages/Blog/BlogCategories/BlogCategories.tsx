@@ -11,11 +11,13 @@ import instance from '../../../helper/interceptor';
 import { ApiHelper } from '../../../helper/api-request';
 import QuickSearch from '../../../libs/quick-search/quick-search';
 import { CircularProgress } from '@mui/material';
-import CreateSlider from './CreateBlogCategory';
-import DeleteSlider from './DeleteBlogCategory';
-import { NavLink } from 'react-router-dom';
 import CreateBlogCategory from './CreateBlogCategory';
+import DeleteSlider from './DeleteBlogCategory';
 import EditBlogCategory from './EditBlogCategory';
+import { ListPageShell } from '../../../components/list/ListPageShell';
+import { ResponsiveDataView } from '../../../components/list/ResponsiveDataView';
+import { FixedPaginationBar } from '../../../components/list/FixedPaginationBar';
+import { cardFieldsFromColDefs, defaultEditDeleteActions } from '../../../utils/listCardHelpers';
 const BlogCategories: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -155,64 +157,45 @@ maxWidth:80,
       filter: false
     },
   ];
+  const cardFields = cardFieldsFromColDefs(columnDefs, { primaryField: 'name' });
+  const cardActions = defaultEditDeleteActions({
+    onEdit: (row) => {
+      setShowEditModal(true);
+      setBlogCatId(row.id);
+      setBlogCatName(row.name);
+    },
+    onDelete: (row) => {
+      setSlideId(row.id);
+      setSlideName(row.name);
+      setShowDeleteUser(true);
+    },
+  });
+
   const onFilterTextBoxChanged = useCallback(() => {
+    allgridRef.current!.api!.setGridOption('quickFilterText', getValues().search);
+  }, [getValues]);
 
-    allgridRef.current!.api!.setGridOption(
-      'quickFilterText',
-      
+  const overlayComponent = () => (
+    <div className="bg-white flex justify-center items-center w-full h-80">
+      <CircularProgress />
+    </div>
+  );
 
-      getValues().search
-    );
-  }, []);
-  const overlayComponent = () => {
-    return (
-      <div className='bg-white flex justify-center items-center w-full h-80'>
-          <CircularProgress />
-      </div>
-    )
-  }
-
-
-
-
-  return (
-    <Fragment>
-    
-       <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
-        
-          <h3 className="text-base font-bold text-primary">   دسته بندی بلاگ </h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن دسته بندی بلاگ</button>
-      
-      </div>
-        <QuickSearch  activeSearch={true}   register={register}
-                control={control}   onSubmit={onFilterTextBoxChanged}/>
-               
-     
-      <div
-        className="absolute right-0 bottom-0 bg-white w-full"
-        style={{ boxShadow: '0px -2px 7px 0px rgba(0, 0, 0, 0.05)' }}
-      >
-    <PaginationLib count={count} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
-      </div>
-      <div style={containerStyle}>
-      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-32 pt-6">
+  const desktopView = (
+    <div style={containerStyle}>
+      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-4 pt-2">
         <AgGridReact
           ref={allgridRef}
-          
-          // getRowId={(params) => params.data.requestId}
-          
           animateRows={true}
           rowHeight={60}
           headerHeight={50}
           domLayout="autoHeight"
-          rowData={rowData}
+          rowData={rowData ?? []}
           enableRtl={true}
           suppressAggFuncInHeader={true}
           defaultColDef={defaultColDef}
           columnDefs={columnDefs}
           pagination={false}
-         
-         
           localeText={AG_GRID_LOCALE_FN}
           suppressColumnVirtualisation={true}
           rowDragManaged={true}
@@ -229,7 +212,50 @@ maxWidth:80,
           }}
         />
       </div>
-      </div>
+    </div>
+  );
+
+  return (
+    <Fragment>
+      <ListPageShell
+        title="دسته بندی بلاگ"
+        headerAction={
+          <button
+            className="bg-brand w-full sm:w-auto min-h-[44px] px-4 rounded-xl text-white text-sm"
+            onClick={() => setShowAddModal(true)}
+          >
+            اضافه کردن دسته بندی بلاگ
+          </button>
+        }
+        searchSlot={
+          <QuickSearch
+            activeSearch={true}
+            register={register}
+            control={control}
+            onSubmit={onFilterTextBoxChanged}
+          />
+        }
+        pagination={
+          <FixedPaginationBar>
+            <PaginationLib
+              count={count}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+            />
+          </FixedPaginationBar>
+        }
+      >
+        <ResponsiveDataView
+          rowData={rowData ?? []}
+          fields={cardFields}
+          actions={cardActions}
+          emptyMessage="دسته‌بندی‌ای یافت نشد"
+          getRowKey={(row, index) => row.id ?? index}
+          desktopView={desktopView}
+        />
+      </ListPageShell>
       {showAddModal && (
         <CreateBlogCategory showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )}

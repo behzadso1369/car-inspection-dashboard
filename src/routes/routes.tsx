@@ -226,6 +226,34 @@ export const RoutesData = [
   ]
 
 },
+  {
+    path: 'expert',
+    component: ExpertRoute,
+    ID: 6,
+    permission: ['admin', 'superAdmin'],
+    title: 'کارشناسان',
+    icon: faUserTie,
+    children: [
+      {
+        path: 'expert/list',
+        permission: ['admin', 'superAdmin'],
+        ID: 1,
+        title: 'تعریف کارشناسان',
+      },
+      {
+        path: 'expert/assignment',
+        permission: ['admin', 'superAdmin'],
+        ID: 2,
+        title: 'تخصیص کارشناس',
+      },
+      {
+        path: 'expert/earnings',
+        permission: ['admin', 'superAdmin'],
+        ID: 3,
+        title: 'درآمد کارشناسان',
+      },
+    ],
+  },
 
   {
     path: 'secretOfOurServicequality/list',
@@ -304,28 +332,6 @@ export const RoutesData = [
         permission: ['admin', 'superAdmin'],
         ID: 2,
         title: 'سوالات متداول',
-      },
-    ],
-  },
-  {
-    path: 'expert',
-    component: ExpertRoute,
-    ID: 6,
-    permission: ['admin', 'superAdmin'],
-    title: 'کارشناسان',
-    icon: faUserTie,
-    children: [
-      {
-        path: 'expert/list',
-        permission: ['admin', 'superAdmin'],
-        ID: 1,
-        title: 'تعریف کارشناسان',
-      },
-      {
-        path: 'expert/assignment',
-        permission: ['admin', 'superAdmin'],
-        ID: 2,
-        title: 'تخصیص کارشناس',
       },
     ],
   },

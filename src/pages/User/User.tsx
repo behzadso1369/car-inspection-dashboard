@@ -16,6 +16,10 @@ import Switch from '@mui/material/Switch';
 import DeleteUser from './DeleteUser';
 import EditUserRole from './EditUserRole';
 import Register from './Register';
+import { ListPageShell } from '../../components/list/ListPageShell';
+import { ResponsiveDataView } from '../../components/list/ResponsiveDataView';
+import { FixedPaginationBar } from '../../components/list/FixedPaginationBar';
+import { CardAction, CardField } from '../../types/list';
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 const User: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
@@ -78,6 +82,56 @@ const User: React.FunctionComponent = () => {
     setShowDeleteUser(true);
   
   }
+
+  const openEditRole = (row: any) => {
+    setShowEditModal(true);
+    setUserId(row.Id);
+    setRoleName(row.Roles?.[0] ?? '');
+  };
+
+  const cardFields: CardField[] = useMemo(
+    () => [
+      {
+        key: 'UserName',
+        label: 'نام کاربری',
+        primary: true,
+        getValue: (row) => row.UserName || 'ثبت نشده است',
+      },
+      {
+        key: 'role',
+        label: 'نقش کاربر',
+        badge: true,
+        badgeTone: () => 'info',
+        getValue: (row) => row.Roles?.[0] || 'ثبت نشده است',
+      },
+      {
+        key: 'Email',
+        label: 'ایمیل',
+        getValue: (row) => row.Email || 'ثبت نشده است',
+      },
+      {
+        key: 'LockoutEnd',
+        label: 'فعال/غیرفعال',
+        badge: true,
+        badgeTone: (row) => (row.LockoutEnd === null ? 'success' : 'default'),
+        getValue: (row) => (row.LockoutEnd === null ? 'فعال' : 'غیرفعال'),
+      },
+    ],
+    []
+  );
+
+  const cardActions: CardAction[] = useMemo(
+    () => [
+      {
+        key: 'editRole',
+        label: 'ویرایش نقش',
+        variant: 'secondary',
+        onClick: (row) => openEditRole(row),
+      },
+    ],
+    []
+  );
+
   const columnDefs:ColDef[] = [
     {
       field: 'UserName',
@@ -161,23 +215,10 @@ const User: React.FunctionComponent = () => {
       </div>
     )
   }
-  return (
-    <Fragment>
-    
-       <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
-          <h3 className="text-base font-bold text-primary">  کاربران </h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}> ثبت نام کاربر</button>
-      </div>
-        <QuickSearch  activeSearch={true}   register={register}
-                control={control}   onSubmit={onFilterTextBoxChanged}/>
-      <div
-        className="absolute right-0 bottom-0 bg-white w-full"
-        style={{ boxShadow: '0px -2px 7px 0px rgba(0, 0, 0, 0.05)' }}
-      >
-    <PaginationLib count={count} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
-      </div>
-      <div style={containerStyle}>
-      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-32 pt-6">
+
+  const desktopView = (
+    <div style={containerStyle}>
+      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-4 pt-2">
         <AgGridReact
           ref={allgridRef}
           animateRows={true}
@@ -197,16 +238,52 @@ const User: React.FunctionComponent = () => {
           suppressMoveWhenRowDragging={true}
           paginationPageSize={5}
           loadingOverlayComponent={overlayComponent}
-          icons={{
-            checkboxChecked:
-              '<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>',
-            sortAscending: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>`,
-            sortDescending: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>`,
-            sortUnSort: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>`,
-          }}
         />
       </div>
-      </div>
+    </div>
+  );
+
+  return (
+    <Fragment>
+      <ListPageShell
+        title="کاربران"
+        headerAction={
+          <button
+            className="bg-brand w-full sm:w-auto min-h-[44px] px-4 rounded-xl text-white"
+            onClick={() => setShowAddModal(true)}
+          >
+            ثبت نام کاربر
+          </button>
+        }
+        searchSlot={
+          <QuickSearch
+            activeSearch={true}
+            register={register}
+            control={control}
+            onSubmit={onFilterTextBoxChanged}
+          />
+        }
+        pagination={
+          <FixedPaginationBar>
+            <PaginationLib
+              count={count}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+            />
+          </FixedPaginationBar>
+        }
+      >
+        <ResponsiveDataView
+          rowData={rowData ?? []}
+          fields={cardFields}
+          actions={cardActions}
+          emptyMessage="کاربری وجود ندارد"
+          getRowKey={(row) => row.Id}
+          desktopView={desktopView}
+        />
+      </ListPageShell>
       {/* {showAddModal && (
         <AddUser showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )} */}

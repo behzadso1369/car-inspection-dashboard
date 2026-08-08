@@ -1,20 +1,23 @@
 .accordionn:after {
   content: "";
   position: absolute;
-  bottom: 24px;
-  right: 20px;
+  top: 8px;
+  bottom: 12px;
+  right: 18px;
   width: 1px;
-  height: calc(100% - 96px);
   background: #e4e4e4;
+  pointer-events: none;
 }
 
 .sidebar-accordion {
   .MuiPaper-root {
+    background: transparent !important;
+
     .MuiButtonBase-root {
-      min-height: 50px !important;
+      min-height: 48px !important;
 
       .MuiAccordionSummary-content {
-        margin: unset !important;
+        margin: 0 !important;
       }
     }
   }

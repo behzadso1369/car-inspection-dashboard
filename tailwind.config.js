@@ -10,6 +10,8 @@ module.exports = {
         'primary-focus': '0px 0px 0px 3px rgba(27, 38, 59, 0.50)',
         secondary: '0px 0px 0px 1px #B2E7FD, 0px 1px 1px 0px rgba(0, 0, 0, 0.10)',
         disable: '0px 0px 0px 1px rgba(70, 79, 96, 0.20)',
+        card: '0px 2px 12px rgba(27, 38, 59, 0.06)',
+        'card-hover': '0px 4px 20px rgba(27, 38, 59, 0.10)',
       },
       colors: {
         'blue-lagoon': '#088395',
@@ -44,7 +46,12 @@ module.exports = {
         'secondary-opacity-20': 'rgba(178, 231, 253, 0.2)',
         light: 'rgba(235, 237, 239, 1)',
         dark: '#2C3C51',
-        buttonBackground: "#416CEA"
+        buttonBackground: '#0237fe',
+        brand: '#0237fe',
+        'brand-dark': '#0129c4',
+        'brand-soft': 'rgba(2, 55, 254, 0.08)',
+        surface: '#F4F6FB',
+        'card-border': 'rgba(2, 55, 254, 0.10)',
       },
       fontFamily: {
         peydaThin: 'peydaThin',

@@ -1,4 +1,4 @@
-import React, { useRef, useState, Fragment, useMemo, useCallback, useEffect } from 'react';
+﻿import React, { useRef, useState, Fragment, useMemo, useCallback, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -26,6 +26,11 @@ import EditSecretOfOurServiceQuality from './EditMasterSiteDetail';
 import CreateMasterSiteDetail from './CreateMasterSiteDetail';
 import DeleteMasterSiteDetail from './DeleteMasterSiteDetail';
 import EditMasterSiteDetail from './EditMasterSiteDetail';
+import { ListPageShell } from '../../components/list/ListPageShell';
+import { ResponsiveDataView } from '../../components/list/ResponsiveDataView';
+import { FixedPaginationBar } from '../../components/list/FixedPaginationBar';
+import { cardFieldsFromColDefs, defaultEditDeleteActions } from '../../utils/listCardHelpers';
+
 const MasterSiteDetail: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -78,8 +83,19 @@ const MasterSiteDetail: React.FunctionComponent = () => {
     setSecretOfOurServiceQualityId(params.data.id);
     setSecretOfOurServiceQualityName(params.data.title);
     setShowDeleteUser(true);
-  
-  }
+  };
+
+  const openEdit = (row: any) => {
+    setShowEditModal(true);
+    setSecretOfOurServiceQualityId(row.id);
+    setSecretOfOurServiceQualityName(row.title);
+  };
+
+  const openDelete = (row: any) => {
+    setSecretOfOurServiceQualityId(row.id);
+    setSecretOfOurServiceQualityName(row.title);
+    setShowDeleteUser(true);
+  };
 
 
  
@@ -101,11 +117,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
    
     {
       field: 'companyName',
-      headerName: 'نام شرکت ',
+      headerName: 'Ù†Ø§Ù… Ø´Ø±Ú©Øª ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.companyName ? <span>{params.data.companyName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {params.data.companyName ? <span>{params.data.companyName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
           </>
         )
      
@@ -113,11 +129,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
         },
         {
             field: 'slogan',
-            headerName: 'اسلوگان',
+            headerName: 'Ø§Ø³Ù„ÙˆÚ¯Ø§Ù†',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.slogan ? <span>{params.data.slogan}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.slogan ? <span>{params.data.slogan}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
                 </>
               )
            
@@ -125,11 +141,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
               },
         {
             field: 'navbarPhoneNumber',
-            headerName: 'شماره تلفن بالا',
+            headerName: 'Ø´Ù…Ø§Ø±Ù‡ ØªÙ„ÙÙ† Ø¨Ø§Ù„Ø§',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.navbarPhoneNumber ? <span>{params.data.navbarPhoneNumber}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.navbarPhoneNumber ? <span>{params.data.navbarPhoneNumber}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
                 </>
               )
            
@@ -137,11 +153,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
               },
         {
             field: 'phoneNumbers',
-            headerName: 'تلفن ها',
+            headerName: 'ØªÙ„ÙÙ† Ù‡Ø§',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.phoneNumbers ? <span>{params.data.phoneNumbers}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.phoneNumbers ? <span>{params.data.phoneNumbers}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
                 </>
               )
            
@@ -149,11 +165,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
               },
         {
             field: 'workingHours',
-            headerName: 'ساعات کاری',
+            headerName: 'Ø³Ø§Ø¹Ø§Øª Ú©Ø§Ø±ÛŒ',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.workingHours ? <span>{params.data.workingHours}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.workingHours ? <span>{params.data.workingHours}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
                 </>
               )
            
@@ -161,11 +177,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
               },
         {
             field: 'address',
-            headerName: 'آدرس',
+            headerName: 'Ø¢Ø¯Ø±Ø³',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.address ? <span>{params.data.address}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {params.data.address ? <span>{params.data.address}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
                 </>
               )
            
@@ -173,7 +189,7 @@ const MasterSiteDetail: React.FunctionComponent = () => {
               },
               {
                 field: 'imagePath',
-                headerName: 'عکس',
+                headerName: 'Ø¹Ú©Ø³',
                 autoHeight:true,
                 cellRenderer: (params:any) => {
                   return (
@@ -199,7 +215,7 @@ const MasterSiteDetail: React.FunctionComponent = () => {
   
     {
       field: 'action',
-      headerName: 'عملیات',
+      headerName: 'Ø¹Ù…Ù„ÛŒØ§Øª',
      
      
       cellRenderer: (params:any) => {
@@ -211,8 +227,8 @@ const MasterSiteDetail: React.FunctionComponent = () => {
             setShowEditModal(true)
             setSecretOfOurServiceQualityId(params.data.id);
             setSecretOfOurServiceQualityName(params.data.title);
-            }}>ویرایش    </button>
-          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  </button>
+            }}>ÙˆÛŒØ±Ø§ÛŒØ´    </button>
+          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>Ø­Ø°Ù  </button>
     </div>
         
         
@@ -221,6 +237,21 @@ const MasterSiteDetail: React.FunctionComponent = () => {
       filter: false
     },
   ];
+
+  const cardFields = useMemo(
+    () => cardFieldsFromColDefs(columnDefs, { primaryField: 'companyName' }),
+    []
+  );
+
+  const cardActions = useMemo(
+    () =>
+      defaultEditDeleteActions({
+        onEdit: openEdit,
+        onDelete: openDelete,
+      }),
+    []
+  );
+
   const onFilterTextBoxChanged = useCallback(() => {
 
     allgridRef.current!.api!.setGridOption(
@@ -238,47 +269,21 @@ const MasterSiteDetail: React.FunctionComponent = () => {
     )
   }
 
-
-
-
-  return (
-    <Fragment>
-    
-       <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
-        
-          <h3 className="text-base font-bold text-primary"> اطلاعات اصلی سایت</h3>
-          <button  className='bg-[#0047bc] px-2  text-sm py-2 cursor-pointer mr-2 rounded-md   outline-none text-white' onClick={() => setShowAddModal(true)}>اضافه کردن</button>
-      
-      </div>
-        <QuickSearch  activeSearch={true}   register={register}
-                control={control}   onSubmit={onFilterTextBoxChanged}/>
-               
-     
-      <div
-        className="absolute right-0 bottom-0 bg-white w-full"
-        style={{ boxShadow: '0px -2px 7px 0px rgba(0, 0, 0, 0.05)' }}
-      >
-    <PaginationLib count={count} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
-      </div>
-      <div style={containerStyle}>
-      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-32 pt-6">
+  const desktopView = (
+    <div style={containerStyle}>
+      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-4 pt-2">
         <AgGridReact
           ref={allgridRef}
-          
-          // getRowId={(params) => params.data.requestId}
-          
           animateRows={true}
           rowHeight={60}
           headerHeight={50}
           domLayout="autoHeight"
-          rowData={rowData}
+          rowData={rowData ?? []}
           enableRtl={true}
           suppressAggFuncInHeader={true}
           defaultColDef={defaultColDef}
           columnDefs={columnDefs}
           pagination={false}
-         
-         
           localeText={AG_GRID_LOCALE_FN}
           suppressColumnVirtualisation={true}
           rowDragManaged={true}
@@ -286,16 +291,51 @@ const MasterSiteDetail: React.FunctionComponent = () => {
           suppressMoveWhenRowDragging={true}
           paginationPageSize={5}
           loadingOverlayComponent={overlayComponent}
-          icons={{
-            checkboxChecked:
-              '<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>',
-            sortAscending: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>`,
-            sortDescending: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>`,
-            sortUnSort: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>`,
-          }}
         />
       </div>
-      </div>
+    </div>
+  );
+
+  return (
+    <Fragment>
+      <ListPageShell
+        title="اطلاعات اصلی سایت"
+        headerAction={
+          <button
+            className="bg-brand w-full sm:w-auto min-h-[44px] px-4 rounded-xl text-white"
+            onClick={() => setShowAddModal(true)}
+          >
+            اضافه کردن
+          </button>
+        }
+        searchSlot={
+          <QuickSearch
+            activeSearch={true}
+            register={register}
+            control={control}
+            onSubmit={onFilterTextBoxChanged}
+          />
+        }
+        pagination={
+          <FixedPaginationBar>
+            <PaginationLib
+              count={count}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+            />
+          </FixedPaginationBar>
+        }
+      >
+        <ResponsiveDataView
+          rowData={rowData ?? []}
+          fields={cardFields}
+          actions={cardActions}
+          getRowKey={(row) => row.id ?? row.Id}
+          desktopView={desktopView}
+        />
+      </ListPageShell>
       {showAddModal && (
         <CreateMasterSiteDetail showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />
      )}
@@ -306,11 +346,7 @@ const MasterSiteDetail: React.FunctionComponent = () => {
        {showEditModal && (
         <EditMasterSiteDetail secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
      )}
-   
-    
-   
     </Fragment>
-   
   );
 };
 

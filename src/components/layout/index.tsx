@@ -1,22 +1,16 @@
 import React from 'react';
-
 import { Outlet, useNavigate } from 'react-router-dom';
-// import imageUrl from '../../assets/images/fms-logo.svg';
-// import imageUrl from '../../assets/images/14021221-FMS Service-Logo-Re2 (2)-1.png'
-import imageUrl from '../../assets/images/JB Logo 2.png'
-
+import imageUrl from '../../assets/images/carmacheck-logo.png';
 import { RoutesData } from '../../routes/routes';
 import {
   faGear,
   faRightFromBracket,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
-// import Breadcrumbs from '../../libs/breadcrumbs/breadcrumbs';
 import Sidebar from '../../libs/sidebar/sidebar';
 import Header from '../../libs/header/header';
 
 const Layout: React.FunctionComponent = () => {
-
   const navigate = useNavigate();
 
   const userProfile = () => {
@@ -41,29 +35,22 @@ const Layout: React.FunctionComponent = () => {
   const Icon = imageUrl;
 
   return (
-    <div className="flex" style={{ background: '#F9F9F9' }}>
-      <div className='hidden lg:block xl:block'>
-        <Sidebar
-         
+    <div className="flex min-h-screen bg-surface overflow-x-hidden">
+      <div className="hidden lg:block shrink-0">
+        <Sidebar routesData={RoutesData} icon={Icon} />
+      </div>
+      <div className="w-full min-w-0 h-screen overflow-y-auto overflow-x-hidden relative flex flex-col bg-surface">
+        <Header
           routesData={RoutesData}
           icon={Icon}
+          avatarMenuData={avatarMenuData}
         />
-      </div>
-      <div className="w-full h-screen overflow-auto relative">
-        <Header  routesData={RoutesData} icon={Icon} avatarMenuData={avatarMenuData} />
-        <div className="px-4 pt-2">
-          {/* <Breadcrumbs projectName="ds" routesData={RoutesData} /> */}
-        </div>
-        <div
-          className="relative px-4 pt-1"
-          style={{
-            minHeight: `calc(100% - ${'140px'})`,
-          }}
-        >
+        <main className="relative px-3 sm:px-5 pt-4 pb-4 lg:pb-24 flex-1 min-h-0">
           <Outlet />
-        </div>
+        </main>
       </div>
     </div>
   );
 };
+
 export default Layout;

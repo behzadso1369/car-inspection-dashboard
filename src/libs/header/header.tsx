@@ -1,48 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBell,
-  faEnvelope,
-  faHeadset,
-  faUserNinja,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Badge, IconButton, SwipeableDrawer } from '@mui/material';
-import { useState } from 'react';
-import { AvatarMenu } from '../../libs/avatar-menu/avatar-menu';
+import { AvatarMenu } from '../avatar-menu/avatar-menu';
 import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import MenuIcon from '@mui/icons-material/Menu';
-import Sidebar from '../sidebar/sidebar';
-import { NavLink, useLocation } from 'react-router-dom';
-import SideBarAccordion from '../accordion/accordion';
-type Anchor =  'right';
+import CloseIcon from '@mui/icons-material/Close';
+import { NavMenu } from '../nav-menu/NavMenu';
+import { useLocation } from 'react-router-dom';
 
-/* eslint-disable-next-line */
+type Anchor = 'right';
+
 export interface HeaderProps {
   avatarMenuData: any[];
-  routesData:any;
-  icon:any;
+  routesData: any;
+  icon: any;
 }
-const buttonLink =
-'p-3 flex items-center gap-3 rounded-md duration-200 min-h-[3rem]';
 
-export function Header({ avatarMenuData,icon,routesData }: HeaderProps) {
+function resolvePageTitle(routesData: any[], pathname: string): string {
+  const segments = pathname.split('/').filter(Boolean);
+  if (!segments.length) return 'داشبورد';
+
+  for (const route of routesData) {
+    const root = route.path?.split('/')[0];
+    if (root && segments[0] === root) {
+      if (route.children?.length) {
+        const child = route.children.find(
+          (c: any) => pathname === `/${c.path}` || pathname.startsWith(`/${c.path}`)
+        );
+        if (child?.title) return child.title;
+      }
+      return route.title || 'داشبورد';
+    }
+  }
+  return 'داشبورد';
+}
+
+export function Header({ avatarMenuData, icon, routesData }: HeaderProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [profile,setProfile] = useState<any>()
+  const [profile, setProfile] = useState<any>();
   const open = Boolean(anchorEl);
-  const [openMenu, setOpenMenu] = useState<boolean>(true);
-  const [expanded, setExpanded] = useState<string>('');
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const { pathname } = useLocation();
-  const path = pathname.split('/')[1];
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
+  const pageTitle = resolvePageTitle(routesData, pathname);
 
   const toggleDrawer =
-    (anchor: Anchor, open: boolean) =>
+    (openDrawer: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event &&
@@ -52,197 +56,152 @@ export function Header({ avatarMenuData,icon,routesData }: HeaderProps) {
       ) {
         return;
       }
-
-      setState({ ...state, [anchor]: open });
+      setDrawerOpen(openDrawer);
     };
-  const handleClick: any = (event: React.MouseEvent<HTMLButtonElement>) => {
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const getProfile = () => {
-    instance.get(ApiHelper.get("Profile")).then((res:any) => {
-     setProfile(res?.data)
-    })
-  }
+    instance.get(ApiHelper.get('Profile')).then((res: any) => {
+      setProfile(res?.data);
+    });
+  };
+
   useEffect(() => {
-    getProfile()
-  },[])
+    getProfile();
+  }, []);
 
   return (
-    <div className=" text-white px-6 py-2 flex justify-between lg:justify-end xl:justify-end items-center header relative" style={{ background: '#ffffff' }}>
-       <IconButton
-    className=' lg:!hidden xl:!hidden text-3xl'
+    <header className="sticky top-0 z-40">
+      <div className="h-[3px] w-full bg-gradient-to-l from-brand via-brand to-brand-dark" />
+      <div className="bg-white/90 backdrop-blur-md border-b border-card-border px-3 sm:px-5 py-2.5 flex justify-between items-center gap-3 shadow-[0_4px_24px_rgba(2,55,254,0.04)]">
+        <div className="flex items-center gap-2.5 min-w-0 flex-1">
+          <IconButton
+            className="!text-brand lg:!hidden"
             color="inherit"
-            aria-label="open drawer"
-            onClick={toggleDrawer("right", true)}
+            aria-label="باز کردن منو"
+            onClick={toggleDrawer(true)}
             edge="start"
-            sx={[
-              open && { display: 'none' },
-            ]}
+            size="large"
+            sx={{ minWidth: 44, minHeight: 44 }}
           >
-            <MenuIcon className='text-black ' />
+            <MenuIcon />
           </IconButton>
-      <div className="flex items-center gap-12">
-        <div className="flex gap-7">
-          <FontAwesomeIcon
-            className="text-[#0047bc] text-base"
-            icon={faHeadset}
-          />
-          <FontAwesomeIcon
-            className="text-[#0047bc] text-base"
-            icon={faEnvelope}
-          />
-          <Badge badgeContent={3} color="primary">
-            <FontAwesomeIcon
-       
-              className="text-[#0047bc] text-base cursor-pointer"
-              icon={faBell}
-            />
-          </Badge>
-        </div>
-     
-        <div className='flex flex-col items-center'>
-        <div
-          className="bg-[#fcd435] cursor-pointer w-10 h-10 rounded-full flex justify-center items-center"
-          onClick={handleClick}
-        >
-          {profile?.avatar ? (<img src={profile?.avatar} />) : (  <FontAwesomeIcon
-            size="lg"
-            className="text-primary"
-            icon={faUserNinja}
-          />)}
-        
-        </div>
-        <div className='col-span-1'>
-          <span className='text-xs text-black'>{profile?.full_name}</span>
-        </div>
-        <AvatarMenu
-          avatarMenuData={avatarMenuData}
-          open={open}
-          anchorEl={anchorEl}
-          handleClose={handleClose}
-        />
-        
-        </div>
-       
-      </div>
-     
-      <SwipeableDrawer
-            anchor={"right"}
-            open={state["right"]}
-            onClose={toggleDrawer("right", false)}
-            onOpen={toggleDrawer("right", true)}
-          >
-             
-        <div
-        className={`${
-          openMenu ? 'w-64' : 'w-20'
-        } p-4 bg-white sidebar h-screen overflow-y-auto  duration-300 border-l-[1.5px] border-black-opacity-10 relative`}
-        style={{ whiteSpace: 'nowrap' }}
-      >
-        <div className="py-2 flex justify-start items-center">
-          {openMenu && (
-            <span className="text-base font-medium pt-1 mx-3 text-[#0047bc] !font-peydaExtraBold">کار چک</span>
-          )}
-          <img
-            className="h-10 mx-2"
-            src={icon}
-            alt="logo"
-          />
-         
-        </div>
-        {routesData.map((item: any) => {
-          return (
-            <div key={item.ID}>
-           
-              <div className="w-full mb-2 duration-200">
-                  {item.children ? (
-                    <div className="w-full sidebar-accordion">
-                      <SideBarAccordion
-                        title={item.title}
-                        icon={item.icon}
-                        child={item.children}
-                        expanded={expanded}
-                        setExpanded={setExpanded}
-                        openMenu={openMenu}
-                        path={item.path}
-                      />
-                    </div>
-                  ) : (
-                    <NavLink
-                      className={`w-full flex justify-start ${buttonLink} ${
-                        path === item.path.split('/')[0]
-                          ? 'bg-secondary-opacity-20'
-                          : null
-                      } ${!openMenu ? 'justify-center' : null}`}
-                      to={item.path}
-                      onClick={toggleDrawer("right", false)}
-                    >
-                      {({ isActive }) => (
-                        <div>
-                          {openMenu ? (
-                            <div className="flex gap-3 items-center">
-                                <div
-                                className={`${
-                                  isActive
-                                    ? 'text-primary'
-                                    : 'text-black-opacity-60'
-                                } text-lg`}
-                              >
-                                <FontAwesomeIcon icon={item.icon} size="sm" />
-                              </div>
-                              <span
-                                className={`${
-                                  isActive
-                                    ? 'text-primary font-bold'
-                                    : 'text-black-opacity-70'
-                                } text-sm`}
-                              >
-                                {item.title}
-                              </span>
-                            
-                            </div>
-                          ) : (
-                            // <Tooltip
-                            //   title={item.title}
-                            //   placement="left"
-                            //   componentsProps={{
-                            //     tooltip: {
-                            //       sx: {
-                            //         bgcolor: '#1B263B',
-                            //         fontSize: '12px',
-                            //       },
-                            //     },
-                            //   }}
-                            // >
-                            <div
-                              className={`${
-                                isActive
-                                  ? 'text-primary'
-                                  : 'text-black-opacity-60'
-                              } text-lg`}
-                            >
-                              <FontAwesomeIcon icon={item.icon} size="sm" />
-                            </div>
-                            // </Tooltip>
-                          )}
-                        </div>
-                      )}
-                    </NavLink>
-                  )}
-                </div>
-       
-           
-           
+
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="lg:hidden flex items-center min-w-0">
+              {icon && (
+                <img className="h-8 w-auto shrink-0 object-contain" src={icon} alt="کارماچک" />
+              )}
             </div>
-          );
-        })}
+            <div className="hidden lg:flex items-center gap-3 min-w-0">
+              {icon && (
+                <img className="h-8 w-auto shrink-0 object-contain" src={icon} alt="کارماچک" />
+              )}
+              <h1 className="text-sm sm:text-base font-bold text-primary truncate !font-peydaBold">
+                {pageTitle}
+              </h1>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <button
+            type="button"
+            className="relative hidden sm:flex w-10 h-10 items-center justify-center rounded-xl border border-card-border bg-surface hover:bg-brand-soft hover:border-brand/20 transition-colors"
+            aria-label="اعلان‌ها"
+          >
+            <Badge
+              badgeContent={3}
+              sx={{
+                '& .MuiBadge-badge': {
+                  backgroundColor: '#0237fe',
+                  color: '#fff',
+                  fontSize: 10,
+                },
+              }}
+            >
+              <FontAwesomeIcon className="text-primary text-sm" icon={faBell} />
+            </Badge>
+          </button>
+
+          <button
+            type="button"
+            className="flex items-center gap-2.5 rounded-2xl border border-card-border bg-white hover:border-brand/25 hover:shadow-[0_4px_16px_rgba(2,55,254,0.1)] transition-all pl-2 pr-1 py-1 cursor-pointer"
+            onClick={handleClick as any}
+            aria-label="منوی کاربر"
+          >
+            <span className="hidden sm:flex flex-col items-end max-w-[130px]">
+              <span className="text-xs font-medium text-primary truncate w-full text-left">
+                {profile?.full_name || profile?.fullName || 'کاربر'}
+              </span>
+              <span className="text-[10px] text-black-opacity-50">مدیر سیستم</span>
+            </span>
+            <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center shrink-0 overflow-hidden shadow-[0_4px_12px_rgba(2,55,254,0.35)]">
+              {profile?.avatar ? (
+                <img
+                  src={profile?.avatar}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <FontAwesomeIcon size="sm" className="text-white" icon={faUser} />
+              )}
+            </span>
+          </button>
+          <AvatarMenu
+            avatarMenuData={avatarMenuData}
+            open={open}
+            anchorEl={anchorEl}
+            handleClose={handleClose}
+          />
+        </div>
       </div>
-            
-          </SwipeableDrawer>
-    </div>
+
+      <SwipeableDrawer
+        anchor={'right' as Anchor}
+        open={drawerOpen}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+        PaperProps={{
+          sx: {
+            width: 'min(88vw, 320px)',
+            borderTopLeftRadius: 20,
+            borderBottomLeftRadius: 20,
+            background: '#fff',
+          },
+        }}
+      >
+        <div className="p-4 bg-white h-full overflow-y-auto flex flex-col" dir="rtl">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-card-border">
+            <div className="flex items-center">
+              {icon && (
+                <img className="h-10 w-auto object-contain" src={icon} alt="کارماچک" />
+              )}
+            </div>
+            <IconButton
+              aria-label="بستن منو"
+              onClick={toggleDrawer(false)}
+              size="large"
+              sx={{ minWidth: 44, minHeight: 44, color: '#0237fe' }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
+          <NavMenu
+            routesData={routesData}
+            openMenu
+            onNavigate={() => setDrawerOpen(false)}
+          />
+        </div>
+      </SwipeableDrawer>
+    </header>
   );
 }
 

@@ -3,6 +3,7 @@ import {  Doughnut } from 'react-chartjs-2';
 
 import { useNavigate } from 'react-router-dom';
 import { Chart, registerables } from 'chart.js';
+import { DashboardCard } from '../../components/dashboard/DashboardCard';
 Chart.register(...registerables);
  interface PieceName extends React.PropsWithChildren {
   piceName: string;
@@ -105,40 +106,23 @@ const OtpSends: React.FunctionComponent<PieceName> = ({piceName,allData}) => {
   };
 
   return (
-    <div className="card mt-3 ml-7">
-      <div
-        className="h-full bg-white p-4 rounded-xl"
-        style={{ boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.10)' }}
-      >
-        <div className="flex">
-          <h1
-            onClick={() => navigate('/order/sell')}
-            className="text-primary text-lg font-bold cursor-pointer"
-          >
-             <span>{piceName}</span>
-          </h1>
-        </div>
-        <div className="flex flex-wrap items-center justify-around">
-          <div className="h-80 flex justify-center items-center w-full   2xl:w-64 lg:w-64 xl:w-64">
+    <DashboardCard title={piceName} onTitleClick={() => navigate('/order/sell')}>
+        <div className="flex flex-wrap items-center justify-around gap-4">
+          <div className="h-64 sm:h-80 flex justify-center items-center w-full max-w-xs mx-auto">
             {allData?.AllOrders?.length > 0 && <Doughnut data={data} options={options} plugins={[textCenter]} />}
-            
           </div>
-
-          <div className="flex flex-col gap-4">
-      
+          <div className="flex flex-col gap-3 w-full sm:w-auto">
             {data.labels.map((item,index) => {
                 return (
-                    <div className="flex items-center text-xs gap-4">
-                    <div className={`bg-[${data.datasets[0].backgroundColor[index]}] rounded-full w-5 h-5`}></div>
+                    <div key={item} className="flex items-center text-xs gap-3">
+                    <div style={{ backgroundColor: data.datasets[0].backgroundColor[index] as string }} className="rounded-full w-4 h-4 shrink-0"></div>
                     <span>  {item}  : {data.datasets[0].data[index]}</span>
                   </div>
                 )
             })}
-           
           </div>
         </div>
-      </div>
-    </div>
+    </DashboardCard>
   );
 };
 

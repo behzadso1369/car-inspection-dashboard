@@ -3,7 +3,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const PrimaryButton =
-  'bg-buttonBackground ml-2 text-white hover:bg-[#416CEA] focus:bg-primary-opacity-90 focus:shadow-primary-focus whitespace-nowrap';
+  'bg-brand ml-2 text-white hover:bg-brand-dark focus:bg-brand-dark focus:shadow-[0_0_0_3px_rgba(2,55,254,0.25)] whitespace-nowrap';
 
 export const SecondaryButton =
   'bg-white ml-2 text-[#464F60] shadow-secondary hover:text-[#171C26] focus:!shadow-mid-blue-focus duration-100 whitespace-nowrap';

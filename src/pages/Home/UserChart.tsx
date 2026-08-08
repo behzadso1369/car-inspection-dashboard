@@ -3,8 +3,7 @@ import {  Doughnut, Line } from 'react-chartjs-2';
 
 import { useNavigate } from 'react-router-dom';
 import { Chart, registerables } from 'chart.js';
-import instance from 'src/helper/interceptor';
-import { ApiHelper } from 'src/helper/api-request';
+import { DashboardCard } from '../../components/dashboard/DashboardCard';
 Chart.register(...registerables);
  interface PieceName extends React.PropsWithChildren {
   piceName: string;
@@ -50,29 +49,13 @@ const data = {
 
 
   return (
-    <div className="card mt-3 ml-7">
-      <div
-        className="h-full bg-white p-4 rounded-xl"
-        style={{ boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.10)' }}
-      >
-        <div className="flex">
-          <h1
-            onClick={() => navigate('/order/sell')}
-            className="text-primary text-lg font-bold cursor-pointer"
-          >
-             <span>{piceName}</span>
-          </h1>
-        </div>
+    <DashboardCard title={piceName} onTitleClick={() => navigate('/order/sell')}>
         <div className="flex flex-wrap items-center justify-around !w-full">
-          <div className="h-80 flex justify-center items-center !w-full   2xl:w-64 lg:w-64 xl:w-64">
+          <div className="h-64 sm:h-80 flex justify-center items-center !w-full">
             {allData && <Line data={data} options={options}  />}
-            
           </div>
-
-   
         </div>
-      </div>
-    </div>
+    </DashboardCard>
   );
 };
 

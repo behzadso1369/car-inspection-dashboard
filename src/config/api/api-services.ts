@@ -205,6 +205,11 @@ UnassignedOnSiteOrders: "OrderExpertAssignment/UnassignedOnSiteOrders",
 SuggestExperts: "OrderExpertAssignment/SuggestExperts",
 AssignExpert: "OrderExpertAssignment/AssignExpert",
 OrderReportDetail: "OrderExpertAssignment/OrderReportDetail",
+//ExpertEarning
+ExpertEarningList: "ExpertEarning/List",
+EditExpertEarning: "ExpertEarning/Edit",
+ConfirmExpertEarning: "ExpertEarning/Confirm",
+RejectExpertEarning: "ExpertEarning/Reject",
 
 
 

@@ -5,6 +5,8 @@ import instance from '../../../helper/interceptor';
 import { ApiHelper } from '../../../helper/api-request';
 import Input from '../../../libs/input/input';
 import Button, { PrimaryButton, SecondaryButton } from '../../../libs/button/button';
+import Dropdown from '../../../libs/dropdown/dropdown';
+import { EXPERT_PAYOUT_TYPE, payoutTypeOptions } from '../expertFinance';
 
 const switchLabel = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -17,7 +19,7 @@ const CreateExpert: React.FunctionComponent<CreateExpertProps> = ({
   showAddModal,
   setShowAddModal,
 }) => {
-  const { register, control, getValues } = useForm({
+  const { register, control, getValues, watch } = useForm({
     defaultValues: {
       PhoneNumber: '',
       FullName: '',
@@ -26,17 +28,35 @@ const CreateExpert: React.FunctionComponent<CreateExpertProps> = ({
       BaseLat: '',
       BaseLng: '',
       IsActive: true,
+      PayoutType: EXPERT_PAYOUT_TYPE.Percentage,
+      CommissionPercent: '30',
+      FixedAmountPerOrder: '',
     },
   });
 
+  const payoutType = Number(watch('PayoutType'));
+
   const onSubmit = () => {
     const values = getValues();
+    const type = Number(values.PayoutType);
     instance
       .post(ApiHelper.get('CreateExpert'), {
-        ...values,
-        BaseLat: parseFloat(values.BaseLat as unknown as string),
-        BaseLng: parseFloat(values.BaseLng as unknown as string),
-        IsActive: !!values.IsActive,
+        phoneNumber: values.PhoneNumber,
+        fullName: values.FullName,
+        nationalCode: values.NationalCode,
+        baseCity: values.BaseCity,
+        baseLat: parseFloat(values.BaseLat as unknown as string),
+        baseLng: parseFloat(values.BaseLng as unknown as string),
+        isActive: !!values.IsActive,
+        payoutType: type,
+        commissionPercent:
+          type === EXPERT_PAYOUT_TYPE.Percentage
+            ? Number(values.CommissionPercent) || null
+            : null,
+        fixedAmountPerOrder:
+          type === EXPERT_PAYOUT_TYPE.FixedPerOrder
+            ? Number(values.FixedAmountPerOrder) || null
+            : null,
       })
       .then((res: any) => {
         if (res.data) {
@@ -112,11 +132,46 @@ const CreateExpert: React.FunctionComponent<CreateExpertProps> = ({
           label="طول جغرافیایی"
           width="w-full"
         />
+        <Dropdown
+          optionTitle="title"
+          register={register}
+          control={control}
+          title="PayoutType"
+          label="نوع قرارداد مالی"
+          option={payoutTypeOptions}
+          fullWidth={true}
+        />
+        {payoutType === EXPERT_PAYOUT_TYPE.Percentage && (
+          <Input
+            placeholder="30"
+            type="text"
+            register={register}
+            control={control}
+            title="CommissionPercent"
+            label="درصد کمیسیون"
+            width="w-full"
+          />
+        )}
+        {payoutType === EXPERT_PAYOUT_TYPE.FixedPerOrder && (
+          <Input
+            placeholder="850000"
+            type="text"
+            register={register}
+            control={control}
+            title="FixedAmountPerOrder"
+            label="مبلغ ثابت هر سفارش (ریال)"
+            width="w-full"
+          />
+        )}
         <div className="flex flex-col col-span-4 lg:col-span-1">
           <span className="text-[#464F60] text-xs font-normal mb-2">فعال</span>
           <Switch {...register('IsActive')} {...switchLabel} defaultChecked={true} />
         </div>
-        <div className="col-span-4 flex justify-end mt-8">
+        <div className="col-span-4 rounded-lg bg-slate-50 border border-slate-200 p-3 text-xs text-slate-600 leading-6">
+          <div>فرمول: FinalPrice = Price − Discount · Tax = ۱۰٪ · CommissionBase = FinalPrice − Tax</div>
+          <div>درصدی: Amount = CommissionBase × (درصد / ۱۰۰) · ثابت: Amount = مبلغ ثابت هر سفارش</div>
+        </div>
+        <div className="col-span-4 flex justify-end mt-4">
           <Button
             title="لغو"
             active={true}

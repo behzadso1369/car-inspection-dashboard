@@ -14,6 +14,10 @@ import { CircularProgress } from '@mui/material';
 import CreateFAQ from './CreateFAQ';
 import DeleteFAQ from './DeleteFAQ';
 import EditFAQ from './EditFAQ';
+import { ListPageShell } from '../../../components/list/ListPageShell';
+import { ResponsiveDataView } from '../../../components/list/ResponsiveDataView';
+import { FixedPaginationBar } from '../../../components/list/FixedPaginationBar';
+import { cardFieldsFromColDefs, defaultEditDeleteActions } from '../../../utils/listCardHelpers';
 
 const FAQ: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
@@ -158,67 +162,103 @@ const FAQ: React.FunctionComponent = () => {
     },
   ];
 
+  const cardFields = cardFieldsFromColDefs(columnDefs, {
+    primaryField: 'question',
+    valueOverrides: {
+      categoryName: (row) => row.categoryName || row.category?.name || '—',
+    },
+  });
+  const cardActions = defaultEditDeleteActions({
+    onEdit: (row) => {
+      setShowEditModal(true);
+      setFaqId(row.id);
+      setFaqQuestion(row.question);
+    },
+    onDelete: (row) => {
+      setFaqId(row.id);
+      setFaqQuestion(row.question);
+      setShowDeleteModal(true);
+    },
+  });
+
   const onFilterTextBoxChanged = useCallback(() => {
     allgridRef.current!.api!.setGridOption('quickFilterText', getValues().search);
-  }, []);
+  }, [getValues]);
 
-  const overlayComponent = () => {
-    return (
-      <div className="bg-white flex justify-center items-center w-full h-80">
-        <CircularProgress />
+  const overlayComponent = () => (
+    <div className="bg-white flex justify-center items-center w-full h-80">
+      <CircularProgress />
+    </div>
+  );
+
+  const desktopView = (
+    <div style={containerStyle}>
+      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-4 pt-2">
+        <AgGridReact
+          ref={allgridRef}
+          animateRows={true}
+          rowHeight={60}
+          headerHeight={50}
+          domLayout="autoHeight"
+          rowData={rowData ?? []}
+          enableRtl={true}
+          suppressAggFuncInHeader={true}
+          defaultColDef={defaultColDef}
+          columnDefs={columnDefs}
+          pagination={false}
+          localeText={AG_GRID_LOCALE_FN}
+          suppressColumnVirtualisation={true}
+          rowDragManaged={true}
+          suppressRowVirtualisation={true}
+          suppressMoveWhenRowDragging={true}
+          paginationPageSize={5}
+          loadingOverlayComponent={overlayComponent}
+        />
       </div>
-    );
-  };
+    </div>
+  );
 
   return (
     <Fragment>
-      <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
-        <h3 className="text-base font-bold text-primary">سوالات متداول</h3>
-        <button
-          className="bg-[#0047bc] px-2 text-sm py-2 cursor-pointer mr-2 rounded-md outline-none text-white"
-          onClick={() => setShowAddModal(true)}
-        >
-          اضافه کردن سوال
-        </button>
-      </div>
-      <QuickSearch activeSearch={true} register={register} control={control} onSubmit={onFilterTextBoxChanged} />
-
-      <div
-        className="absolute right-0 bottom-0 bg-white w-full"
-        style={{ boxShadow: '0px -2px 7px 0px rgba(0, 0, 0, 0.05)' }}
-      >
-        <PaginationLib
-          count={count}
-          page={page}
-          setPage={setPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-        />
-      </div>
-      <div style={containerStyle}>
-        <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-32 pt-6">
-          <AgGridReact
-            ref={allgridRef}
-            animateRows={true}
-            rowHeight={60}
-            headerHeight={50}
-            domLayout="autoHeight"
-            rowData={rowData}
-            enableRtl={true}
-            suppressAggFuncInHeader={true}
-            defaultColDef={defaultColDef}
-            columnDefs={columnDefs}
-            pagination={false}
-            localeText={AG_GRID_LOCALE_FN}
-            suppressColumnVirtualisation={true}
-            rowDragManaged={true}
-            suppressRowVirtualisation={true}
-            suppressMoveWhenRowDragging={true}
-            paginationPageSize={5}
-            loadingOverlayComponent={overlayComponent}
+      <ListPageShell
+        title="سوالات متداول"
+        headerAction={
+          <button
+            className="bg-brand w-full sm:w-auto min-h-[44px] px-4 rounded-xl text-white text-sm"
+            onClick={() => setShowAddModal(true)}
+          >
+            اضافه کردن سوال
+          </button>
+        }
+        searchSlot={
+          <QuickSearch
+            activeSearch={true}
+            register={register}
+            control={control}
+            onSubmit={onFilterTextBoxChanged}
           />
-        </div>
-      </div>
+        }
+        pagination={
+          <FixedPaginationBar>
+            <PaginationLib
+              count={count}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+            />
+          </FixedPaginationBar>
+        }
+      >
+        <ResponsiveDataView
+          rowData={rowData ?? []}
+          fields={cardFields}
+          actions={cardActions}
+          emptyMessage="سوالی یافت نشد"
+          getRowKey={(row, index) => row.id ?? index}
+          desktopView={desktopView}
+        />
+      </ListPageShell>
       {showAddModal && <CreateFAQ showAddUserModal={showAddModal} setShowAddUserModal={setShowAddModal} />}
       {showDeleteModal && (
         <DeleteFAQ

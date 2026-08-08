@@ -13,6 +13,10 @@ import QuickSearch from '../../libs/quick-search/quick-search';
 import { Box, CircularProgress } from '@mui/material';
 import DeleteOrder from '../Order/DeleteOrder';
 import moment from 'jalali-moment';
+import { ListPageShell } from '../../components/list/ListPageShell';
+import { ResponsiveDataView } from '../../components/list/ResponsiveDataView';
+import { FixedPaginationBar } from '../../components/list/FixedPaginationBar';
+import { CardAction, CardField } from '../../types/list';
 const SiteOrder: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -68,8 +72,66 @@ const SiteOrder: React.FunctionComponent = () => {
   
   }
 
+  const openDelete = (row: any) => {
+    setSecretOfOurServiceQualityId(row.id);
+    setSecretOfOurServiceQualityName(row.title);
+    setShowDeleteUser(true);
+  };
 
- 
+  const cardFields: CardField[] = useMemo(
+    () => [
+      {
+        key: 'id',
+        label: '#',
+        primary: true,
+        getValue: (row) => (row.id != null ? `#${row.id}` : 'ثبت نشده است'),
+      },
+      {
+        key: 'paymentStatusTitle',
+        label: 'وضعیت پرداخت',
+        badge: true,
+        badgeTone: () => 'info',
+        getValue: (row) => row.paymentStatusTitle || 'ثبت نشده است',
+      },
+      {
+        key: 'userId',
+        label: 'کاربر',
+        getValue: (row) => row.userId ?? 'ثبت نشده است',
+      },
+      {
+        key: 'price',
+        label: 'قیمت سفارش',
+        getValue: (row) =>
+          row.price != null ? `${row.price.toLocaleString()} تومان` : 'ثبت نشده است',
+      },
+      {
+        key: 'lastLevel',
+        label: 'آخرین مرحله',
+        getValue: (row) => row.flowState?.title || 'ثبت نشده است',
+      },
+      {
+        key: 'createdOn',
+        label: 'تاریخ ثبت سفارش',
+        getValue: (row) =>
+          row.createdOn
+            ? moment(row.createdOn).locale('fa').format('YYYY-MM-DD ساعت HH:mm:ss')
+            : 'ثبت نشده است',
+      },
+    ],
+    []
+  );
+
+  const cardActions: CardAction[] = useMemo(
+    () => [
+      {
+        key: 'delete',
+        label: 'حذف سفارش',
+        variant: 'danger',
+        onClick: (row) => openDelete(row),
+      },
+    ],
+    []
+  );
 
   const columnDefs:ColDef[] = [
     {
@@ -194,34 +256,11 @@ maxWidth:80,
     )
   }
 
-
-
-
-  return (
-    <Fragment>
-    
-       <div className="bg-white border border-[#2c3c511a] rounded-xl flex items-baseline justify-between p-4 mb-3">
-        
-          <h3 className="text-base font-bold text-primary">سفارشات سایت</h3>
-      
-      </div>
-        <QuickSearch  activeSearch={true}   register={register}
-                control={control}   onSubmit={onFilterTextBoxChanged}/>
-               
-     
-      <div
-        className="absolute right-0 bottom-0 bg-white w-full"
-        style={{ boxShadow: '0px -2px 7px 0px rgba(0, 0, 0, 0.05)' }}
-      >
-    <PaginationLib count={count} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
-      </div>
-      <div style={containerStyle}>
-      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-32 pt-6">
+  const desktopView = (
+    <div style={containerStyle}>
+      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-4 pt-2">
         <AgGridReact
           ref={allgridRef}
-          
-          // getRowId={(params) => params.data.requestId}
-          
           animateRows={true}
           rowHeight={60}
           headerHeight={50}
@@ -232,8 +271,6 @@ maxWidth:80,
           defaultColDef={defaultColDef}
           columnDefs={columnDefs}
           pagination={false}
-         
-         
           localeText={AG_GRID_LOCALE_FN}
           suppressColumnVirtualisation={true}
           rowDragManaged={true}
@@ -241,16 +278,44 @@ maxWidth:80,
           suppressMoveWhenRowDragging={true}
           paginationPageSize={5}
           loadingOverlayComponent={overlayComponent}
-          icons={{
-            checkboxChecked:
-              '<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>',
-            sortAscending: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>`,
-            sortDescending: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>`,
-            sortUnSort: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg>`,
-          }}
         />
       </div>
-      </div>
+    </div>
+  );
+
+  return (
+    <Fragment>
+      <ListPageShell
+        title="سفارشات سایت"
+        searchSlot={
+          <QuickSearch
+            activeSearch={true}
+            register={register}
+            control={control}
+            onSubmit={onFilterTextBoxChanged}
+          />
+        }
+        pagination={
+          <FixedPaginationBar>
+            <PaginationLib
+              count={count}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+            />
+          </FixedPaginationBar>
+        }
+      >
+        <ResponsiveDataView
+          rowData={rowData ?? []}
+          fields={cardFields}
+          actions={cardActions}
+          emptyMessage="سفارشی وجود ندارد"
+          getRowKey={(row) => row.id}
+          desktopView={desktopView}
+        />
+      </ListPageShell>
    
      
       {showDeleteUser && (

@@ -1,26 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import { NavLink, useLocation } from 'react-router-dom';
-import {
-
-  Menu,
- 
-} from '@mui/material';
+import { Menu } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
-
-/* eslint-disable-next-line */
 export interface AccordionProps {
   title: string;
-  child: [];
+  child: any[];
   icon: any;
   expanded: string;
   setExpanded: React.Dispatch<React.SetStateAction<string>>;
   openMenu: boolean;
   path: string;
+  onNavigate?: () => void;
 }
 
 export function SideBarAccordion({
@@ -31,321 +26,148 @@ export function SideBarAccordion({
   setExpanded,
   openMenu,
   path,
-
+  onNavigate,
 }: AccordionProps) {
-
-
   const { pathname } = useLocation();
-  console.log(pathname);
-  console.log(child);
-  console.log(path)
-  const [pathName, setPathName] = useState<string>(path);
- 
+  const isSectionActive = pathname.split('/')[1] === path.split('/')[0];
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<any>(null);
 
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-
-  const handleClose = () => {
-    // if (anchorRef.current && anchorRef.current.contains(event.target)) {
-    //   return;
-    // }
-
-    setOpen(false);
-  };
-
-  // function handleListKeyDown(event: any) {
-  //   if (event.key === 'Tab') {
-  //     event.preventDefault();
-  //     setOpen(false);
-  //   } else if (event.key === 'Escape') {
-  //     setOpen(false);
-  //   }
-  // }
-
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
-    // if (prevOpen.current === true && open === false) {
-    //   anchorRef.current.focus();
-    // }
-
-    prevOpen.current = open;
-  }, [open]);
+  const handleToggle = () => setOpen((prev) => !prev);
+  const handleClose = () => setOpen(false);
 
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-      console.log(event)
-
+    (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : '');
-      if (pathname.split('/')[1] === pathName.split('/')[0]) {
-        setPathName('');
-      } else {
-        setPathName(path);
-      }
     };
-
-  // const closeSidebarHandler = () => {
-  //   setShowLinks(true);
-  // };
-
-  // const userProfile = () => {};
-  // const settings = () => {};
-  // const logout = () => {};
- 
 
   return (
     <Accordion
-      expanded={
-        (openMenu && expanded === title) ||
-        pathname.split('/')[1] === pathName.split('/')[0]
-      }
+      expanded={(openMenu && expanded === title) || isSectionActive}
       onChange={handleChange(title)}
-      defaultExpanded={false}
-      className="!shadow-none !relative"
-      style={{ direction: 'rtl' }}
+      disableGutters
+      elevation={0}
+      className="!shadow-none !bg-transparent before:!hidden"
+      sx={{
+        direction: 'rtl',
+        '&:before': { display: 'none' },
+        '&.Mui-expanded': { margin: 0 },
+      }}
     >
       <AccordionSummary
         expandIcon={
-          openMenu && (
+          openMenu ? (
             <FontAwesomeIcon
               icon={faAngleDown}
-              className={`${
-                pathname.split('/')[1] === path.split('/')[0]
-                  ? 'text-primary'
-                  : 'text-black-opacity-60'
-              }`}
+              className={isSectionActive ? 'text-brand' : 'text-black-opacity-60'}
               size="sm"
             />
-          )
+          ) : undefined
         }
-        aria-controls="panel1d-content"
-        id="panel1d-header"
-        // !py-1
-        className={`!px-3 !py-0.5 !rounded-md ${
-          pathname.split('/')[1] === path.split('/')[0] &&
-          '!bg-secondary-opacity-20'
+        aria-controls={`${path}-content`}
+        id={`${path}-header`}
+        className={`!px-3 !min-h-[48px] !rounded-xl ${
+          isSectionActive ? '!bg-brand-soft' : 'hover:!bg-brand-soft/50'
         }`}
+        sx={{
+          flexDirection: 'row',
+          '& .MuiAccordionSummary-content': {
+            margin: '0 !important',
+            alignItems: 'center',
+          },
+          '& .MuiAccordionSummary-expandIconWrapper': {
+            marginRight: 0,
+            marginLeft: '4px',
+          },
+        }}
       >
-        <div className="!p-0 w-full">
-          {openMenu ? (
-            <div className="flex items-center gap-2 w-full">
-              <div>
-                <FontAwesomeIcon
-                  className={`${
-                    pathname.split('/')[1] === path.split('/')[0]
-                      ? 'text-primary'
-                      : 'text-black-opacity-60'
-                  }`}
-                  icon={icon}
-                  size="sm"
-                />
-              </div>
-
-              <div className="flex w-full justify-between items-center">
-                <span
-                  className={`${
-                    pathname.split('/')[1] === path.split('/')[0]
-                      ? 'font-bold'
-                      : 'text-black-opacity-70'
-                  } text-sm pr-2`}
-                  style={{ fontFamily: 'IRANSans' }}
-                >
-                  {title}
-                </span>
-                {/* <>
-                  {path === 'order' ? (
-                    <Badge
-                      className="ml-6"
-                      badgeContent={2}
-                      color="primary"
-                    ></Badge>
-                  ) : (
-                    ''
-                  )}
-                </> */}
-              </div>
+        {openMenu ? (
+          <div className="flex items-center gap-3 w-full min-w-0">
+            <FontAwesomeIcon
+              className={`shrink-0 ${
+                isSectionActive ? 'text-brand' : 'text-black-opacity-60'
+              }`}
+              icon={icon}
+              size="sm"
+            />
+            <span
+              className={`text-sm truncate ${
+                isSectionActive ? 'font-bold text-brand' : 'text-black-opacity-70'
+              }`}
+            >
+              {title}
+            </span>
+          </div>
+        ) : (
+          <>
+            <div
+              className="flex justify-center items-center w-full"
+              ref={anchorRef}
+              onClick={handleToggle}
+            >
+              <FontAwesomeIcon
+                className={isSectionActive ? 'text-brand' : 'text-black-opacity-60'}
+                icon={icon}
+                size="sm"
+              />
             </div>
-          ) : (
-            <>
-              {/* <Tooltip
-                title={title}
-                placement="left"
-                componentsProps={{
-                  tooltip: {
-                    sx: {
-                      bgcolor: '#1B263B',
-                      fontSize: '12px',
-                      fontFamily: 'IRANSans',
-                    },
-                  },
-                }}
-              > */}
-              <div
-                className="flex justify-center items-center"
-                ref={anchorRef}
-                onClick={handleToggle}
-              >
-                <FontAwesomeIcon
-                  className={`${
-                    pathname.split('/')[1] === path.split('/')[0]
-                      ? 'text-primary'
-                      : 'text-black-opacity-60'
-                  }`}
-                  icon={icon}
-                  size="sm"
-                />
-              </div>
-              {/* </Tooltip> */}
-
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorRef.current}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                }}
-                sx={{
-                  '& .MuiMenu-paper': {
-                    height: 'auto !important',
-                  },
-                  '& .MuiMenuItem-gutters': {
-                    paddingRight: '1rem',
-                    paddingLeft: '1rem',
-                  },
-                  '& .MuiPaper-elevation': {
-                    borderRadius: '8px !important',
-                  },
-                  '& .MuiMenu-list': {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1rem',
-                    paddingX: '.7rem',
-                  },
-                }}
-                transformOrigin={{
-                  vertical: 'center',
-                  horizontal: 'right',
-                }}
-              >
-                {child.map((item: any) => (
-                  <NavLink
-                    to={item.path}
-                    className={`w-full flex justify-end  ${
-                      pathname === "/" + item.path
-                        ? 'bg-red-700'
-                        : null
-                    } `}
-                    // className="!p-0 rounded-md text-xs text-black-opacity-70"
-                    key={item.ID}
-                  >
-                    {({ isActive }) => (
-                      <>
-                        <p
-                          className={
-                            `px-1 ${
-                              isActive
-                                ? 'text-primary bg-red-500'
-                                : 'text-black-opacity-70 bg-red-300'
-                            }` + 'w-full flex justify-center items-center'
-                          }
-                          style={{
-                            fontFamily: isActive ? 'IRANYekanExtraBold' : '',
-                          }}
-                        >
-                          {item.title}
-                        </p>
-                      </>
-                    )}
-                  </NavLink>
-                ))}
-              </Menu>
-
-              {/* <>
-                <Tooltip
-                  title={title}
-                  placement="left"
-                  componentsProps={{
-                    tooltip: {
-                      sx: {
-                        bgcolor: '#1B263B',
-                        fontSize: '12px',
-                        fontFamily: 'IRANSans',
-                      },
-                    },
-                  }}
+            <Menu
+              id={`${path}-menu`}
+              anchorEl={anchorRef.current}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{ 'aria-labelledby': 'basic-button' }}
+              sx={{
+                '& .MuiMenu-paper': { height: 'auto !important', borderRadius: '8px' },
+                '& .MuiMenu-list': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.5rem',
+                  padding: '0.5rem',
+                },
+              }}
+              transformOrigin={{ vertical: 'center', horizontal: 'right' }}
+            >
+              {child.map((item: any) => (
+                <NavLink
+                  to={item.path}
+                  key={item.path}
+                  onClick={handleClose}
+                  className="w-full px-3 py-2 rounded-md text-sm"
                 >
-                  <div className="flex justify-center items-center">
-                    <FontAwesomeIcon
-                      className={`${
-                        pathname.split('/')[1] === path.split('/')[0]
-                          ? 'text-primary'
-                          : 'text-black-opacity-60'
-                      }`}
-                      icon={icon}
-                      size="sm"
-                      onClick={closeSidebarHandler}
-                    />
-                  </div>
-                </Tooltip>
-                <AvatarMenu
-                  avatarMenuData={[]}
-                  open={true}
-                  anchorEl={anchorEl}
-                  handleClose={() => console.log('GH')}
-                />
-              </> */}
-            </>
-          )}
-        </div>
+                  {({ isActive }) => (
+                    <span className={isActive ? 'text-primary font-bold' : 'text-black-opacity-70'}>
+                      {item.title}
+                    </span>
+                  )}
+                </NavLink>
+              ))}
+            </Menu>
+          </>
+        )}
       </AccordionSummary>
       {openMenu && (
-        <AccordionDetails className="flex flex-col gap-1 !p-0 mr-5 accordionn">
+        <AccordionDetails className="flex flex-col gap-0.5 !p-0 !pr-2 !pb-1 accordionn relative">
           {child.map((item: any) => (
-         
-     <NavLink
+            <NavLink
               to={item.path}
-              className={`px-4 py-2 rounded-md text-sm text-black-opacity-70   ${
-                pathname === "/" + item.path
-                  ? 'font-extrabold'
-                  : null
-              } `}
-              // className="px-4 py-2 rounded-md text-sm text-black-opacity-70 "
-              key={item.ID}
+              onClick={onNavigate}
+              key={item.path}
+              className="pr-4 pl-2 py-2.5 rounded-md text-sm min-h-[44px] flex items-center hover:bg-surface"
             >
               {({ isActive }) => (
                 <>
-                  <div className=" border-r-[1.5px] border-b-[1.5px] w-3 h-3 rounded-br-lg relative top-3 right-[-16px]"></div>
-                  <p
-                    className={
-                      `px-1 ${
-                        isActive ? 'text-primary' : 'text-black-opacity-70'
-                      }` + 'w-full flex justify-between items-center'
-                    }
-                    style={{ fontFamily: isActive ? 'IRANYekanExtraBold' : '' }}
+                  <div className="border-r-[1.5px] border-b-[1.5px] border-card-border w-2.5 h-2.5 rounded-br-md shrink-0 relative top-0.5 -mr-0.5 ml-2" />
+                  <span
+                    className={`text-sm leading-5 ${
+                      isActive ? 'text-brand font-bold' : 'text-black-opacity-70'
+                    }`}
                   >
                     {item.title}
-                    {/* <>
-                      {item.path.split('/')[1] === 'selling-without-price' ? (
-                        <Badge
-                          badgeContent={awaitingConfirmationData.length}
-                          color="primary"
-                        ></Badge>
-                      ) : (
-                        ''
-                      )}
-                    </> */}
-                  </p>
+                  </span>
                 </>
               )}
             </NavLink>
-            
-            
-       
           ))}
         </AccordionDetails>
       )}

@@ -153,16 +153,12 @@ setImage({image: imageUrl});
   };
 
   return (
-    <div className="pb-20">
-      <div className="bg-white border border-[#2c3c511a] rounded-xl flex justify-between p-4 mb-3">
-        <div className="flex items-center gap-3">
-          <h3 className="text-base font-bold text-primary">ویرایش کاربر</h3>
-        </div>
+    <div className="w-full pb-24 max-w-full overflow-x-hidden">
+      <div className="bg-white border border-card-border rounded-2xl p-4 mb-4 shadow-card">
+        <h3 className="text-base sm:text-lg font-bold text-primary">تنظیمات سایت</h3>
       </div>
 
-    
-      
-    <div className="grid grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-3 pb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-4 pb-8">
   
        <Input
        placeholder='اسم سایت'
@@ -514,26 +510,22 @@ setImage({image: imageUrl});
 
          
 
-                  <div className='flex justify-between items-center'>
-                    <span>Is enter persian information</span>
+                  <div className="flex justify-between items-center gap-3 rounded-xl border border-card-border p-3 bg-[#FCFCFC]">
+                    <span className="text-sm">Is enter persian information</span>
                     <Switch {...register("is_enter_persian_information")} {...label} defaultChecked={false}  />
-
                   </div>
                   
-                  <div className='flex justify-between items-center'>
-                    <span>Is register</span>
+                  <div className="flex justify-between items-center gap-3 rounded-xl border border-card-border p-3 bg-[#FCFCFC]">
+                    <span className="text-sm">Is register</span>
                     <Switch {...register("is_register")}  {...label} defaultChecked={false}  />
-
                   </div>
-                  <div className='flex justify-between items-center'>
-                    <span>Active nobitex</span>
+                  <div className="flex justify-between items-center gap-3 rounded-xl border border-card-border p-3 bg-[#FCFCFC]">
+                    <span className="text-sm">Active nobitex</span>
                     <Switch {...register("active_nobitex")}  {...label} defaultChecked={false}  />
-
                   </div>
-                  <div className='flex justify-between items-center'>
-                    <span>Is automatic</span>
-                    <Switch {...register("active_nobitex")}  {...label} defaultChecked={false}  />
-
+                  <div className="flex justify-between items-center gap-3 rounded-xl border border-card-border p-3 bg-[#FCFCFC]">
+                    <span className="text-sm">Is automatic</span>
+                    <Switch {...register("is_automatic")}  {...label} defaultChecked={false}  />
                   </div>
                  
        
@@ -545,13 +537,11 @@ setImage({image: imageUrl});
 
 
              
-              <div className='mt-8 col-span-2 flex'>
-        <div className="flex ">
-    
-    <div className='w-1/2'>
-      <label
+              <div className="col-span-full flex flex-col sm:flex-row sm:items-center gap-3 mt-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full">
+    <label
         htmlFor="imageFile"
-        className=" rounded-md px-3 py-1 text-sm bg-gray-700 text-white hover:bg-blue-700 focus:bg-blue-opacity-90 focus:shadow-primary-focus whitespace-nowrap cursor-pointer"
+        className="inline-flex items-center justify-center min-h-[44px] rounded-xl px-4 text-sm bg-brand text-white cursor-pointer w-full sm:w-auto"
       >
         آپلود لوگو   
       </label>
@@ -561,29 +551,12 @@ setImage({image: imageUrl});
         type="file"
         ref={inputImageRef}
         onInput={uploadImageFile}
-        style={{ visibility: 'hidden' }}
+        className="hidden"
       />
-
-    </div>
-    {progressImageBar ? <span>فایل عکس در حال آپلود است</span> : <div>
-    {image &&  <div className='w-auto relative p-2 border-2 border-slate-400 flex flex-col items-center'><img width="50px" height="50px" src={image.image}/></div>}
+    {progressImageBar ? <span className="text-sm text-black-opacity-60">فایل عکس در حال آپلود است</span> : <div>
+    {image &&  <div className='w-auto relative p-2 border border-card-border rounded-xl flex flex-col items-center'><img width="50" height="50" src={image.image} alt="لوگو" className="rounded-lg"/></div>}
     </div>}
-
-  
-  
-
-    {/* <Button
-      title={'ذخیره   '}
-      active={true}
-      style={PrimaryButton}
-      onClick={uploadFile}
-    >
-      {' '}
-      ذخیره
-    </Button> */}
-    <div className="flex "></div>
         </div>
-      
         </div>
          
         
@@ -609,19 +582,19 @@ setImage({image: imageUrl});
              
           
     </div>
-    <div className='col-span-3 flex justify-end mt-8'>
+    <div className="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end mt-8 px-1">
               <Button
               title='لغو'
               active={true}
               style={SecondaryButton}
             />
-              <Button
-              title='ویرایش'
-              active={true}
-              style={PrimaryButton}
+              <button
+              type="button"
+              className="w-full sm:w-auto min-h-[44px] px-6 rounded-xl bg-brand text-white text-sm font-medium"
               onClick={onSubmit}
-            />
-            
+            >
+              ذخیره تنظیمات
+            </button>
               </div>
     </div>
   );

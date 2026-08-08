@@ -1,19 +1,85 @@
-.login__main {
+.login-page {
+  direction: rtl;
+}
 
-    &::before {
-        width: 100%;
-        height: 100%;
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-background-image: url("../../assets/images/login-back.jpg");
+.login-page__hero {
+  min-height: 100dvh;
+}
+
+.login-page__hero-overlay {
+  background:
+    linear-gradient(155deg, rgba(2, 55, 254, 0.88) 0%, rgba(1, 30, 120, 0.92) 48%, rgba(10, 18, 40, 0.94) 100%);
+}
+
+.login-page__form-side {
+  background: #f4f6fb;
+  min-height: 100dvh;
+}
+
+.login-page__fade-up {
+  animation: loginFadeUp 0.55s ease-out both;
+}
+
+@keyframes loginFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-page__fade-up {
+    animation: none;
+  }
+}
+
+/* Larger touch-friendly fields on login (esp. mobile) */
+.login-page form {
+  span.text-\[\#464F60\],
+  label {
+    font-size: 0.9375rem !important;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  input {
+    min-height: 52px !important;
+    height: 52px !important;
+    font-size: 1rem !important;
+    padding-top: 0.875rem !important;
+    padding-bottom: 0.875rem !important;
+    padding-inline: 1rem !important;
+  }
+
+  .relative > label {
+    top: 50% !important;
+    transform: translateY(-50%);
+    font-size: 0.9375rem !important;
+    right: 1rem !important;
+  }
+
+  button {
+    min-height: 56px !important;
+    font-size: 1.0625rem !important;
+    border-radius: 1rem !important;
+    font-weight: 600;
+  }
+}
+
+@media (min-width: 640px) {
+  .login-page form {
+    input {
+      min-height: 48px !important;
+      height: 48px !important;
     }
-    .login-form {
-        z-index: 2;
+
+    button {
+      min-height: 52px !important;
+      font-size: 1rem !important;
     }
-    .login-title {
-        z-index: 2; 
-    }
+  }
 }
