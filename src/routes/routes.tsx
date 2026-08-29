@@ -242,7 +242,7 @@ export const RoutesData = [
       },
       {
         path: 'expert/assignment',
-        permission: ['admin', 'superAdmin'],
+        permission: ['admin', 'superAdmin', 'expert'],
         ID: 2,
         title: 'تخصیص کارشناس',
       },

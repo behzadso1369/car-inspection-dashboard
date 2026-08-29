@@ -10,6 +10,11 @@ import './Login.scss';
 import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import PasswordInput from '../../libs/password-input/password-input';
+import {
+  getAccessToken,
+  getDefaultPathForRole,
+  persistRolesFromToken,
+} from '../../utils/auth-role';
 
 const Login: React.FunctionComponent = () => {
   const navigate = useNavigate();
@@ -18,17 +23,20 @@ const Login: React.FunctionComponent = () => {
   const onSubmit = () => {
     instance.post(ApiHelper.get('login'), getValues()).then((res) => {
       if (res.data) {
-        localStorage.setItem('accessToken', res.data.resultObject.accessToken);
-        navigate('/home');
+        const token = res.data.resultObject.accessToken;
+        localStorage.setItem('accessToken', token);
+        persistRolesFromToken(token);
+        navigate(getDefaultPathForRole(token));
       }
       reset();
     });
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = getAccessToken();
     if (token) {
-      navigate('/home');
+      persistRolesFromToken(token);
+      navigate(getDefaultPathForRole(token));
     }
   }, []);
 

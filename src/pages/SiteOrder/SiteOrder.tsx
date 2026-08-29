@@ -12,6 +12,7 @@ import { ApiHelper } from '../../helper/api-request';
 import QuickSearch from '../../libs/quick-search/quick-search';
 import { Box, CircularProgress } from '@mui/material';
 import DeleteOrder from '../Order/DeleteOrder';
+import SiteOrderDetail from './SiteOrderDetail';
 import moment from 'jalali-moment';
 import { ListPageShell } from '../../components/list/ListPageShell';
 import { ResponsiveDataView } from '../../components/list/ResponsiveDataView';
@@ -32,6 +33,8 @@ const SiteOrder: React.FunctionComponent = () => {
   const [blogCatName, setBlogCatName] = React.useState<string>("");
   const [blogCatId, setBlogCatId] = React.useState<number>(0);
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false);
+  const [showDetailModal, setShowDetailModal] = useState<boolean>(false);
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
   const [rowData, setRowData] = useState<any>();
 
@@ -76,6 +79,12 @@ const SiteOrder: React.FunctionComponent = () => {
     setSecretOfOurServiceQualityId(row.id);
     setSecretOfOurServiceQualityName(row.title);
     setShowDeleteUser(true);
+  };
+
+  const openDetail = (row: any) => {
+    setSecretOfOurServiceQualityId(row.id);
+    setSelectedOrder(row);
+    setShowDetailModal(true);
   };
 
   const cardFields: CardField[] = useMemo(
@@ -123,6 +132,12 @@ const SiteOrder: React.FunctionComponent = () => {
 
   const cardActions: CardAction[] = useMemo(
     () => [
+      {
+        key: 'detail',
+        label: 'جزئیات سفارش',
+        variant: 'primary',
+        onClick: (row) => openDetail(row),
+      },
       {
         key: 'delete',
         label: 'حذف سفارش',
@@ -224,13 +239,13 @@ maxWidth:80,
     {
       field: 'action',
       headerName: 'عملیات',
-     
-     
+      minWidth: 180,
       cellRenderer: (params:any) => {
         return (
    
-          <div className="flex justify-start items-start">
-          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  سفارش</button>
+          <div className="flex justify-start items-center gap-1 flex-wrap">
+          <button className='bg-brand text-xs py-2 cursor-pointer rounded-md px-2 outline-none text-white' onClick={() => openDetail(params.data)}>جزئیات</button>
+          <button className='bg-red-500 text-xs py-2 cursor-pointer rounded-md px-2 outline-none text-white' onClick={() => deleteBlog(params)}>حذف سفارش</button>
     </div>
         
         
@@ -321,6 +336,14 @@ maxWidth:80,
       {showDeleteUser && (
        <DeleteOrder secretOfOurServiceQualityId={secretOfOurServiceQualityId} secretOfOurServiceQualityName={secretOfOurServiceQualityName} showDeleteModal={showDeleteUser} setShowDeleteModal={setShowDeleteUser}/>
      )}
+      {showDetailModal && (
+        <SiteOrderDetail
+          showModal={showDetailModal}
+          setShowModal={setShowDetailModal}
+          orderId={secretOfOurServiceQualityId}
+          initialOrder={selectedOrder}
+        />
+      )}
       
    
     

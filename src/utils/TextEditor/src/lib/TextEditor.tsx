@@ -335,56 +335,28 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
       }
       case ChonkyActions['DeleteFiles'].id: {
         const filesToDelete = action.state.selectedFiles;
-        
-        for (const file of filesToDelete) {
-          if (file?.isDir) {
-            const path =
-            currentPath !== '' ? currentPath + '/' + file?.name : file?.name;
-            
 
-            await instance
-              .delete(
-                ApiHelper.get("FileManagerDelete"),
-                {
-                  data: {
-                    path: path,
-                  },
-                  headers: {
-                    accept: 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json',
-                  },
-                },
-              )
-              .then((res) => {
-                if (res) {
-                  fecthDirectories(currentPath);
-                  fetchFiles(currentPath);
-                }
-              });
-          } else {
-            const path =
-              file?.id;
-            await axios
-              .delete(`${baseApi}Browse/File/Delete/v1`, {
-                data: {
-                  path: path,
-                },
+        for (const file of filesToDelete) {
+          const path =
+            currentPath !== '' ? `${currentPath}/${file?.name}` : file?.name;
+
+          await instance
+            .delete(
+              ApiHelper.get("FileManagerDelete") + "?path=" + path,
+              {
                 headers: {
                   accept: 'application/json',
                   Authorization: `Bearer ${localStorage.getItem('token')}`,
-                  'Content-Type': 'application/json',
                 },
-              })
-              .then((res) => {
-                if (res) {
-                  fecthDirectories(currentPath);
-                  fetchFiles(currentPath);
-                }
-              });
-          }
+              },
+            )
+            .then((res) => {
+              if (res) {
+                fecthDirectories(currentPath);
+                fetchFiles(currentPath);
+              }
+            });
         }
-        // await fetchFiles(currentFolderId);
         break;
       }
 
@@ -704,7 +676,7 @@ export const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
   
   };
   const truncateCaption = (caption:string) => {
-    return caption.length > 16 ? `${caption.slice(0, 16)}...` : caption;
+    return caption.length > 35 ? `${caption.slice(0, 35)}...` : caption;
   };
 
   return (

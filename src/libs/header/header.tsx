@@ -9,6 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { NavMenu } from '../nav-menu/NavMenu';
 import { useLocation } from 'react-router-dom';
+import { getRoleLabel } from '../../utils/auth-role';
 
 type Anchor = 'right';
 
@@ -141,7 +142,7 @@ export function Header({ avatarMenuData, icon, routesData }: HeaderProps) {
               <span className="text-xs font-medium text-primary truncate w-full text-left">
                 {profile?.full_name || profile?.fullName || 'کاربر'}
               </span>
-              <span className="text-[10px] text-black-opacity-50">مدیر سیستم</span>
+              <span className="text-[10px] text-black-opacity-50">{getRoleLabel()}</span>
             </span>
             <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center shrink-0 overflow-hidden shadow-[0_4px_12px_rgba(2,55,254,0.35)]">
               {profile?.avatar ? (

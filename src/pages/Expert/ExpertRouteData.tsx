@@ -13,7 +13,7 @@ export const RoutesData = [
     path: 'assignment',
     component: UnassignedOrders,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'expert'],
   },
   {
     path: 'earnings',
