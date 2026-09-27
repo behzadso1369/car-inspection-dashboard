@@ -107,9 +107,10 @@ maxWidth:80,
             field: 'carGroup',
             headerName: 'گروه خودرو',
             cellRenderer: (params:any) => {
+              const name = params.data?.carGroup?.name;
               return (
                 <>
-                {params.data.carGroup.name ? <span>{params.data.carGroup.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                {name ? <span>{name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
@@ -119,9 +120,10 @@ maxWidth:80,
                 field: 'carInspectionType',
                 headerName: 'نوع کارشناسی',
                 cellRenderer: (params:any) => {
+                  const name = params.data?.carInspectionType?.name;
                   return (
                     <>
-                    {params.data.carInspectionType.name ? <span>{params.data.carInspectionType.name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+                    {name ? <span>{name}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                     </>
                   )
                

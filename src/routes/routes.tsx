@@ -12,6 +12,8 @@ import {
   faCreditCard,
   faTruckRampBox,
   faUserTie,
+  faFilter,
+  faHeadset,
 
 } from '@fortawesome/free-solid-svg-icons';
 import UserRoute from '../pages/User/UserRoute';
@@ -40,9 +42,12 @@ import AboutUs from '../pages/AboutUs/AboutUs';
 import AboutUsRoute from '../pages/AboutUs/AboutUsRoute';
 import FinancialExpenditure from '../pages/FinancialExpenditure/FinancialExpenditure';
 import Order from '../pages/Order/Order';
+import SupportOrder from '../pages/SupportOrder/SupportOrder';
 import SiteOrder from '../pages/SiteOrder/SiteOrder';
+import OrderFunnel from '../pages/OrderFunnel/OrderFunnel';
 import FAQRoute from '../pages/FAQ/FAQRoute';
 import ExpertRoute from '../pages/Expert/ExpertRoute';
+import WalletRoute from '../pages/Wallet/WalletRoute';
 
 
 export const RoutesData = [
@@ -50,7 +55,7 @@ export const RoutesData = [
     path: 'home',
     component: HomeMainPage,
     ID: 1,
-    permission: ['admin', 'superAdmin','customer'],
+    permission: ['admin', 'superAdmin', 'customer', 'marketing'],
     title: "داشبورد",
     icon: faHouse,
   },
@@ -93,7 +98,7 @@ export const RoutesData = [
     path: 'slides/list',
     component: Slider,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
     title: "اسلایدها",
     icon: faUser,
 
@@ -102,20 +107,20 @@ export const RoutesData = [
     path: 'blog',
     component: BlogRoute,
     ID: 3,
-    permission: ['admin', 'superAdmin' ,'customer'],
+    permission: ['admin', 'superAdmin', 'customer', 'marketing'],
     title: "بلاگ",
     icon: faTruckRampBox,
     children: [
       {
         path: 'blog/posts',
-        permission: ['admin', 'superAdmin' ,'customer'],
+        permission: ['admin', 'superAdmin', 'customer', 'marketing'],
         ID: 1,
         title: "پست های بلاگ",
       },
     
       {
         path: 'blog/blog-categories',
-        permission: ['admin', 'superAdmin' ,'customer'],
+        permission: ['admin', 'superAdmin', 'customer', 'marketing'],
         ID: 2,
         title: "دسته بندی بلاگ",
       },
@@ -127,13 +132,13 @@ export const RoutesData = [
       // },
       {
         path: 'blog/tags',
-        permission: ['admin', 'superAdmin' ,'customer'],
+        permission: ['admin', 'superAdmin', 'customer', 'marketing'],
         ID: 4,
         title: "تگ های بلاگ",
       },
       {
         path: 'blog/post-tag',
-        permission: ['admin', 'superAdmin' ,'customer'],
+        permission: ['admin', 'superAdmin', 'customer', 'marketing'],
         ID: 5,
         title: "تگ های پست بلاگ",
       },
@@ -144,13 +149,13 @@ export const RoutesData = [
     path: 'order-report',
     component: OrderReportRoute,
     ID: 4,
-    permission: ['admin', 'superAdmin', 'customer'],
+    permission: ['admin', 'superAdmin', 'customer', 'marketing'],
     title: "گزارش کارشناسی",
     icon: faTruckRampBox,
     children: [
       {
         path: 'order-report/list',
-        permission: ['admin', 'superAdmin', 'customer'],
+        permission: ['admin', 'superAdmin', 'customer', 'marketing'],
         ID: 1,
         title: "گزارش کارشناسی",
       },
@@ -160,14 +165,14 @@ export const RoutesData = [
   path: 'car-inspection',
   component: CarRoute,
   ID: 3,
-  permission: ['admin', 'superAdmin' ,'customer'],
+  permission: ['admin', 'superAdmin', 'customer', 'marketing'],
   title: "کارشناسی خودرو",
   icon: faTruckRampBox,
   children: [
     {
       path: 'car-inspection/car-inspection-service/list',
       ID: 1,
-      permission: ['admin', 'superAdmin'],
+      permission: ['admin', 'superAdmin', 'marketing'],
       title: "خدمات خودرویی",
 
   
@@ -175,7 +180,7 @@ export const RoutesData = [
     {
       path: 'car-inspection/CarGroup/list',
       ID: 2,
-      permission: ['admin', 'superAdmin'],
+      permission: ['admin', 'superAdmin', 'marketing'],
       title: "گروه خودرو",
 
   
@@ -183,7 +188,7 @@ export const RoutesData = [
     {
       path: 'car-inspection/CarBrand/list',
       ID: 3,
-      permission: ['admin', 'superAdmin'],
+      permission: ['admin', 'superAdmin', 'marketing'],
       title: "برند خودرو",
 
   
@@ -191,35 +196,35 @@ export const RoutesData = [
     {
       path: 'car-inspection/CarInspection/list',
       ID: 4,
-      permission: ['admin', 'superAdmin'],
+      permission: ['admin', 'superAdmin', 'marketing'],
       title: "کارشناسی خودرو",
   
     },
     {
       path: 'car-inspection/CarInspectionDateType/list',
       ID: 5,
-      permission: ['admin', 'superAdmin'],
+      permission: ['admin', 'superAdmin', 'marketing'],
       title: "نوع تاریخ کارشناسی",
   
     },
     {
       path: 'car-inspection/CarInspectionFeature/list',
       ID: 6,
-      permission: ['admin', 'superAdmin'],
+      permission: ['admin', 'superAdmin', 'marketing'],
       title: "ویژگیهای کارشناسی",
   
     },
     {
       path: 'car-inspection/CarInspectionType/list',
       ID: 8,
-      permission: ['admin', 'superAdmin'],
+      permission: ['admin', 'superAdmin', 'marketing'],
       title: "نوع کارشناسی",
   
     },
     {
       path: 'car-inspection/CarInspectionLocation/list',
       ID: 9,
-      permission: ['admin', 'superAdmin'],
+      permission: ['admin', 'superAdmin', 'marketing'],
       title: "مکان کارشناسی",
   
     },
@@ -230,25 +235,25 @@ export const RoutesData = [
     path: 'expert',
     component: ExpertRoute,
     ID: 6,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'expert', 'marketing'],
     title: 'کارشناسان',
     icon: faUserTie,
     children: [
       {
         path: 'expert/list',
-        permission: ['admin', 'superAdmin'],
+        permission: ['admin', 'superAdmin', 'expert', 'marketing'],
         ID: 1,
         title: 'تعریف کارشناسان',
       },
       {
         path: 'expert/assignment',
-        permission: ['admin', 'superAdmin', 'expert'],
+        permission: ['admin', 'superAdmin', 'expert', 'marketing'],
         ID: 2,
         title: 'تخصیص کارشناس',
       },
       {
         path: 'expert/earnings',
-        permission: ['admin', 'superAdmin'],
+        permission: ['admin', 'superAdmin', 'marketing'],
         ID: 3,
         title: 'درآمد کارشناسان',
       },
@@ -259,7 +264,7 @@ export const RoutesData = [
     path: 'secretOfOurServicequality/list',
     component: SecretOfOurServiceQuality,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
     title: "راز خدمات ما",
     icon: faUser,
 
@@ -268,7 +273,7 @@ export const RoutesData = [
     path: 'ٌwhy-we/list',
     component: WhyWe,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
     title: "چرا ما",
     icon: faUser,
 
@@ -278,7 +283,7 @@ export const RoutesData = [
     path: 'about-us',
     component: AboutUsRoute,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
     title: "درباره ما",
     icon: faUser
 
@@ -287,17 +292,25 @@ export const RoutesData = [
     path: 'MasterSiteDetail/list',
     component: MasterSiteDetail,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
     title: "اطلاعات سایت",
     icon: faUser,
 
+  },
+  {
+    path: 'support-order',
+    component: SupportOrder,
+    ID: 21,
+    permission: ['admin', 'superAdmin'],
+    title: 'سفارش تلفنی پشتیبانی',
+    icon: faHeadset,
   },
   {
     path: 'Order/list',
     component: Order,
     ID: 2,
     permission: ['admin', 'superAdmin'],
-    title: "سفارش از طرق پشتیبان",
+    title: 'سفارشات پشتیبان',
     icon: faUser,
 
   },
@@ -305,10 +318,52 @@ export const RoutesData = [
     path: 'SiteOrder/list',
     component: SiteOrder,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
     title: "سفارش   های سایت",
     icon: faUser,
 
+  },
+  {
+    path: 'order-funnel',
+    component: OrderFunnel,
+    ID: 8,
+    permission: ['admin', 'superAdmin', 'marketing'],
+    title: 'گزارش قیف سفارش',
+    icon: faFilter,
+  },
+  {
+    path: 'wallet',
+    component: WalletRoute,
+    ID: 9,
+    permission: ['admin', 'superAdmin'],
+    title: 'کیف‌پول',
+    icon: faWallet,
+    children: [
+      {
+        path: 'wallet/settings',
+        permission: ['admin', 'superAdmin'],
+        ID: 1,
+        title: 'تنظیمات هدیه',
+      },
+      {
+        path: 'wallet/plans',
+        permission: ['admin', 'superAdmin'],
+        ID: 2,
+        title: 'پلن‌های شارژ',
+      },
+      {
+        path: 'wallet/users',
+        permission: ['admin', 'superAdmin'],
+        ID: 3,
+        title: 'موجودی کاربر',
+      },
+      {
+        path: 'wallet/transactions',
+        permission: ['admin', 'superAdmin'],
+        ID: 4,
+        title: 'تراکنش‌ها',
+      },
+    ],
   },
  
     
@@ -317,19 +372,19 @@ export const RoutesData = [
     path: 'faq',
     component: FAQRoute,
     ID: 5,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
     title: 'سوالات متداول',
     icon: faUser,
     children: [
       {
         path: 'faq/categories',
-        permission: ['admin', 'superAdmin'],
+        permission: ['admin', 'superAdmin', 'marketing'],
         ID: 1,
         title: 'دسته بندی سوالات',
       },
       {
         path: 'faq/list',
-        permission: ['admin', 'superAdmin'],
+        permission: ['admin', 'superAdmin', 'marketing'],
         ID: 2,
         title: 'سوالات متداول',
       },

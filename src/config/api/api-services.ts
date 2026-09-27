@@ -165,10 +165,12 @@ GetFinancialExpenditure: "FinancialExpenditure/Get",
 //Order
 
 OrderList: "Order/GetAllOrder",
+OrderByUser: "Order/ByUser",
 CreateOrder: "Order/Create",
 DeleteOrder: "Order/Delete",
 EdtiOrder: "Order/Update",
 GetOrder: "Order/GetOrderWithDetails",
+OrderFunnelReport: "Order/FunnelReport",
 //OrderReport
 OrderReportList: "OrderReport/List",
 CreateOrderReport: "OrderReport/CreateWithFile",
@@ -210,6 +212,16 @@ ExpertEarningList: "ExpertEarning/List",
 EditExpertEarning: "ExpertEarning/Edit",
 ConfirmExpertEarning: "ExpertEarning/Confirm",
 RejectExpertEarning: "ExpertEarning/Reject",
+//Wallet
+WalletSettings: "Wallet/Settings",
+WalletUser: "Wallet/User",
+WalletAdjust: "Wallet/Adjust",
+WalletTransactions: "Wallet/Transactions",
+WalletChargePlanCreate: "WalletChargePlan/Create",
+WalletChargePlanUpdate: "WalletChargePlan/Update",
+WalletChargePlanDelete: "WalletChargePlan/Delete",
+WalletChargePlanGet: "WalletChargePlan/Get",
+WalletChargePlanList: "WalletChargePlan/List",
 
 
 

@@ -48,7 +48,7 @@ EditPieceProps
     const formData = new FormData();
     formData.append("text",getValues()["text"])
     formData.append("link",getValues()["link"])
-    formData.append("durrationTime",getValues()["durrationTime"])
+    formData.append("durationTime",getValues()["durationTime"])
     formData.append("image",image);
   instance.put(ApiHelper.get("UpdateSlider")+ "?id=" + slideId,formData).then((res:any) => {
     if(res.data) {

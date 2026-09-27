@@ -47,17 +47,36 @@ export const persistRolesFromToken = (token: string) => {
 
 export const isExpertRole = (token?: string) => getTokenRoles(token).includes('expert');
 
+export const isMarketingRole = (token?: string) => getTokenRoles(token).includes('marketing');
+
+const MARKETING_DENIED_PREFIXES = [
+  '/users',
+  '/roles',
+  '/Order',
+  '/support-order',
+  '/FinancialExpenditure',
+  '/FlowLifeCycle',
+  '/FlowState',
+  '/FlowType',
+];
+
 export const getDefaultPathForRole = (token?: string) =>
   isExpertRole(token) ? EXPERT_HOME_PATH : '/home';
 
 export const isExpertAllowedPath = (pathname: string) => {
-  const allowed = [EXPERT_HOME_PATH, '/profile'];
+  const allowed = ['/expert/list', EXPERT_HOME_PATH, '/profile'];
   return allowed.some((path) => pathname === path || pathname.startsWith(`${path}/`));
 };
+
+export const isMarketingAllowedPath = (pathname: string) =>
+  !MARKETING_DENIED_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  );
 
 export const getRoleLabel = (token?: string) => {
   const roles = getTokenRoles(token);
   if (roles.includes('expert')) return 'کارشناس';
+  if (roles.includes('marketing')) return 'مارکتینگ';
   if (roles.includes('superadmin') || roles.includes('superAdmin'.toLowerCase())) {
     return 'سوپرادمین';
   }
@@ -65,26 +84,37 @@ export const getRoleLabel = (token?: string) => {
   return 'کاربر';
 };
 
-export const getVisibleRoutes = <T extends { path?: string; title?: string; children?: any[] }>(
+const hasMarketingAccess = (permission?: string[]) => permission?.includes('marketing');
+
+export const getVisibleRoutes = <T extends { path?: string; title?: string; permission?: string[]; children?: any[] }>(
   routes: T[]
 ): T[] => {
-  if (!isExpertRole()) return routes;
+  if (isExpertRole()) {
+    const expertGroup = routes.find((route) => route.path === 'expert');
+    if (!expertGroup) return [];
 
-  const expertGroup = routes.find((route) => route.path === 'expert');
-  if (!expertGroup) return [];
+    const children = (expertGroup.children ?? []).filter((child: { permission?: string[] }) =>
+      child.permission?.includes('expert')
+    );
 
-  const assignment = expertGroup.children?.find(
-    (child: { path?: string }) => child.path === 'expert/assignment'
-  );
+    return [
+      {
+        ...expertGroup,
+        children,
+      },
+    ];
+  }
 
-  return [
-    {
-      ...expertGroup,
-      title: assignment?.title || 'تخصیص کارشناس',
-      path: 'expert/assignment',
-      children: undefined,
-    },
-  ];
+  if (!isMarketingRole()) return routes;
+
+  return routes
+    .filter((route) => hasMarketingAccess(route.permission))
+    .map((route) => ({
+      ...route,
+      children: route.children?.filter((child: { permission?: string[] }) =>
+        hasMarketingAccess(child.permission)
+      ),
+    }));
 };
 
 export const clearAuthStorage = () => {

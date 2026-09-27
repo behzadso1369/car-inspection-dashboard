@@ -7,7 +7,9 @@ const ExpertRoute: React.FunctionComponent = () => {
   const roles = getTokenRoles();
   const visibleRoutes = roles.includes('expert')
     ? RoutesData.filter((item) => item.permission?.includes('expert'))
-    : RoutesData;
+    : roles.includes('marketing')
+      ? RoutesData.filter((item) => item.permission?.includes('marketing'))
+      : RoutesData;
 
   return (
     <Routes>

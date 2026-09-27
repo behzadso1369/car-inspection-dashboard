@@ -14,7 +14,7 @@ export const RoutesData = [
     path: 'car-inspection-service/list',
     component: CarInspectionService,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
 
 
   },
@@ -22,7 +22,7 @@ export const RoutesData = [
     path: 'CarGroup/list',
     component: CarGroup,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
    
 
   },
@@ -30,7 +30,7 @@ export const RoutesData = [
     path: 'CarBrand/list',
     component: CarBrand,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
  
 
   },
@@ -38,14 +38,14 @@ export const RoutesData = [
     path: 'CarInspection/list',
     component: CarInspection,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
 
   },
   {
     path: 'CarInspectionDateType/list',
     component: CarInspectionDateType,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
 
 
   },
@@ -53,7 +53,7 @@ export const RoutesData = [
     path: 'CarInspectionFeature/list',
     component: CarInspectionFeature,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
 
 
   },
@@ -61,7 +61,7 @@ export const RoutesData = [
     path: 'CarInspectionLocation/list',
     component: CarInspectionLocation,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
 
 
   },
@@ -69,7 +69,7 @@ export const RoutesData = [
     path: 'CarInspectionType/list',
     component: CarInspectionType,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
 
 
   },
@@ -77,7 +77,7 @@ export const RoutesData = [
     path: 'CarInspectionLocation/list',
     component: CarInspectionLocation,
     ID: 2,
-    permission: ['admin', 'superAdmin'],
+    permission: ['admin', 'superAdmin', 'marketing'],
   
 
   },

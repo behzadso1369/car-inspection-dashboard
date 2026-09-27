@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { CircularProgress } from '@mui/material';
 import { Input } from '../../libs/input/input';
 import { Button, PrimaryButton } from '../../libs/button/button';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -19,17 +20,27 @@ import {
 const Login: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, control, getValues, reset } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = () => {
-    instance.post(ApiHelper.get('login'), getValues()).then((res) => {
-      if (res.data) {
-        const token = res.data.resultObject.accessToken;
-        localStorage.setItem('accessToken', token);
-        persistRolesFromToken(token);
-        navigate(getDefaultPathForRole(token));
-      }
-      reset();
-    });
+    if (loading) return;
+    setLoading(true);
+    instance
+      .post(ApiHelper.get('login'), getValues())
+      .then((res) => {
+        if (res.data) {
+          const token = res.data.resultObject.accessToken;
+          localStorage.setItem('accessToken', token);
+          persistRolesFromToken(token);
+          navigate(getDefaultPathForRole(token));
+          reset();
+          return;
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -103,8 +114,14 @@ const Login: React.FunctionComponent = () => {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-white/95 backdrop-blur border border-card-border rounded-3xl p-5 sm:p-8 shadow-[0_12px_40px_rgba(2,55,254,0.08)]"
+            className="relative bg-white/95 backdrop-blur border border-card-border rounded-3xl p-5 sm:p-8 shadow-[0_12px_40px_rgba(2,55,254,0.08)]"
           >
+            {loading && (
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 rounded-3xl bg-white/80 backdrop-blur-sm">
+                <CircularProgress sx={{ color: '#0237fe' }} />
+                <p className="text-sm text-black-opacity-60">در حال ورود به داشبورد...</p>
+              </div>
+            )}
             <div className="mb-5">
               <Input
                 placeholder="نام کاربری خود را وارد نمایید"

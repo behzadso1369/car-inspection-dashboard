@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { CircularProgress } from '@mui/material';
 import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
 import OrderChart from './OrderChart';
@@ -9,11 +10,18 @@ import { KpiCard } from '../../components/dashboard/DashboardCard';
 
 const HomePage: React.FunctionComponent = () => {
   const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   const getAllUser = () => {
-    instance.get(ApiHelper.get('GetChart')).then((res: any) => {
-      setData(res?.data?.resultObject);
-    });
+    setLoading(true);
+    instance
+      .get(ApiHelper.get('GetChart'))
+      .then((res: any) => {
+        setData(res?.data?.resultObject);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -52,19 +60,28 @@ const HomePage: React.FunctionComponent = () => {
         </div>
       </section>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <KpiCard label="کل سفارشات" value={allOrders} tone="brand" />
-        <KpiCard label="تکمیل‌شده" value={completed} tone="success" />
-        <KpiCard label="ناتمام" value={notCompleted} tone="warning" />
-        <KpiCard label="کاربران سایت" value={usersCount} tone="neutral" />
-      </div>
+      {loading ? (
+        <div className="flex flex-col justify-center items-center min-h-[50vh] gap-3">
+          <CircularProgress sx={{ color: '#0237fe' }} />
+          <p className="text-sm text-black-opacity-50">در حال بارگذاری داشبورد...</p>
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <KpiCard label="کل سفارشات" value={allOrders} tone="brand" />
+            <KpiCard label="تکمیل‌شده" value={completed} tone="success" />
+            <KpiCard label="ناتمام" value={notCompleted} tone="warning" />
+            <KpiCard label="کاربران سایت" value={usersCount} tone="neutral" />
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-        <UserChart piceName={'کاربران'} allData={data?.UsersSite} />
-        <OrderChart piceName={'سفارشات'} allData={data} />
-        <OtpSends piceName={'پیام های ارسال شده'} allData={data} />
-        <OrderPattern piceName={'روند سفارشات'} allData={data?.Orders} />
-      </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+            <UserChart piceName={'کاربران'} allData={data?.UsersSite} />
+            <OrderChart piceName={'سفارشات'} allData={data} />
+            <OtpSends piceName={'پیام های ارسال شده'} allData={data} />
+            <OrderPattern piceName={'روند سفارشات'} allData={data?.Orders} />
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -16,6 +16,8 @@ import {
   getVisibleRoutes,
   isExpertAllowedPath,
   isExpertRole,
+  isMarketingAllowedPath,
+  isMarketingRole,
   persistRolesFromToken,
 } from '../../utils/auth-role';
 
@@ -32,6 +34,10 @@ const Layout: React.FunctionComponent = () => {
   useEffect(() => {
     if (isExpertRole() && !isExpertAllowedPath(pathname)) {
       navigate(EXPERT_HOME_PATH, { replace: true });
+      return;
+    }
+    if (isMarketingRole() && !isMarketingAllowedPath(pathname)) {
+      navigate('/home', { replace: true });
     }
   }, [pathname, navigate]);
 
