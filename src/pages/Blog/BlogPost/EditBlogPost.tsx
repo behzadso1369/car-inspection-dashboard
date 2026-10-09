@@ -37,7 +37,8 @@ const EditBlogPost: React.FunctionComponent = () => {
         blogPostTitle:"",
         blogPostCanonical:"",
         blogPostKeyword:"",
-        blogPostDescription:""
+        blogPostDescription:"",
+        Schema:""
       }
         
     });
@@ -58,6 +59,7 @@ const EditBlogPost: React.FunctionComponent = () => {
       formData.append("blogPostDescription",getValues("blogPostDescription"));
       formData.append("blogPostKeyword",getValues("blogPostKeyword"));
       formData.append("blogPostCanonical",getValues("blogPostCanonical"));
+      formData.append("Schema",getValues("Schema") ?? "");
       
   instance.put(ApiHelper.get("EditBlogPost") + "?id=" + blogPostId,formData).then((res:any) => {
     if(res.data) {
@@ -89,7 +91,8 @@ const EditBlogPost: React.FunctionComponent = () => {
             blogPostTitle:res.data.resultObject.blogPostTitle,
             blogPostCanonical:res.data.resultObject.blogPostCanonical,
             blogPostKeyword:res.data.resultObject.blogPostKeyword,
-            blogPostDescription:res.data.resultObject.blogPostDescription
+            blogPostDescription:res.data.resultObject.blogPostDescription,
+            Schema: res.data.resultObject.schema ?? res.data.resultObject.Schema ?? ""
           })
       })
     }
@@ -182,6 +185,13 @@ const EditBlogPost: React.FunctionComponent = () => {
                          title="blogPostDescription"
                          label='description'
                          
+                       />
+                  <TextArea
+                         register={register}
+                         control={control}
+                         title="Schema"
+                         label='Schema'
+                         className="col-span-4"
                        />
                             <div className="col-span-4">
     <TextEditor 

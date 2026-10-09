@@ -58,6 +58,7 @@ EditPieceProps
       formData.append("blogPostDescription",getValues("blogPostDescription"));
       formData.append("blogPostKeyword",getValues("blogPostKeyword"));
       formData.append("blogPostCanonical",getValues("blogPostCanonical"));
+      formData.append("Schema",getValues("Schema") ?? "");
       
   instance.post(ApiHelper.get("CreateBlogPost"),formData).then((res:any) => {
     if(res.data) {
@@ -174,6 +175,13 @@ EditPieceProps
          title="blogPostDescription"
          label='description'
          
+       />
+  <TextArea
+         register={register}
+         control={control}
+         title="Schema"
+         label='Schema'
+         className="col-span-4"
        />
                             <div className="col-span-4">
     <TextEditor 

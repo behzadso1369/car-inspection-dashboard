@@ -222,6 +222,12 @@ WalletChargePlanUpdate: "WalletChargePlan/Update",
 WalletChargePlanDelete: "WalletChargePlan/Delete",
 WalletChargePlanGet: "WalletChargePlan/Get",
 WalletChargePlanList: "WalletChargePlan/List",
+//FinanceUser
+FinanceUserList: "FinanceUser/List",
+FinanceUserCreate: "FinanceUser/Create",
+FinanceUserUpdate: "FinanceUser/Update",
+FinanceUserDelete: "FinanceUser/Delete",
+FinanceUserGet: "FinanceUser/Get",
 
 
 

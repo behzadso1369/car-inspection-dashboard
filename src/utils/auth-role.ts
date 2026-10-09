@@ -55,6 +55,7 @@ const MARKETING_DENIED_PREFIXES = [
   '/Order',
   '/support-order',
   '/FinancialExpenditure',
+  '/FinanceUser',
   '/FlowLifeCycle',
   '/FlowState',
   '/FlowType',

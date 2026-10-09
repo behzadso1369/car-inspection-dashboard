@@ -103,7 +103,8 @@ const AxiosInterceptor = ({ children }: any) => {
 
       // Other errors
       setError(
-        error?.response?.data?.message ||
+        error?.response?.data?.statusMessage ||
+          error?.response?.data?.message ||
           "مشکلی به وجود آمده است، لطفاً دوباره تلاش کنید."
       );
       setOpen(true);

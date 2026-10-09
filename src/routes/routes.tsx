@@ -41,6 +41,7 @@ import CarRoute from '../pages/Car/CarRoute';
 import AboutUs from '../pages/AboutUs/AboutUs';
 import AboutUsRoute from '../pages/AboutUs/AboutUsRoute';
 import FinancialExpenditure from '../pages/FinancialExpenditure/FinancialExpenditure';
+import FinanceUser from '../pages/FinanceUser/FinanceUser';
 import Order from '../pages/Order/Order';
 import SupportOrder from '../pages/SupportOrder/SupportOrder';
 import SiteOrder from '../pages/SiteOrder/SiteOrder';
@@ -425,6 +426,14 @@ export const RoutesData = [
     title: "خرجکرد مالی",
     icon: faUser,
 
+  },
+  {
+    path: 'FinanceUser/list',
+    component: FinanceUser,
+    ID: 12,
+    permission: ['admin', 'superAdmin'],
+    title: 'کاربران مالی',
+    icon: faCreditCard,
   },
   // {
   //   path: 'services',
