@@ -31,19 +31,38 @@ export function SideBarAccordion({
   const { pathname } = useLocation();
   const isSectionActive = pathname.split('/')[1] === path.split('/')[0];
   const [open, setOpen] = React.useState(false);
+  const [collapsedWhileActive, setCollapsedWhileActive] = React.useState(false);
   const anchorRef = React.useRef<any>(null);
+
+  React.useEffect(() => {
+    if (!isSectionActive) {
+      setCollapsedWhileActive(false);
+    }
+  }, [isSectionActive]);
 
   const handleToggle = () => setOpen((prev) => !prev);
   const handleClose = () => setOpen(false);
 
+  const isExpanded =
+    openMenu &&
+    (expanded === title || (isSectionActive && !collapsedWhileActive));
+
   const handleChange =
     (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
-      setExpanded(newExpanded ? panel : '');
+      if (newExpanded) {
+        setCollapsedWhileActive(false);
+        setExpanded(panel);
+      } else {
+        if (isSectionActive) {
+          setCollapsedWhileActive(true);
+        }
+        setExpanded('');
+      }
     };
 
   return (
     <Accordion
-      expanded={(openMenu && expanded === title) || isSectionActive}
+      expanded={isExpanded}
       onChange={handleChange(title)}
       disableGutters
       elevation={0}

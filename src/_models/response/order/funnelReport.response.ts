@@ -25,6 +25,8 @@ export interface OrderFunnelReport {
   fromDate: string | null;
   toDate: string | null;
   totalOrders: number;
+  carOrderCount?: number;
+  motorcycleOrderCount?: number;
   uniqueUsers: number;
   stage1_SelectVehicle: FunnelStage;
   topVehicles: FunnelNamedCount[];

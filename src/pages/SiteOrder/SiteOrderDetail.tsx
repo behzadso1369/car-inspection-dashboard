@@ -4,7 +4,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import moment from 'jalali-moment';
 import instance from '../../helper/interceptor';
 import { ApiHelper } from '../../helper/api-request';
-import { OrderDetailResponse } from '../../_models/response/order/orderDetail.response';
+import {
+  OrderDetailResponse,
+  OrderDetailUser,
+} from '../../_models/response/order/orderDetail.response';
+import {
+  isMotorcycleOrder,
+  orderImagePath,
+  orderInspectionName,
+  orderModelName,
+  vehicleKindLabel,
+} from '../Order/vehicleKind';
 
 const IMAGE_BASE = 'https://api.carmacheck.com/';
 
@@ -12,8 +22,38 @@ interface SiteOrderDetailProps {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   orderId: number;
+  vehicleKind?: number | null;
   initialOrder?: OrderDetailResponse | null;
 }
+
+interface OrderDetailView {
+  order: OrderDetailResponse;
+  vehicleKind?: number | null;
+  vehicleKindTitle?: string | null;
+  user?: OrderDetailUser | null;
+}
+
+const readOrderDetail = (payload: any, fallbackKind?: number | null): OrderDetailView | null => {
+  if (!payload || typeof payload !== 'object') return null;
+  const nested = payload.order && typeof payload.order === 'object' ? payload.order : null;
+  const order = nested ?? payload;
+  const looksLikeOrder =
+    order &&
+    (order.address ||
+      order.carGroup ||
+      order.motorcycleGroup ||
+      order.flowState ||
+      order.userId ||
+      order.id ||
+      order.price != null);
+  if (!looksLikeOrder) return null;
+  return {
+    order,
+    vehicleKind: payload.vehicleKind ?? order.vehicleKind ?? fallbackKind,
+    vehicleKindTitle: payload.vehicleKindTitle ?? order.vehicleKindTitle,
+    user: payload.user ?? null,
+  };
+};
 
 const dash = 'ثبت نشده است';
 
@@ -127,46 +167,58 @@ const SiteOrderDetail: React.FunctionComponent<SiteOrderDetailProps> = ({
   showModal,
   setShowModal,
   orderId,
+  vehicleKind,
   initialOrder,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [detail, setDetail] = useState<OrderDetailResponse | null>(initialOrder ?? null);
+  const [kind, setKind] = useState<number | null | undefined>(vehicleKind);
+  const [kindTitle, setKindTitle] = useState<string | null | undefined>(initialOrder?.vehicleKindTitle);
+  const [customer, setCustomer] = useState<OrderDetailUser | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const applyView = (view: OrderDetailView | null) => {
+    if (!view) return;
+    setDetail(view.order);
+    setKind(view.vehicleKind);
+    setKindTitle(view.vehicleKindTitle);
+    setCustomer(view.user ?? null);
+  };
 
   useEffect(() => {
     if (!showModal || !orderId) return;
 
-    setDetail(initialOrder ?? null);
+    applyView(readOrderDetail(initialOrder, vehicleKind));
+    if (!initialOrder) setDetail(null);
     setLoading(!initialOrder);
+    const params: Record<string, number> = { OrderId: orderId, id: orderId };
+    if (vehicleKind != null) params.vehicleKind = vehicleKind;
     instance
-      .get(ApiHelper.get('GetOrder'), { params: { id: orderId } })
+      .get(ApiHelper.get('GetOrder'), { params })
       .then((res: any) => {
-        const payload = res?.data?.resultObject ?? res?.data;
-        const looksLikeOrder =
-          payload &&
-          (payload.address || payload.carGroup || payload.flowState || payload.userId);
-        if (looksLikeOrder) setDetail(payload);
+        const view = readOrderDetail(res?.data?.resultObject ?? res?.data, vehicleKind);
+        if (view) applyView(view);
       })
       .catch(() => undefined)
       .finally(() => setLoading(false));
-  }, [showModal, orderId, initialOrder]);
+  }, [showModal, orderId, vehicleKind, initialOrder]);
 
   const payable = useMemo(() => {
     if (detail?.price == null) return null;
     return Number(detail.price) - Number(detail.discount ?? 0);
   }, [detail]);
 
-  const carName = [
-    detail?.carGroup?.carBrand?.name,
-    detail?.carGroup?.name,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const motorcycle = isMotorcycleOrder({
+    vehicleKind: kind ?? detail?.vehicleKind,
+    vehicleKindTitle: kindTitle ?? detail?.vehicleKindTitle,
+  });
+  const kindText = vehicleKindLabel(kind ?? detail?.vehicleKind, kindTitle ?? detail?.vehicleKindTitle);
+  const vehicleName = orderModelName(detail);
+  const inspectionName = orderInspectionName(detail);
+  const catalog = motorcycle ? detail?.motorcycleInspection || detail?.carInspection : detail?.carInspection;
 
-  const carImage = toImageUrl(
-    detail?.carGroup?.imagePath || detail?.carGroup?.carBrand?.imagePath || detail?.imagePath
-  );
+  const carImage = toImageUrl(orderImagePath(detail));
 
   const address = detail?.address;
   const expert = detail?.expert;
@@ -199,6 +251,9 @@ const SiteOrderDetail: React.FunctionComponent<SiteOrderDetailProps> = ({
               جزئیات سفارش {detail?.id ? `#${detail.id}` : ''}
             </p>
             <div className="mt-1 flex flex-wrap items-center gap-2">
+              <span className="text-[11px] px-2.5 py-1 rounded-full bg-brand-soft text-brand font-medium">
+                {kindText}
+              </span>
               {detail?.code && (
                 <span className="text-xs text-black-opacity-50">کد {detail.code}</span>
               )}
@@ -235,7 +290,9 @@ const SiteOrderDetail: React.FunctionComponent<SiteOrderDetailProps> = ({
           <>
             <Section title="خلاصه سفارش">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
-                <Field label="کاربر" value={detail.userId} />
+                <Field label="نوع وسیله" value={kindText} />
+                <Field label="مشتری" value={customer?.userName || detail.userId} />
+                <Field label="موبایل" value={customer?.userPhone} />
                 <Field label="نوع فرآیند" value={detail.flowState?.flowType?.title} />
                 <Field label="مرحله سفارش" value={detail.flowState?.title} />
                 <Field label="تاریخ ثبت" value={formatDateTime(detail.createdOn)} />
@@ -257,23 +314,41 @@ const SiteOrderDetail: React.FunctionComponent<SiteOrderDetailProps> = ({
               </div>
             </Section>
 
-            <Section title="خودرو">
+            <Section title={motorcycle ? 'موتورسیکلت' : 'خودرو'}>
               <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
                 {carImage && (
                   <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border border-card-border bg-white flex items-center justify-center p-2 shrink-0">
-                    <img src={carImage} alt={carName || 'خودرو'} className="max-w-full max-h-full object-contain" />
+                    <img src={carImage} alt={vehicleName || kindText} className="max-w-full max-h-full object-contain" />
                   </div>
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 flex-1 min-w-0">
-                  <Field label="برند" value={detail.carGroup?.carBrand?.name} />
-                  <Field label="مدل" value={detail.carGroup?.name} />
+                  <Field
+                    label="برند"
+                    value={
+                      motorcycle
+                        ? detail.motorcycleGroup?.motorcycleBrand?.name
+                        : detail.carGroup?.carBrand?.name
+                    }
+                  />
+                  <Field
+                    label="مدل"
+                    value={motorcycle ? detail.motorcycleGroup?.name || vehicleName : detail.carGroup?.name}
+                  />
                 </div>
               </div>
             </Section>
 
             <Section title="کارشناسی">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
-                <Field label="نوع کارشناسی" value={detail.carInspectionType?.name} />
+                <Field
+                  label="نوع کارشناسی"
+                  value={
+                    inspectionName ||
+                    (motorcycle
+                      ? detail.motorcycleInspectionType?.name
+                      : detail.carInspectionType?.name)
+                  }
+                />
                 <Field label="زمان کارشناسی" value={detail.carInspectionDateType?.name} />
                 <Field label="محل کارشناسی" value={detail.carInspectionLocationType?.name} />
                 <Field
@@ -284,11 +359,11 @@ const SiteOrderDetail: React.FunctionComponent<SiteOrderDetailProps> = ({
                 <Field label="ساعت برنامه‌ریزی" value={formatTime(detail.scheduledTime)} />
                 <Field
                   label="قیمت کارشناسی ما"
-                  value={formatMoney(detail.carInspection?.ourPrice)}
+                  value={formatMoney(catalog?.ourPrice)}
                 />
                 <Field
                   label="قیمت بازار"
-                  value={formatMoney(detail.carInspection?.marketPrice)}
+                  value={formatMoney(catalog?.marketPrice)}
                 />
               </div>
             </Section>
@@ -317,7 +392,11 @@ const SiteOrderDetail: React.FunctionComponent<SiteOrderDetailProps> = ({
             </Section>
 
             <Section title="کارشناس">
-              {expert ? (
+              {motorcycle ? (
+                <p className="text-sm text-black-opacity-50">
+                  اعزام کارشناس در محل فقط برای سفارش خودرو است.
+                </p>
+              ) : expert ? (
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
                     <Field label="نام کارشناس" value={expert.fullName} />

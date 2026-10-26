@@ -9,6 +9,7 @@ import {
   OrderByUserWalletTx,
 } from '../../_models/response/order/orderByUser.response';
 import { formatSignedToman, formatToman, txAmountClass } from '../Wallet/walletHelpers';
+import { isMotorcycleOrder, orderInspectionName, orderModelName, vehicleKindLabel } from './vehicleKind';
 
 const IMAGE_BASE = 'https://api.carmacheck.com/';
 const dash = 'ثبت نشده است';
@@ -216,6 +217,8 @@ const OrderByUserDetail: React.FunctionComponent<OrderByUserDetailProps> = ({ op
   const location = order?.location;
   const report = order?.report;
   const assignment = order?.expertAssignment;
+  const motorcycle = isMotorcycleOrder(order);
+  const kindText = vehicleKindLabel(order?.vehicleKind, order?.vehicleKindTitle);
   const showMap =
     !!location?.isOnSite && hasCoords(location.address?.lat, location.address?.lng);
 
@@ -260,6 +263,7 @@ const OrderByUserDetail: React.FunctionComponent<OrderByUserDetailProps> = ({ op
               جزئیات سفارش {order ? `#${order.id}` : ''}
             </p>
             <div className="mt-1 flex flex-wrap items-center gap-2">
+              {order && <Pill className="bg-brand-soft text-brand">{kindText}</Pill>}
               {order?.code && <span className="text-xs text-black-opacity-50">کد {order.code}</span>}
               {order?.paymentStatusTitle && (
                 <Pill className={paymentTitleClass(order.paymentStatusTitle)}>{order.paymentStatusTitle}</Pill>
@@ -285,8 +289,9 @@ const OrderByUserDetail: React.FunctionComponent<OrderByUserDetailProps> = ({ op
                 <Field label="شناسه" value={`#${order.id}`} />
                 <Field label="کد" value={order.code} />
                 <Field label="تاریخ ثبت" value={order.createdOnPersian} />
-                <Field label="خودرو" value={order.carName} />
-                <Field label="نوع کارشناسی" value={order.inspectionType} />
+                <Field label="نوع وسیله" value={kindText} />
+                <Field label={motorcycle ? 'موتورسیکلت' : 'خودرو'} value={motorcycle ? orderModelName(order) : order.carName} />
+                <Field label="نوع کارشناسی" value={orderInspectionName(order) || order.inspectionType} />
                 <Field label="ساعت برنامه‌ریزی" value={clock(order.scheduledTime)} />
                 {(order.scheduledDatePersian || order.scheduledDate) && (
                   <Field label="تاریخ برنامه‌ریزی" value={order.scheduledDatePersian || order.scheduledDate} />
@@ -329,7 +334,9 @@ const OrderByUserDetail: React.FunctionComponent<OrderByUserDetailProps> = ({ op
             </Section>
 
             <Section title="اعزام کارشناس">
-              {assignment?.statusText ? (
+              {motorcycle ? (
+                <p className="text-sm text-black-opacity-50">اعزام کارشناس در محل فقط برای سفارش خودرو است.</p>
+              ) : assignment?.statusText ? (
                 <p className="text-sm text-primary">{assignment.statusText}</p>
               ) : (
                 <p className="text-sm text-black-opacity-50">اعزام کارشناسی برای این سفارش ثبت نشده است.</p>

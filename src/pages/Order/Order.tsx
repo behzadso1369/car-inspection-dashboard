@@ -23,6 +23,14 @@ import {
   OrderByUserWalletTx,
 } from '../../_models/response/order/orderByUser.response';
 import OrderByUserDetail from './OrderByUserDetail';
+import {
+  isMotorcycleOrder,
+  orderInspectionName,
+  orderModelName,
+  VEHICLE_KIND_CAR,
+  VEHICLE_KIND_MOTORCYCLE,
+  vehicleKindLabel,
+} from './vehicleKind';
 
 type ActiveQuery = { search?: string; userId?: string };
 
@@ -32,9 +40,135 @@ const USER_TYPE: Record<string, string> = {
 
 const txDate = (tx: OrderByUserWalletTx) => tx.createdOnPersian || tx.createdOn || '—';
 
-const Order: React.FunctionComponent = () => {
+const presentOrder = (order: OrderByUserOrder, fallbackKind: number): OrderByUserOrder => {
+  const vehicleKind = order.vehicleKind ?? fallbackKind;
+  const motorcycle = vehicleKind === VEHICLE_KIND_MOTORCYCLE || isMotorcycleOrder(order);
+  return {
+    ...order,
+    vehicleKind,
+    vehicleKindTitle: vehicleKindLabel(vehicleKind, order.vehicleKindTitle),
+    carName: motorcycle ? orderModelName({ ...order, vehicleKind }) || order.carName : order.carName,
+    inspectionType: motorcycle
+      ? orderInspectionName({ ...order, vehicleKind }) || order.inspectionType
+      : order.inspectionType,
+  };
+};
+
+const UserOrderTable: React.FC<{
+  rows: OrderByUserOrder[];
+  nameHeader: string;
+  emptyMessage: string;
+  onOpen: (row: OrderByUserOrder) => void;
+}> = ({ rows, nameHeader, emptyMessage, onOpen }) => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
+  const columnDefs = useMemo<ColDef[]>(
+    () => [
+      { field: 'id', headerName: 'شناسه', maxWidth: 90, pinned: 'right', filter: false },
+      { field: 'vehicleKindTitle', headerName: 'نوع', minWidth: 120 },
+      { field: 'code', headerName: 'کد', minWidth: 110 },
+      { field: 'createdOnPersian', headerName: 'تاریخ', minWidth: 150 },
+      { field: 'carName', headerName: nameHeader, minWidth: 140 },
+      { field: 'inspectionType', headerName: 'نوع کارشناسی', minWidth: 140 },
+      {
+        field: 'location.displayAddress',
+        headerName: 'محل',
+        minWidth: 180,
+        valueGetter: (params) => params.data?.location?.displayAddress || '—',
+      },
+      {
+        field: 'finalPrice',
+        headerName: 'مبلغ نهایی',
+        minWidth: 130,
+        cellRenderer: (params: any) => formatToman(params.data?.finalPrice),
+      },
+      { field: 'paymentStatusTitle', headerName: 'وضعیت پرداخت', minWidth: 160 },
+      { field: 'flowStateTitle', headerName: 'مرحله', minWidth: 140 },
+      {
+        field: 'action',
+        headerName: 'عملیات',
+        filter: false,
+        minWidth: 120,
+        cellRenderer: (params: any) => (
+          <button
+            type="button"
+            className="bg-brand text-xs py-2 cursor-pointer rounded-md px-2 outline-none text-white"
+            onClick={(event) => {
+              event.stopPropagation();
+              onOpen(params.data);
+            }}
+          >
+            جزئیات
+          </button>
+        ),
+      },
+    ],
+    [nameHeader, onOpen]
+  );
+  const cardFields = useMemo(
+    () =>
+      cardFieldsFromColDefs(columnDefs, {
+        primaryField: 'carName',
+        badgeField: 'vehicleKindTitle',
+        maxBodyFields: 8,
+        valueOverrides: {
+          id: (row) => (row.id != null ? `#${row.id}` : '—'),
+          finalPrice: (row) => formatToman(row.finalPrice),
+          'location.displayAddress': (row) => row.location?.displayAddress || '—',
+        },
+      }),
+    [columnDefs]
+  );
+  const defaultColDef = useMemo<ColDef>(
+    () => ({
+      flex: 1,
+      minWidth: 120,
+      filter: 'agTextColumnFilter',
+      menuTabs: ['filterMenuTab'],
+    }),
+    []
+  );
+  const desktopView = (
+    <div style={containerStyle}>
+      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-4 pt-2">
+        <AgGridReact
+          animateRows={true}
+          rowHeight={60}
+          headerHeight={50}
+          domLayout="autoHeight"
+          rowData={rows}
+          enableRtl={true}
+          suppressAggFuncInHeader={true}
+          defaultColDef={defaultColDef}
+          columnDefs={columnDefs}
+          pagination={false}
+          localeText={AG_GRID_LOCALE_FN}
+          suppressColumnVirtualisation={true}
+          suppressRowVirtualisation={true}
+          getRowId={(params) => `${params.data?.vehicleKind ?? 0}-${params.data?.id}`}
+          onRowClicked={(event) => {
+            if (event.data) onOpen(event.data);
+          }}
+        />
+      </div>
+    </div>
+  );
+
+  return (
+    <ResponsiveDataView
+      rowData={rows}
+      fields={cardFields}
+      actions={[
+        { key: 'detail', label: 'جزئیات', variant: 'primary', onClick: (row) => onOpen(row) },
+      ]}
+      emptyMessage={emptyMessage}
+      getRowKey={(row) => `${row.vehicleKind ?? 0}-${row.id}`}
+      desktopView={desktopView}
+    />
+  );
+};
+
+const Order: React.FunctionComponent = () => {
   const requestId = useRef(0);
   const activeQuery = useRef<ActiveQuery | null>(null);
 
@@ -129,101 +263,19 @@ const Order: React.FunctionComponent = () => {
     activeQuery.current = null;
   };
 
-  const orders = dossier?.orders ?? [];
+  const orders = (dossier?.orders ?? []).map((order) => presentOrder(order, VEHICLE_KIND_CAR));
+  const motorcycleOrders = (dossier?.motorcycleOrders ?? []).map((order) =>
+    presentOrder(order, VEHICLE_KIND_MOTORCYCLE)
+  );
   const user = dossier?.user;
   const wallet = dossier?.wallet;
-
-  const columnDefs: ColDef[] = [
-    { field: 'id', headerName: 'شناسه', maxWidth: 90, pinned: 'right', filter: false },
-    { field: 'code', headerName: 'کد', minWidth: 110 },
-    { field: 'createdOnPersian', headerName: 'تاریخ', minWidth: 150 },
-    { field: 'carName', headerName: 'خودرو', minWidth: 140 },
-    { field: 'inspectionType', headerName: 'نوع کارشناسی', minWidth: 140 },
-    {
-      field: 'location.displayAddress',
-      headerName: 'محل',
-      minWidth: 180,
-      valueGetter: (params) => params.data?.location?.displayAddress || '—',
-    },
-    {
-      field: 'finalPrice',
-      headerName: 'مبلغ نهایی',
-      minWidth: 130,
-      cellRenderer: (params: any) => formatToman(params.data?.finalPrice),
-    },
-    { field: 'paymentStatusTitle', headerName: 'وضعیت پرداخت', minWidth: 160 },
-    { field: 'flowStateTitle', headerName: 'مرحله', minWidth: 140 },
-    {
-      field: 'action',
-      headerName: 'عملیات',
-      filter: false,
-      minWidth: 120,
-      cellRenderer: (params: any) => (
-        <button
-          type="button"
-          className="bg-brand text-xs py-2 cursor-pointer rounded-md px-2 outline-none text-white"
-          onClick={(event) => {
-            event.stopPropagation();
-            setSelectedOrder(params.data);
-          }}
-        >
-          جزئیات
-        </button>
-      ),
-    },
-  ];
-
-  const cardFields = cardFieldsFromColDefs(columnDefs, {
-    primaryField: 'carName',
-    badgeField: 'paymentStatusTitle',
-    maxBodyFields: 8,
-    valueOverrides: {
-      id: (row) => (row.id != null ? `#${row.id}` : '—'),
-      finalPrice: (row) => formatToman(row.finalPrice),
-      'location.displayAddress': (row) => row.location?.displayAddress || '—',
-    },
-  });
-
-  const defaultColDef = useMemo<ColDef>(
-    () => ({
-      flex: 1,
-      minWidth: 120,
-      filter: 'agTextColumnFilter',
-      menuTabs: ['filterMenuTab'],
-    }),
-    []
-  );
-
-  const desktopView = (
-    <div style={containerStyle}>
-      <div style={gridStyle} className="ag-theme-alpine w-full default-table pb-4 pt-2">
-        <AgGridReact
-          animateRows={true}
-          rowHeight={60}
-          headerHeight={50}
-          domLayout="autoHeight"
-          rowData={orders}
-          enableRtl={true}
-          suppressAggFuncInHeader={true}
-          defaultColDef={defaultColDef}
-          columnDefs={columnDefs}
-          pagination={false}
-          localeText={AG_GRID_LOCALE_FN}
-          suppressColumnVirtualisation={true}
-          suppressRowVirtualisation={true}
-          onRowClicked={(event) => {
-            if (event.data) setSelectedOrder(event.data);
-          }}
-        />
-      </div>
-    </div>
-  );
+  const openOrder = useCallback((row: OrderByUserOrder) => setSelectedOrder(row), []);
 
   return (
     <>
       <ListPageShell
         title="سفارشات پشتیبان"
-        subtitle="با شماره تماس، شناسه کاربر یا نام، پرونده مشتری را باز کنید. جزئیات هر سفارش از همان پاسخ خوانده می‌شود."
+        subtitle="با شماره تماس، شناسه کاربر یا نام، پرونده مشتری را باز کنید. سفارش خودرو و موتورسیکلت جدا نشان داده می‌شود."
         headerAction={
           <NavLink
             to="/support-order"
@@ -373,21 +425,25 @@ const Order: React.FunctionComponent = () => {
               )}
             </DashboardCard>
 
-            <DashboardCard title={`سفارش‌ها (${Number(count || orders.length).toLocaleString('fa-IR')})`}>
-              <ResponsiveDataView
-                rowData={orders}
-                fields={cardFields}
-                actions={[
-                  {
-                    key: 'detail',
-                    label: 'جزئیات',
-                    variant: 'primary',
-                    onClick: (row) => setSelectedOrder(row),
-                  },
-                ]}
-                emptyMessage="سفارشی برای این کاربر ثبت نشده است"
-                getRowKey={(row) => row.id}
-                desktopView={desktopView}
+            <DashboardCard title={`سفارش‌های خودرو (${Number(count || orders.length).toLocaleString('fa-IR')})`}>
+              <UserOrderTable
+                rows={orders}
+                nameHeader="خودرو"
+                emptyMessage="سفارش خودرویی برای این کاربر ثبت نشده است"
+                onOpen={openOrder}
+              />
+            </DashboardCard>
+
+            <DashboardCard
+              title={`سفارش‌های موتورسیکلت (${Number(
+                dossier?.motorcycleOrderCount ?? motorcycleOrders.length
+              ).toLocaleString('fa-IR')})`}
+            >
+              <UserOrderTable
+                rows={motorcycleOrders}
+                nameHeader="موتور"
+                emptyMessage="سفارش موتورسیکلتی برای این کاربر ثبت نشده است"
+                onOpen={openOrder}
               />
             </DashboardCard>
           </div>

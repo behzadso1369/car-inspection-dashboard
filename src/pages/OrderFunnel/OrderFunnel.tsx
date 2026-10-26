@@ -86,6 +86,9 @@ function normalizeReport(raw: any): OrderFunnelReport {
     fromDate: raw?.fromDate ?? null,
     toDate: raw?.toDate ?? null,
     totalOrders: Number(raw?.totalOrders ?? 0),
+    carOrderCount: raw?.carOrderCount == null ? undefined : Number(raw.carOrderCount),
+    motorcycleOrderCount:
+      raw?.motorcycleOrderCount == null ? undefined : Number(raw.motorcycleOrderCount),
     uniqueUsers: Number(raw?.uniqueUsers ?? 0),
     stage1_SelectVehicle: pickStage(raw?.stage1_SelectVehicle, 'انتخاب خودرو'),
     topVehicles: pickNamedList(raw?.topVehicles),
@@ -127,8 +130,8 @@ function buildFunnelSteps(report: OrderFunnelReport): FunnelDisplayStep[] {
     {
       key: 'stage1',
       step: 1,
-      title: s1.title || 'انتخاب خودرو',
-      criterion: 'انتخاب خودرو (CarGroupId)',
+      title: s1.title || 'انتخاب خودرو یا موتورسیکلت',
+      criterion: 'انتخاب خودرو یا موتورسیکلت',
       orderCount: s1.orderCount,
       uniqueUserCount: s1.uniqueUserCount,
       percentOfTotal: s1.percentOfTotal,
@@ -455,11 +458,12 @@ const OrderFunnel: React.FunctionComponent = () => {
   const steps = useMemo(() => (report ? buildFunnelSteps(report) : []), [report]);
   const isEmpty = report != null && report.totalOrders === 0;
   const payment = report?.payment ?? emptyPayment();
+  const hasKindSplit = report?.carOrderCount != null || report?.motorcycleOrderCount != null;
 
   return (
     <ListPageShell
       title="گزارش قیف سفارش"
-      subtitle="تعداد سفارش در هر مرحله از انتخاب خودرو تا پرداخت موفق"
+      subtitle="تعداد سفارش خودرو و موتورسیکلت در هر مرحله تا پرداخت موفق"
       searchSlot={
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
           <Datepicker
@@ -545,12 +549,27 @@ const OrderFunnel: React.FunctionComponent = () => {
             {formatCount(appliedTop)}
           </p>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
             <KpiCard
               label="کل سفارش‌ها"
               value={formatCount(report.totalOrders)}
+              hint={hasKindSplit ? 'خودرو و موتورسیکلت' : undefined}
               tone="brand"
             />
+            {hasKindSplit && (
+              <KpiCard
+                label="سفارش خودرو"
+                value={formatCount(report.carOrderCount)}
+                tone="neutral"
+              />
+            )}
+            {hasKindSplit && (
+              <KpiCard
+                label="سفارش موتورسیکلت"
+                value={formatCount(report.motorcycleOrderCount)}
+                tone="success"
+              />
+            )}
             <KpiCard
               label="کاربران یکتا"
               value={formatCount(report.uniqueUsers)}
@@ -572,7 +591,7 @@ const OrderFunnel: React.FunctionComponent = () => {
           <FunnelVisual steps={steps} totalOrders={report.totalOrders} />
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-            <RankList title="محبوب‌ترین خودروها" items={report.topVehicles} />
+            <RankList title="محبوب‌ترین مدل‌ها" items={report.topVehicles} />
             <RankList
               title="محبوب‌ترین نوع کارشناسی"
               items={report.topInspectionTypes}

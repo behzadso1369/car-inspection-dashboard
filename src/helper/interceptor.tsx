@@ -12,8 +12,11 @@ const AxiosInterceptor = ({ children }: any) => {
   const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-  const handleClose = (event: any, reason: any) => {
-    if (reason === "clickaway") return;
+  const handleClose = (_event: unknown, reason?: string) => {
+    if (reason === "clickaway" || reason === "escapeKeyDown" || reason === "timeout") {
+      setOpen(false);
+      return;
+    }
     setOpen(false);
   };
 
@@ -58,14 +61,20 @@ const AxiosInterceptor = ({ children }: any) => {
   // --- Response interceptor ---
   instance.interceptors.response.use(
     (response) => {
+      const method = (response.config?.method ?? "get").toLowerCase();
+      const silentGet = method === "get" && response.data?.isSuccess !== false;
+
       if (response.data?.isSuccess) {
-        setIsSuccess(true);
-        setError(response.data.statusMessage || "عملیات موفقیت‌آمیز بود");
+        if (!silentGet) {
+          setIsSuccess(true);
+          setError(response.data.statusMessage || "عملیات موفقیت‌آمیز بود");
+          setOpen(true);
+        }
       } else {
         setIsSuccess(false);
         setError(response.data?.statusMessage || "خطایی رخ داده است");
+        setOpen(true);
       }
-      setOpen(true);
       return response;
     },
     async (error) => {
@@ -118,10 +127,12 @@ const AxiosInterceptor = ({ children }: any) => {
       <Snackbar
         open={open}
         onClose={handleClose}
-        autoHideDuration={1000}
+        autoHideDuration={4000}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <Alert severity={isSuccess ? "success" : "error"}>{error}</Alert>
+        <Alert severity={isSuccess ? "success" : "error"} onClose={() => setOpen(false)}>
+          {error}
+        </Alert>
       </Snackbar>
     </>
   );

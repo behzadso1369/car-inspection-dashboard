@@ -49,6 +49,38 @@ export interface OrderDetailInspectionType {
   id?: number;
 }
 
+export interface OrderDetailUser {
+  userId?: string;
+  userName?: string;
+  userPhone?: string;
+}
+
+export interface OrderDetailMotorcycleBrand {
+  name?: string;
+  englishName?: string;
+  imagePath?: string | null;
+  id?: number;
+}
+
+export interface OrderDetailMotorcycleGroup {
+  motorcycleBrandId?: number;
+  motorcycleBrand?: OrderDetailMotorcycleBrand | null;
+  name?: string;
+  englishName?: string;
+  imagePath?: string | null;
+  id?: number;
+}
+
+export interface OrderDetailMotorcycleInspection {
+  marketPrice?: number;
+  ourPrice?: number;
+  motorcycleGroupId?: number;
+  motorcycleGroup?: OrderDetailMotorcycleGroup | null;
+  motorcycleInspectionTypeId?: number;
+  motorcycleInspectionType?: OrderDetailInspectionType | null;
+  id?: number;
+}
+
 export interface OrderDetailCarInspection {
   marketPrice?: number;
   ourPrice?: number;
@@ -120,6 +152,14 @@ export interface OrderDetailResponse {
   discountEntity?: unknown;
   paymentStatus?: number | null;
   paymentStatusTitle?: string | null;
+  vehicleKind?: number | null;
+  vehicleKindTitle?: string | null;
+  motorcycleGroupId?: number | null;
+  motorcycleGroup?: OrderDetailMotorcycleGroup | null;
+  motorcycleInspectionId?: number | null;
+  motorcycleInspection?: OrderDetailMotorcycleInspection | null;
+  motorcycleInspectionTypeId?: number | null;
+  motorcycleInspectionType?: OrderDetailInspectionType | null;
   expertId?: number | null;
   expert?: OrderDetailExpert | null;
   expertAssignedAt?: string | null;

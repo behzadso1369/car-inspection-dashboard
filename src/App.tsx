@@ -14,6 +14,10 @@ import './styles.scss'
 import Auth from './utils/Auth';
 import Setting from './pages/Setting/Setting';
 import Register from './pages/Register/Register';
+import {
+  LegacySellerSalesSmsRedirect,
+  LegacyShortLinkRedirect,
+} from './pages/Utm/legacyUtmRedirects';
 
 
 const App: React.FunctionComponent = () => {
@@ -79,7 +83,8 @@ const App: React.FunctionComponent = () => {
               }
             >
               {lazyRoutes}
-              {/* <Route path="" element={<Navigate to="/home" />} /> */}
+              <Route path="short-link/*" element={<LegacyShortLinkRedirect />} />
+              <Route path="seller-sales-sms" element={<LegacySellerSalesSmsRedirect />} />
               <Route path="profile" element={<Profile />} />
               <Route path='setting' element={<Setting />} />
            

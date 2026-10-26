@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { AdapterDateFnsJalali } from '@mui/x-date-pickers/AdapterDateFnsJalali';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { faIR } from '@mui/x-date-pickers/locales';
 import moment from 'jalali-moment';
 
 interface DatepickerProps extends React.PropsWithChildren {
@@ -39,13 +40,23 @@ export const Datepicker: React.FunctionComponent<DatepickerProps> = ({
         {...register(title)}
         control={control}
         render={({ field: { ref, ...field } }) => (
-          <LocalizationProvider dateAdapter={AdapterDateFnsJalali}>
+          <LocalizationProvider
+            dateAdapter={AdapterDateFnsJalali}
+            localeText={faIR.components.MuiLocalizationProvider.defaultProps.localeText}
+          >
             <DatePicker
               className="date-picker bg-white"
               sx={{
                
                 width: '100%'
               }}
+              value={
+                field.value
+                  ? moment(field.value, ['YYYY-MM-DD', moment.ISO_8601], true).isValid()
+                    ? moment(field.value, ['YYYY-MM-DD', moment.ISO_8601]).toDate()
+                    : null
+                  : null
+              }
               dayOfWeekFormatter={(day) =>
                 `${
                   day === 'ش'
@@ -63,12 +74,14 @@ export const Datepicker: React.FunctionComponent<DatepickerProps> = ({
                     : 'ج'
                 }`
               }
-              onChange={(date: any) => {
-                field.onChange(moment(date).locale("en").format("YYYY-MM-DD"));
-            
+              onChange={(date: Date | null) => {
+                if (!date || !moment(date).isValid()) {
+                  field.onChange('');
+                  return;
+                }
+                field.onChange(moment(date).locale('en').format('YYYY-MM-DD'));
               }}
               disabled={disabled}
-              // defaultValue={new Date()}
               slots={{
                 openPickerIcon: () => (
                   <FontAwesomeIcon
@@ -95,7 +108,7 @@ export const Datepicker: React.FunctionComponent<DatepickerProps> = ({
                   />
                 ),
               }}
-              format="yyyy-MM-dd"
+              format="yyyy/MM/dd"
             />
           </LocalizationProvider>
         )}

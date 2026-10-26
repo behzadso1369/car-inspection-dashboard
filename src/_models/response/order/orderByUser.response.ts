@@ -112,7 +112,15 @@ export interface OrderByUserOrder {
   id: number;
   code?: string | null;
   createdOnPersian?: string | null;
+  vehicleKind?: number | null;
+  vehicleKindTitle?: string | null;
   carName?: string | null;
+  motorcycleGroup?: {
+    name?: string | null;
+    imagePath?: string | null;
+    motorcycleBrand?: { name?: string | null; imagePath?: string | null } | null;
+  } | null;
+  motorcycleInspectionType?: { name?: string | null } | string | null;
   inspectionType?: string | null;
   finalPrice?: number | null;
   price?: number | null;
@@ -136,4 +144,6 @@ export interface OrderByUserResult {
   user?: OrderByUserProfile | null;
   wallet?: OrderByUserWallet | null;
   orders?: OrderByUserOrder[];
+  motorcycleOrders?: OrderByUserOrder[];
+  motorcycleOrderCount?: number;
 }

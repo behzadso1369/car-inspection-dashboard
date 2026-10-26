@@ -14,6 +14,7 @@ import {
   faUserTie,
   faFilter,
   faHeadset,
+  faTags,
 
 } from '@fortawesome/free-solid-svg-icons';
 import UserRoute from '../pages/User/UserRoute';
@@ -49,6 +50,7 @@ import OrderFunnel from '../pages/OrderFunnel/OrderFunnel';
 import FAQRoute from '../pages/FAQ/FAQRoute';
 import ExpertRoute from '../pages/Expert/ExpertRoute';
 import WalletRoute from '../pages/Wallet/WalletRoute';
+import UtmRoute from '../pages/Utm/UtmRoute';
 
 
 export const RoutesData = [
@@ -331,6 +333,52 @@ export const RoutesData = [
     permission: ['admin', 'superAdmin', 'marketing'],
     title: 'گزارش قیف سفارش',
     icon: faFilter,
+  },
+  {
+    path: 'utm',
+    component: UtmRoute,
+    ID: 22,
+    permission: ['admin', 'superAdmin', 'marketing'],
+    title: 'UTM',
+    icon: faTags,
+    children: [
+      {
+        path: 'utm/short-link/list',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 1,
+        title: 'لیست لینک‌ها',
+      },
+      {
+        path: 'utm/short-link/create',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 2,
+        title: 'ساخت لینک',
+      },
+      {
+        path: 'utm/short-link/bulk',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 3,
+        title: 'پیامک انبوه',
+      },
+      {
+        path: 'utm/short-link/campaigns',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 4,
+        title: 'گزارش کمپین',
+      },
+      {
+        path: 'utm/short-link/flow',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 5,
+        title: 'روند و راهنما',
+      },
+      {
+        path: 'utm/seller-sales-sms',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 6,
+        title: 'پیامک کارشناسی فروش',
+      },
+    ],
   },
   {
     path: 'wallet',

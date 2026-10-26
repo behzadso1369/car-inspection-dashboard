@@ -18,6 +18,14 @@ import { ListPageShell } from '../../components/list/ListPageShell';
 import { ResponsiveDataView } from '../../components/list/ResponsiveDataView';
 import { FixedPaginationBar } from '../../components/list/FixedPaginationBar';
 import { CardAction, CardField } from '../../types/list';
+import {
+  isMotorcycleOrder,
+  orderInspectionName,
+  orderModelName,
+  vehicleKindLabel,
+  VEHICLE_KIND_CAR,
+  VEHICLE_KIND_MOTORCYCLE,
+} from '../Order/vehicleKind';
 const SiteOrder: React.FunctionComponent = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -35,6 +43,7 @@ const SiteOrder: React.FunctionComponent = () => {
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false);
   const [showDetailModal, setShowDetailModal] = useState<boolean>(false);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [selectedVehicleKind, setSelectedVehicleKind] = useState<number | undefined>(undefined);
 
   const [rowData, setRowData] = useState<any>();
 
@@ -83,6 +92,13 @@ const SiteOrder: React.FunctionComponent = () => {
 
   const openDetail = (row: any) => {
     setSecretOfOurServiceQualityId(row.id);
+    setSelectedVehicleKind(
+      row?.vehicleKind != null
+        ? Number(row.vehicleKind)
+        : isMotorcycleOrder(row)
+          ? VEHICLE_KIND_MOTORCYCLE
+          : undefined
+    );
     setSelectedOrder(row);
     setShowDetailModal(true);
   };
@@ -94,6 +110,23 @@ const SiteOrder: React.FunctionComponent = () => {
         label: '#',
         primary: true,
         getValue: (row) => (row.id != null ? `#${row.id}` : 'ثبت نشده است'),
+      },
+      {
+        key: 'vehicleKindTitle',
+        label: 'نوع وسیله',
+        badge: true,
+        badgeTone: (row) => (isMotorcycleOrder(row) ? 'info' : 'default'),
+        getValue: (row) => vehicleKindLabel(row.vehicleKind, row.vehicleKindTitle),
+      },
+      {
+        key: 'model',
+        label: 'مدل',
+        getValue: (row) => orderModelName(row) || 'ثبت نشده است',
+      },
+      {
+        key: 'inspection',
+        label: 'نوع کارشناسی',
+        getValue: (row) => orderInspectionName(row) || 'ثبت نشده است',
       },
       {
         key: 'paymentStatusTitle',
@@ -116,7 +149,10 @@ const SiteOrder: React.FunctionComponent = () => {
       {
         key: 'lastLevel',
         label: 'آخرین مرحله',
-        getValue: (row) => row.flowState?.title || 'ثبت نشده است',
+        getValue: (row) =>
+          (typeof row.flowState === 'string' ? row.flowState : row.flowState?.title) ||
+          row.flowStateTitle ||
+          'ثبت نشده است',
       },
       {
         key: 'createdOn',
@@ -161,8 +197,45 @@ maxWidth:80,
       wrapText:false
      
     },
-  
-   
+    {
+      field: 'vehicleKindTitle',
+      headerName: 'نوع وسیله',
+      minWidth: 130,
+      cellRenderer: (params: any) => {
+        const motorcycle = isMotorcycleOrder(params.data);
+        return (
+          <span className={motorcycle ? 'text-brand font-medium' : ''}>
+            {vehicleKindLabel(params.data?.vehicleKind, params.data?.vehicleKindTitle)}
+          </span>
+        );
+      },
+    },
+    {
+      field: 'model',
+      headerName: 'مدل',
+      minWidth: 160,
+      cellRenderer: (params: any) => {
+        const name = orderModelName(params.data);
+        return name ? (
+          <span>{name}</span>
+        ) : (
+          <span className="text-black-opacity-50">ثبت نشده است</span>
+        );
+      },
+    },
+    {
+      field: 'inspection',
+      headerName: 'نوع کارشناسی',
+      minWidth: 150,
+      cellRenderer: (params: any) => {
+        const name = orderInspectionName(params.data);
+        return name ? (
+          <span>{name}</span>
+        ) : (
+          <span className="text-black-opacity-50">ثبت نشده است</span>
+        );
+      },
+    },
     {
       field: 'userId',
       headerName: 'کاربر ',
@@ -179,7 +252,6 @@ maxWidth:80,
       field: 'createdOn',
       headerName: ' تاریخ ثبت سفارش ',
       cellRenderer: (params:any) => {
-        debugger
         return (
           <>
           {params.data.createdOn ? <span>{moment(params.data.createdOn).locale("fa").format("YYYY-MM-DD ساعت HH:mm:ss")}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
@@ -205,9 +277,13 @@ maxWidth:80,
       field: 'lastLevel',
       headerName: 'آخرین مرحله',
       cellRenderer: (params:any) => {
+        const stage =
+          (typeof params?.data?.flowState === 'string'
+            ? params.data.flowState
+            : params?.data?.flowState?.title) || params?.data?.flowStateTitle;
         return (
           <>
-          {params?.data?.flowState?.title ? <span>{params?.data?.flowState?.title}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
+          {stage ? <span>{stage}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
@@ -293,6 +369,7 @@ maxWidth:80,
           suppressMoveWhenRowDragging={true}
           paginationPageSize={5}
           loadingOverlayComponent={overlayComponent}
+          getRowId={(params) => `${params.data?.vehicleKind ?? VEHICLE_KIND_CAR}-${params.data?.id}`}
         />
       </div>
     </div>
@@ -302,6 +379,7 @@ maxWidth:80,
     <Fragment>
       <ListPageShell
         title="سفارشات سایت"
+        subtitle="سفارش‌های پرداخت‌شده خودرو و موتورسیکلت"
         searchSlot={
           <QuickSearch
             activeSearch={true}
@@ -327,7 +405,7 @@ maxWidth:80,
           fields={cardFields}
           actions={cardActions}
           emptyMessage="سفارشی وجود ندارد"
-          getRowKey={(row) => row.id}
+          getRowKey={(row) => `${row.vehicleKind ?? VEHICLE_KIND_CAR}-${row.id}`}
           desktopView={desktopView}
         />
       </ListPageShell>
@@ -341,6 +419,7 @@ maxWidth:80,
           showModal={showDetailModal}
           setShowModal={setShowDetailModal}
           orderId={secretOfOurServiceQualityId}
+          vehicleKind={selectedVehicleKind}
           initialOrder={selectedOrder}
         />
       )}
