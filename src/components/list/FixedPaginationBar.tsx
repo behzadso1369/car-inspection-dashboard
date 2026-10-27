@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 export function FixedPaginationBar({ children }: { children: ReactNode }) {
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-30 bg-white/95 backdrop-blur-md border-t border-card-border shadow-[0_-4px_20px_rgba(2,55,254,0.06)] lg:absolute lg:inset-x-0"
+      className="fixed inset-x-0 bottom-0 z-30 bg-white/95 backdrop-blur-md border-t border-card-border shadow-[0_-4px_20px_rgba(2,55,254,0.06)] lg:static lg:z-auto lg:mt-3 lg:rounded-2xl lg:border lg:border-card-border lg:shadow-card lg:bg-white lg:backdrop-blur-none"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       {children}

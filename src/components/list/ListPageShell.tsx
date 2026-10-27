@@ -18,7 +18,7 @@ export function ListPageShell({
   pagination,
 }: ListPageShellProps) {
   return (
-    <div className={`w-full ${pagination ? 'pb-[7.5rem] sm:pb-28 lg:pb-24' : 'pb-4'}`}>
+    <div className={`w-full ${pagination ? 'pb-[7.5rem] sm:pb-28 lg:pb-4' : 'pb-4'}`}>
       <div className="bg-white border border-card-border rounded-2xl p-4 mb-3 shadow-card relative overflow-hidden">
         <span className="absolute top-0 right-0 w-1.5 h-full bg-brand" />
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pr-2">

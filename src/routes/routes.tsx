@@ -15,8 +15,10 @@ import {
   faFilter,
   faHeadset,
   faTags,
+  faStore,
 
 } from '@fortawesome/free-solid-svg-icons';
+import SellerUserInfoRoute from '../pages/SellerUserInfo/SellerUserInfoRoute';
 import UserRoute from '../pages/User/UserRoute';
 import Role from '../pages/Role/Role';
 import Slider from '../pages/Slider/Slider';
@@ -333,6 +335,28 @@ export const RoutesData = [
     permission: ['admin', 'superAdmin', 'marketing'],
     title: 'گزارش قیف سفارش',
     icon: faFilter,
+  },
+  {
+    path: 'divar-sellers',
+    component: SellerUserInfoRoute,
+    ID: 23,
+    permission: ['admin', 'superAdmin', 'support'],
+    title: 'فروشنده‌های دیوار',
+    icon: faStore,
+    children: [
+      {
+        path: 'divar-sellers/list',
+        permission: ['admin', 'superAdmin', 'support'],
+        ID: 1,
+        title: 'لیست آگهی‌ها',
+      },
+      {
+        path: 'divar-sellers/manual',
+        permission: ['admin', 'superAdmin', 'support'],
+        ID: 2,
+        title: 'ثبت / ویرایش دستی',
+      },
+    ],
   },
   {
     path: 'utm',
