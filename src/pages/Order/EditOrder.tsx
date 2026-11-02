@@ -83,7 +83,7 @@ EditPieceProps
          
        
         })
-        setFiles("https://api.carmacheck.com/" + res.data.resultObject.imagePath)
+        setFiles("https://api-test.carmacheck.com/" + res.data.resultObject.imagePath)
     })
   }
       const getUsers = () => {
@@ -100,7 +100,7 @@ EditPieceProps
     })
   }
   //   const getUserAdddress = () => {
-  //   axios.get("https://api.carmacheck.com/api/User/getUserAddress",{
+  //   axios.get("https://api-test.carmacheck.com/api/User/getUserAddress",{
   //     headers: {Authorization: localStorage.getItem("accessToken")},
   //     params: {skip:0,take:10000}}).then((res:any) => {
   //     setUserAddress(res.data.data.resultObject);

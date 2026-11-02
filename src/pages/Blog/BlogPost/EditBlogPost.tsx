@@ -195,7 +195,7 @@ const EditBlogPost: React.FunctionComponent = () => {
                        />
                             <div className="col-span-4">
     <TextEditor 
-    baseUrl='https://api.carmacheck.com'
+    baseUrl='https://api-test.carmacheck.com'
     register={register}
       control={control}
       title="Content"

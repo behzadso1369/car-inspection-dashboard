@@ -15,8 +15,10 @@ import {
   orderModelName,
   vehicleKindLabel,
 } from '../Order/vehicleKind';
-
-const IMAGE_BASE = 'https://api.carmacheck.com/';
+import { publicAssetUrl } from '../../config/api/base-url';
+import { AdminPayment } from '../../_models/response/payment/adminPayment';
+import AdminPaymentList from '../../components/payment/AdminPaymentList';
+import { canManageInstallmentActions } from '../../utils/auth-role';
 
 interface SiteOrderDetailProps {
   showModal: boolean;
@@ -31,6 +33,7 @@ interface OrderDetailView {
   vehicleKind?: number | null;
   vehicleKindTitle?: string | null;
   user?: OrderDetailUser | null;
+  payments?: AdminPayment[];
 }
 
 const readOrderDetail = (payload: any, fallbackKind?: number | null): OrderDetailView | null => {
@@ -47,18 +50,19 @@ const readOrderDetail = (payload: any, fallbackKind?: number | null): OrderDetai
       order.id ||
       order.price != null);
   if (!looksLikeOrder) return null;
+  const payments = Array.isArray(payload.payments) ? (payload.payments as AdminPayment[]) : [];
   return {
     order,
     vehicleKind: payload.vehicleKind ?? order.vehicleKind ?? fallbackKind,
     vehicleKindTitle: payload.vehicleKindTitle ?? order.vehicleKindTitle,
     user: payload.user ?? null,
+    payments,
   };
 };
 
 const dash = 'ثبت نشده است';
 
-const toImageUrl = (path?: string | null) =>
-  path ? `${IMAGE_BASE}${path.replace(/\\/g, '/')}` : null;
+const toImageUrl = (path?: string | null) => publicAssetUrl(path);
 
 const formatMoney = (value?: number | null) => {
   if (value === null || value === undefined || Number.isNaN(Number(value))) return dash;
@@ -176,7 +180,10 @@ const SiteOrderDetail: React.FunctionComponent<SiteOrderDetailProps> = ({
   const [kind, setKind] = useState<number | null | undefined>(vehicleKind);
   const [kindTitle, setKindTitle] = useState<string | null | undefined>(initialOrder?.vehicleKindTitle);
   const [customer, setCustomer] = useState<OrderDetailUser | null>(null);
+  const [payments, setPayments] = useState<AdminPayment[]>([]);
   const [loading, setLoading] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
+  const showInstallmentActions = canManageInstallmentActions();
 
   const applyView = (view: OrderDetailView | null) => {
     if (!view) return;
@@ -184,6 +191,7 @@ const SiteOrderDetail: React.FunctionComponent<SiteOrderDetailProps> = ({
     setKind(view.vehicleKind);
     setKindTitle(view.vehicleKindTitle);
     setCustomer(view.user ?? null);
+    setPayments(view.payments ?? []);
   };
 
   useEffect(() => {
@@ -202,7 +210,7 @@ const SiteOrderDetail: React.FunctionComponent<SiteOrderDetailProps> = ({
       })
       .catch(() => undefined)
       .finally(() => setLoading(false));
-  }, [showModal, orderId, vehicleKind, initialOrder]);
+  }, [showModal, orderId, vehicleKind, initialOrder, reloadKey]);
 
   const payable = useMemo(() => {
     if (detail?.price == null) return null;
@@ -312,6 +320,14 @@ const SiteOrderDetail: React.FunctionComponent<SiteOrderDetailProps> = ({
                   }
                 />
               </div>
+            </Section>
+
+            <Section title="پرداخت‌ها">
+              <AdminPaymentList
+                payments={payments}
+                showAdminActions={showInstallmentActions}
+                onChanged={() => setReloadKey((k) => k + 1)}
+              />
             </Section>
 
             <Section title={motorcycle ? 'موتورسیکلت' : 'خودرو'}>

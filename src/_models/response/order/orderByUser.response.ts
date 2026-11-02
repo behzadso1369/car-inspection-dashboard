@@ -1,3 +1,5 @@
+import { AdminPayment } from '../payment/adminPayment';
+
 export interface OrderByUserPick {
   userId: string;
   fullName: string;
@@ -55,18 +57,7 @@ export interface OrderByUserLocation {
   displayAddress?: string | null;
 }
 
-export interface OrderByUserPayment {
-  id: number;
-  amount: number;
-  gateway?: string | null;
-  trackId?: string | null;
-  refId?: string | null;
-  cardNumber?: string | null;
-  status: number;
-  statusTitle?: string | null;
-  paymentUrl?: string | null;
-  paidAtPersian?: string | null;
-}
+export type OrderByUserPayment = AdminPayment;
 
 export interface OrderByUserReportItem {
   status: number;

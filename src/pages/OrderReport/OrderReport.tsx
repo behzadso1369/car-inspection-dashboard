@@ -162,7 +162,7 @@ const OrderReport: React.FunctionComponent = () => {
             {params.data.imagePath ? (
                  <Image
                  style={{width: "80px",height: "50px",borderRadius: "7px",objectFit: "cover" }}
-                 src={"https://api.carmacheck.com/" + params.data.imagePath}
+                 src={"https://api-test.carmacheck.com/" + params.data.imagePath}
                  />
             ) : (
               <button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>

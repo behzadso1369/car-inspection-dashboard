@@ -154,7 +154,7 @@ maxWidth:80,
                        <NavLink
        
                     style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
-                    to={ "https://api.carmacheck.com/" + imagePath }
+                    to={ "https://api-test.carmacheck.com/" + imagePath }
                     target='_blank'
                     >مشاهده لینک</NavLink> 
                         

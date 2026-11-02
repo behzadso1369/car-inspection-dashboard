@@ -9,7 +9,9 @@ import {
   ShortLinkItem,
 } from '../../_models/response/shortLink/shortLink.response';
 
-const ADMIN_BASE = 'https://api.carmacheck.com/api/admin';
+import { ADMIN_API_BASE } from '../../config/api/base-url';
+
+const ADMIN_BASE = ADMIN_API_BASE.replace(/\/$/, '');
 
 function assertSuccess(data: any) {
   if (data?.isSuccess === false) {
