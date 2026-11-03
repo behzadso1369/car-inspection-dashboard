@@ -15,10 +15,12 @@ import { ShortLinkItem } from '../../_models/response/shortLink/shortLink.respon
 import { deactivateShortLink, errorText, listShortLinks } from './shortLinkApi';
 import { copyText } from './shortLinkHelpers';
 import { formatToman } from '../SupportOrder/supportOrderApi';
-import { CHANNEL_OPTIONS, inputStyle } from './shortLinkConstants';
+import { inputStyle } from './shortLinkConstants';
 import Button, { SecondaryButton } from '../../libs/button/button';
+import { useShortLinkChannelOptions } from './useShortLinkChannelOptions';
 
 const ShortLinkList: React.FunctionComponent = () => {
+  const { selectOptions, channelTitle } = useShortLinkChannelOptions(false);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [count, setCount] = useState(0);
@@ -73,8 +75,7 @@ const ShortLinkList: React.FunctionComponent = () => {
     }
   };
 
-  const channelLabel = (sourceKey: string) =>
-    CHANNEL_OPTIONS.find((c) => c.value === sourceKey)?.label ?? sourceKey;
+  const channelLabel = (sourceKey: string) => channelTitle(sourceKey);
 
   const campaignCell = (row: ShortLinkItem) => {
     const parts = [
@@ -176,7 +177,7 @@ const ShortLinkList: React.FunctionComponent = () => {
         },
       },
     ],
-    [busyId]
+    [busyId, channelTitle]
   );
 
   const cardFields: CardField[] = useMemo(
@@ -218,7 +219,7 @@ const ShortLinkList: React.FunctionComponent = () => {
         getValue: (row) => (row.isActive ? 'فعال' : 'غیرفعال'),
       },
     ],
-    []
+    [channelTitle]
   );
 
   const cardActions: CardAction<ShortLinkItem>[] = useMemo(
@@ -267,9 +268,9 @@ const ShortLinkList: React.FunctionComponent = () => {
           style={inputStyle}
         >
           <option value="">همه</option>
-          {CHANNEL_OPTIONS.map((c) => (
+          {selectOptions.map((c) => (
             <option key={c.value} value={c.value}>
-              {c.label}
+              {c.label.split(' (')[0]}
             </option>
           ))}
         </select>

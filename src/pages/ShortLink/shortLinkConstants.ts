@@ -1,17 +1,7 @@
-import { ShortLinkChannel } from '../../_models/response/shortLink/shortLink.response';
-
 export const UTM_CAMPAIGN_PATTERN = /^[a-z0-9_]+$/;
-
-export const CHANNEL_OPTIONS: {
-  value: ShortLinkChannel;
-  label: string;
-}[] = [
-  { value: 'sms', label: 'پیامک' },
-  { value: 'telegram', label: 'تلگرام' },
-  { value: 'instagram', label: 'اینستاگرام' },
-  { value: 'aparat', label: 'آپارات' },
-  { value: 'divar', label: 'دیوار' },
-];
+export const CHANNEL_CODE_PATTERN = /^[a-z0-9_]+$/;
+export const CHANNEL_CODE_MAX_LEN = 40;
+export const CHANNEL_TITLE_MAX_LEN = 80;
 
 export const BULK_PHONE_LIMIT = 1000;
 

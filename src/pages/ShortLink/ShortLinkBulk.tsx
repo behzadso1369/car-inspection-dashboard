@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { ListPageShell } from '../../components/list/ListPageShell';
 import { DashboardCard } from '../../components/dashboard/DashboardCard';
@@ -18,9 +18,18 @@ import {
 } from './shortLinkHelpers';
 import { BULK_PHONE_LIMIT, inputStyle } from './shortLinkConstants';
 import { Field, SelectField } from './ShortLinkShared';
+import { useShortLinkChannelOptions } from './useShortLinkChannelOptions';
 
 const ShortLinkBulk: React.FunctionComponent = () => {
-  const [channel, setChannel] = useState<ShortLinkChannel>('sms');
+  const { selectOptions, loading: channelsLoading, error: channelsError } =
+    useShortLinkChannelOptions(true);
+  const [channel, setChannel] = useState<ShortLinkChannel>('');
+
+  useEffect(() => {
+    if (!channel && selectOptions.length > 0) {
+      setChannel(selectOptions[0].value);
+    }
+  }, [channel, selectOptions]);
   const [utmCampaign, setUtmCampaign] = useState('');
   const [utmContent, setUtmContent] = useState('');
   const [targetPath, setTargetPath] = useState('/');
@@ -43,6 +52,10 @@ const ShortLinkBulk: React.FunctionComponent = () => {
     }
     const phoneErr = validateBulkPhones(phones);
     if (phoneErr) return { error: phoneErr, body: null };
+
+    if (!channel) {
+      return { error: 'کانال فعال انتخاب نشده است.', body: null };
+    }
 
     return {
       error: null,
@@ -106,7 +119,13 @@ const ShortLinkBulk: React.FunctionComponent = () => {
       </p>
       <DashboardCard title="تنظیمات کمپین">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <SelectField label="کانال" value={channel} onChange={setChannel} />
+          <SelectField
+            label="کانال"
+            value={channel}
+            onChange={setChannel}
+            options={selectOptions}
+            loading={channelsLoading}
+          />
           <Field
             label="نام کمپین *"
             value={utmCampaign}
@@ -146,6 +165,12 @@ const ShortLinkBulk: React.FunctionComponent = () => {
           {parsedCount.length.toLocaleString('fa-IR')} شماره یکتا (پس از نرمال‌سازی)
         </p>
       </DashboardCard>
+
+      {channelsError ? (
+        <p className="text-amber-800 text-sm mt-3" role="alert">
+          {channelsError}
+        </p>
+      ) : null}
 
       {formError ? (
         <p className="text-red-600 text-sm mt-3" role="alert">

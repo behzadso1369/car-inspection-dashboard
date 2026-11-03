@@ -3,6 +3,7 @@ import ShortLinkCreate from './ShortLinkCreate';
 import ShortLinkBulk from './ShortLinkBulk';
 import ShortLinkCampaigns from './ShortLinkCampaigns';
 import ShortLinkFlow from './ShortLinkFlow';
+import ShortLinkChannels from './ShortLinkChannels';
 
 export const RoutesData = [
   {
@@ -27,6 +28,12 @@ export const RoutesData = [
     path: 'campaigns',
     component: ShortLinkCampaigns,
     ID: 4,
+    permission: ['admin', 'superAdmin', 'marketing'],
+  },
+  {
+    path: 'channels',
+    component: ShortLinkChannels,
+    ID: 6,
     permission: ['admin', 'superAdmin', 'marketing'],
   },
   {

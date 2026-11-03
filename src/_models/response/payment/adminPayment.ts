@@ -5,6 +5,9 @@ export type TicketTypeTitle = 'IPG' | 'CREDIT' | 'WALLET' | 'BNPL' | 'CREDIT-CAR
 export interface AdminPayment {
   id: number;
   amount: number;
+  baseAmount?: number | null;
+  surchargePercent?: number | null;
+  surchargeAmount?: number | null;
   gateway?: PaymentGateway | null;
   gatewayTitle?: string | null;
   trackId?: string | null;

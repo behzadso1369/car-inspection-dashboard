@@ -91,7 +91,11 @@ const ShortLinkFlow: React.FunctionComponent = () => {
               <tr className="border-b border-card-border/70">
                 <td className="py-2 px-3">ادمین پنل</td>
                 <td className="py-2 px-3">
-                  ساخت لینک، CSV انبوه، گزارش، خاموش کردن — فقط{' '}
+                  مدیریت{' '}
+                  <Link to="/utm/short-link/channels" className="text-brand underline">
+                    انواع کانال
+                  </Link>
+                  ، ساخت لینک، CSV انبوه، گزارش، خاموش کردن — فقط{' '}
                   <code className="text-xs bg-gray-100 px-1 rounded dir-ltr">/api/admin/short-links*</code>
                 </td>
               </tr>

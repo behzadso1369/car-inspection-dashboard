@@ -1,4 +1,14 @@
-import { BULK_PHONE_LIMIT, UTM_CAMPAIGN_PATTERN } from './shortLinkConstants';
+import {
+  BULK_PHONE_LIMIT,
+  CHANNEL_CODE_MAX_LEN,
+  CHANNEL_CODE_PATTERN,
+  CHANNEL_TITLE_MAX_LEN,
+  UTM_CAMPAIGN_PATTERN,
+} from './shortLinkConstants';
+import {
+  SaveShortLinkChannelBody,
+  ShortLinkChannelRecord,
+} from '../../_models/response/shortLink/shortLink.response';
 
 const PERSIAN_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
 const ARABIC_DIGITS = '٠١٢٣٤٥٦٧٨٩';
@@ -76,6 +86,41 @@ export function validateBulkPhones(phones: string[]): string | null {
 
 export async function copyText(text: string) {
   await navigator.clipboard.writeText(text);
+}
+
+export function channelsToSelectOptions(channels: ShortLinkChannelRecord[]) {
+  return [...channels]
+    .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || a.title.localeCompare(b.title, 'fa'))
+    .map((ch) => ({
+      value: ch.code,
+      label: `${ch.title} (${ch.utmSource} / ${ch.utmMedium})`,
+    }));
+}
+
+export function buildChannelTitleLookup(channels: ShortLinkChannelRecord[]) {
+  const map = new Map<string, string>();
+  for (const ch of channels) {
+    map.set(ch.code, ch.title);
+    if (ch.utmSource) map.set(ch.utmSource, ch.title);
+  }
+  return (key: string) => map.get(key) ?? key;
+}
+
+export function validateChannelForm(body: SaveShortLinkChannelBody): string | null {
+  const code = body.code.trim().toLowerCase();
+  if (!code) return 'کد کانال الزامی است';
+  if (code.length > CHANNEL_CODE_MAX_LEN) {
+    return `کد کانال حداکثر ${CHANNEL_CODE_MAX_LEN} کاراکتر`;
+  }
+  if (!CHANNEL_CODE_PATTERN.test(code)) {
+    return 'کد کانال باید انگلیسی کوچک، عدد یا _ باشد (مثل whatsapp)';
+  }
+  const title = body.title.trim();
+  if (!title) return 'عنوان کانال الزامی است';
+  if (title.length > CHANNEL_TITLE_MAX_LEN) {
+    return `عنوان حداکثر ${CHANNEL_TITLE_MAX_LEN} کاراکتر`;
+  }
+  return null;
 }
 
 export function formatPercent(value?: number | null) {

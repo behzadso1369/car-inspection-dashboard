@@ -160,6 +160,22 @@ export const AdminPaymentList: React.FunctionComponent<AdminPaymentListProps> = 
               </div>
             )}
 
+            {(payment.surchargeAmount != null && payment.surchargeAmount > 0) ||
+            (payment.baseAmount != null && payment.baseAmount !== payment.amount) ? (
+              <div className="mb-3 rounded-xl bg-slate-50 border border-slate-200 p-3 text-xs space-y-1">
+                <p className="font-bold text-primary text-sm mb-1">افزایش اقساطی</p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <span>مبلغ پایه: {formatToman(payment.baseAmount)}</span>
+                  <span>
+                    افزایش
+                    {payment.surchargePercent != null ? ` (${payment.surchargePercent}٪)` : ''}:{' '}
+                    {formatToman(payment.surchargeAmount)}
+                  </span>
+                  <span className="font-medium text-brand">نهایی: {formatToman(payment.amount)}</span>
+                </div>
+              </div>
+            ) : null}
+
             {installment && (
               <div className="mb-3 rounded-xl bg-teal-50/60 border border-teal-100 p-3 text-xs space-y-1">
                 <p className="font-bold text-teal-900 text-sm mb-1">اقساط / اعتباری</p>
