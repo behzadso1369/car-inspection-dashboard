@@ -49,6 +49,12 @@ export const isExpertRole = (token?: string) => getTokenRoles(token).includes('e
 
 export const isMarketingRole = (token?: string) => getTokenRoles(token).includes('marketing');
 
+/** Deliver / refund / reverse installment — Admin & SuperAdmin only. */
+export const canManageInstallmentActions = (token?: string) => {
+  const roles = getTokenRoles(token);
+  return roles.includes('admin') || roles.includes('superadmin');
+};
+
 const MARKETING_DENIED_PREFIXES = [
   '/users',
   '/roles',

@@ -1,4 +1,24 @@
-export type ShortLinkChannel = 'sms' | 'telegram' | 'instagram' | 'aparat' | 'divar';
+/** مقدار `channel` در ساخت لینک — کد انگلیسی از API کانال‌ها */
+export type ShortLinkChannel = string;
+
+export interface ShortLinkChannelRecord {
+  id: number;
+  code: string;
+  title: string;
+  utmSource: string;
+  utmMedium: string;
+  sortOrder: number;
+  isActive: boolean;
+}
+
+export interface SaveShortLinkChannelBody {
+  code: string;
+  title: string;
+  utmSource?: string;
+  utmMedium?: string;
+  sortOrder?: number;
+  isActive?: boolean;
+}
 
 export interface ShortLinkItem {
   id: number;

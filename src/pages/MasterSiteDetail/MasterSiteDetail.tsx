@@ -1,4 +1,4 @@
-﻿import React, { useRef, useState, Fragment, useMemo, useCallback, useEffect } from 'react';
+import React, { useRef, useState, Fragment, useMemo, useCallback, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -117,11 +117,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
    
     {
       field: 'companyName',
-      headerName: 'Ù†Ø§Ù… Ø´Ø±Ú©Øª ',
+      headerName: 'نام شرکت ',
       cellRenderer: (params:any) => {
         return (
           <>
-          {params.data.companyName ? <span>{params.data.companyName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
+          {params.data.companyName ? <span>{params.data.companyName}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
           </>
         )
      
@@ -129,11 +129,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
         },
         {
             field: 'slogan',
-            headerName: 'Ø§Ø³Ù„ÙˆÚ¯Ø§Ù†',
+            headerName: 'اسلوگان',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.slogan ? <span>{params.data.slogan}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
+                {params.data.slogan ? <span>{params.data.slogan}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
@@ -141,11 +141,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
               },
         {
             field: 'navbarPhoneNumber',
-            headerName: 'Ø´Ù…Ø§Ø±Ù‡ ØªÙ„ÙÙ† Ø¨Ø§Ù„Ø§',
+            headerName: 'شماره تلفن بالا',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.navbarPhoneNumber ? <span>{params.data.navbarPhoneNumber}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
+                {params.data.navbarPhoneNumber ? <span>{params.data.navbarPhoneNumber}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
@@ -153,11 +153,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
               },
         {
             field: 'phoneNumbers',
-            headerName: 'ØªÙ„ÙÙ† Ù‡Ø§',
+            headerName: 'تلفن ها',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.phoneNumbers ? <span>{params.data.phoneNumbers}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
+                {params.data.phoneNumbers ? <span>{params.data.phoneNumbers}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
@@ -165,11 +165,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
               },
         {
             field: 'workingHours',
-            headerName: 'Ø³Ø§Ø¹Ø§Øª Ú©Ø§Ø±ÛŒ',
+            headerName: 'ساعات کاری',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.workingHours ? <span>{params.data.workingHours}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
+                {params.data.workingHours ? <span>{params.data.workingHours}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
@@ -177,11 +177,11 @@ const MasterSiteDetail: React.FunctionComponent = () => {
               },
         {
             field: 'address',
-            headerName: 'Ø¢Ø¯Ø±Ø³',
+            headerName: 'آدرس',
             cellRenderer: (params:any) => {
               return (
                 <>
-                {params.data.address ? <span>{params.data.address}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª</button>}
+                {params.data.address ? <span>{params.data.address}</span> :<button className='bg-slate-400 text-xs py-2 cursor-pointer mr-2 rounded-md px-2  outline-none text-black'>ثبت نشده است</button>}
                 </>
               )
            
@@ -189,14 +189,14 @@ const MasterSiteDetail: React.FunctionComponent = () => {
               },
               {
                 field: 'imagePath',
-                headerName: 'Ø¹Ú©Ø³',
+                headerName: 'عکس',
                 autoHeight:true,
                 cellRenderer: (params:any) => {
                   return (
                     <div className="flex items-center py-2">
                          <Image
                     style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
-                    src={"https://api.carmacheck.com/" + params.data.imagePath}
+                    src={"https://api-test.carmacheck.com/" + params.data.imagePath}
                     />
                     </div>
                    
@@ -215,7 +215,7 @@ const MasterSiteDetail: React.FunctionComponent = () => {
   
     {
       field: 'action',
-      headerName: 'Ø¹Ù…Ù„ÛŒØ§Øª',
+      headerName: 'عملیات',
      
      
       cellRenderer: (params:any) => {
@@ -227,8 +227,8 @@ const MasterSiteDetail: React.FunctionComponent = () => {
             setShowEditModal(true)
             setSecretOfOurServiceQualityId(params.data.id);
             setSecretOfOurServiceQualityName(params.data.title);
-            }}>ÙˆÛŒØ±Ø§ÛŒØ´    </button>
-          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>Ø­Ø°Ù  </button>
+            }}>ویرایش    </button>
+          <button className='bg-red-500 mr-2 text-xs py-2 cursor-pointer rounded-md px-2  outline-none text-white' onClick={() => deleteBlog(params)}>حذف  </button>
     </div>
         
         
@@ -299,13 +299,13 @@ const MasterSiteDetail: React.FunctionComponent = () => {
   return (
     <Fragment>
       <ListPageShell
-        title="اطلاعات اصلی سایت"
+        title="??????? ???? ????"
         headerAction={
           <button
             className="bg-brand w-full sm:w-auto min-h-[44px] px-4 rounded-xl text-white"
             onClick={() => setShowAddModal(true)}
           >
-            اضافه کردن
+            ????? ????
           </button>
         }
         searchSlot={

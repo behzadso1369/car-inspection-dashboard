@@ -133,7 +133,7 @@ maxWidth:80,
                     <div className="flex items-center py-2">
                          <Image
                     style={{width: "100px",height: "70px",borderRadius: "7px",objectFit: "cover" }}
-                    src={"https://api.carmacheck.com/" + params.data.imagePath}
+                    src={"https://api-test.carmacheck.com/" + params.data.imagePath}
                     />
                     </div>
                    

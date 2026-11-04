@@ -4,14 +4,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import {
   OrderByUserBodyZone,
   OrderByUserOrder,
-  OrderByUserPayment,
   OrderByUserReportItem,
   OrderByUserWalletTx,
 } from '../../_models/response/order/orderByUser.response';
 import { formatSignedToman, formatToman, txAmountClass } from '../Wallet/walletHelpers';
 import { isMotorcycleOrder, orderInspectionName, orderModelName, vehicleKindLabel } from './vehicleKind';
-
-const IMAGE_BASE = 'https://api.carmacheck.com/';
+import { publicAssetUrl } from '../../config/api/base-url';
+import AdminPaymentList from '../../components/payment/AdminPaymentList';
 const dash = 'ثبت نشده است';
 
 const ITEM_STATUS: Record<number, { label: string; className: string }> = {
@@ -42,12 +41,7 @@ const REPORT_STATUS: Record<string, string> = {
   Submitted: 'ثبت‌شده',
 };
 
-const toImageUrl = (path?: string | null) => {
-  if (!path) return null;
-  const clean = path.replace(/\\/g, '/').replace(/^\/+/, '');
-  if (/^https?:\/\//i.test(clean)) return clean;
-  return `${IMAGE_BASE}${clean}`;
-};
+const toImageUrl = (path?: string | null) => publicAssetUrl(path);
 
 const clock = (value?: string | null) => {
   if (!value) return dash;
@@ -56,13 +50,6 @@ const clock = (value?: string | null) => {
 
 const hasCoords = (lat?: number | null, lng?: number | null) =>
   lat != null && lng != null && !Number.isNaN(Number(lat)) && !Number.isNaN(Number(lng));
-
-const paymentClass = (status?: number) => {
-  if (status === 1) return 'bg-emerald-50 text-mid-green';
-  if (status === 2) return 'bg-amber-50 text-amber-700';
-  if (status === 3) return 'bg-red-50 text-mid-red';
-  return 'bg-gray-100 text-gray-700';
-};
 
 const paymentTitleClass = (title?: string | null) => {
   if (!title) return 'bg-gray-100 text-gray-700';
@@ -166,41 +153,6 @@ const WalletRows: React.FC<{ rows: OrderByUserWalletTx[] }> = ({ rows }) => {
           ))}
         </tbody>
       </table>
-    </div>
-  );
-};
-
-const PaymentRows: React.FC<{ rows: OrderByUserPayment[] }> = ({ rows }) => {
-  if (!rows.length) {
-    return <p className="text-sm text-black-opacity-50">تراکنش درگاهی برای این سفارش نیست.</p>;
-  }
-  return (
-    <div className="space-y-2">
-      {rows.map((payment) => (
-        <div key={payment.id} className="rounded-xl border border-card-border p-3">
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="text-sm font-bold text-primary">{formatToman(payment.amount)}</span>
-            <Pill className={paymentClass(payment.status)}>{payment.statusTitle || dash}</Pill>
-            {payment.gateway && <span className="text-xs text-black-opacity-50">{payment.gateway}</span>}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-black-opacity-70">
-            <span>پیگیری: <bdi className="text-primary">{payment.trackId || '—'}</bdi></span>
-            <span>مرجع: <bdi className="text-primary">{payment.refId || '—'}</bdi></span>
-            <span>کارت: <bdi className="text-primary">{payment.cardNumber || '—'}</bdi></span>
-            <span>زمان پرداخت: {payment.paidAtPersian || '—'}</span>
-          </div>
-          {payment.paymentUrl && (
-            <a
-              href={payment.paymentUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-2 text-xs text-brand"
-            >
-              لینک درگاه
-            </a>
-          )}
-        </div>
-      ))}
     </div>
   );
 };
@@ -326,7 +278,7 @@ const OrderByUserDetail: React.FunctionComponent<OrderByUserDetailProps> = ({ op
             </Section>
 
             <Section title="تراکنش درگاه">
-              <PaymentRows rows={order.payments ?? []} />
+              <AdminPaymentList payments={order.payments ?? []} />
             </Section>
 
             <Section title="تراکنش کیف‌پول سفارش">

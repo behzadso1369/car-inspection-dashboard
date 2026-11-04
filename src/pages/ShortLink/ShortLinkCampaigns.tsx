@@ -9,8 +9,8 @@ import { ShortLinkCampaignRow } from '../../_models/response/shortLink/shortLink
 import { errorText, listCampaigns } from './shortLinkApi';
 import { formatPercent } from './shortLinkHelpers';
 import { formatToman } from '../SupportOrder/supportOrderApi';
-import { CHANNEL_OPTIONS } from './shortLinkConstants';
 import { ResponsiveDataView } from '../../components/list/ResponsiveDataView';
+import { useShortLinkChannelOptions } from './useShortLinkChannelOptions';
 import { CardField } from '../../types/list';
 
 function toIsoDate(value: unknown) {
@@ -22,6 +22,7 @@ function toIsoDate(value: unknown) {
 }
 
 const ShortLinkCampaigns: React.FunctionComponent = () => {
+  const { channelTitle } = useShortLinkChannelOptions(false);
   const { register, control, getValues } = useForm({
     defaultValues: { fromDate: '', toDate: '' },
   });
@@ -29,8 +30,7 @@ const ShortLinkCampaigns: React.FunctionComponent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const channelLabel = (source: string) =>
-    CHANNEL_OPTIONS.find((c) => c.value === source)?.label ?? source;
+  const channelLabel = (source: string) => channelTitle(source);
 
   const fetchReport = useCallback(() => {
     setLoading(true);
@@ -119,7 +119,7 @@ const ShortLinkCampaigns: React.FunctionComponent = () => {
         getValue: (row) => formatPercent(row.conversionRate),
       },
     ],
-    []
+    [channelTitle]
   );
 
   const getRowKey = (row: ShortLinkCampaignRow) =>

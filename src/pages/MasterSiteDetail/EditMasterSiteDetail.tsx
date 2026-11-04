@@ -78,7 +78,7 @@ EditPieceProps
           Address:res.data.resultObject.address,
           WorkingHours:res.data.resultObject.workingHours,
         })
-        setFiles("https://api.carmacheck.com/" + res.data.resultObject.imagePath)
+        setFiles("https://api-test.carmacheck.com/" + res.data.resultObject.imagePath)
     })
   }
   useEffect(() => {

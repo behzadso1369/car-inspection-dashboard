@@ -1,9 +1,10 @@
 import { Alert, Snackbar } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
+import { ADMIN_API_BASE } from "../config/api/base-url";
 
 const instance = axios.create({
-  baseURL: "https://api.carmacheck.com/api/admin/",
+  baseURL: ADMIN_API_BASE,
   withCredentials: true
 });
 
@@ -37,7 +38,7 @@ const AxiosInterceptor = ({ children }: any) => {
       console.log('🔄 Attempting to refresh token...');
       console.log('📍 Current cookies:', document.cookie);
       const res = await axios.get(
-        "https://api.carmacheck.com/api/admin/Auth/refreshToken",
+        `${ADMIN_API_BASE}Auth/refreshToken`,
         {
           withCredentials: true,
           headers: {

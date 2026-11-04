@@ -91,7 +91,11 @@ const ShortLinkFlow: React.FunctionComponent = () => {
               <tr className="border-b border-card-border/70">
                 <td className="py-2 px-3">ادمین پنل</td>
                 <td className="py-2 px-3">
-                  ساخت لینک، CSV انبوه، گزارش، خاموش کردن — فقط{' '}
+                  مدیریت{' '}
+                  <Link to="/utm/short-link/channels" className="text-brand underline">
+                    انواع کانال
+                  </Link>
+                  ، ساخت لینک، CSV انبوه، گزارش، خاموش کردن — فقط{' '}
                   <code className="text-xs bg-gray-100 px-1 rounded dir-ltr">/api/admin/short-links*</code>
                 </td>
               </tr>
@@ -204,7 +208,7 @@ const ShortLinkFlow: React.FunctionComponent = () => {
         <p className="text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 mt-4">
           برای تست واقعی روی دامنه، nginx باید <code className="dir-ltr text-[11px]">/s/</code> را
           به API پروکسی کند. تا قبل از آن می‌توانید{' '}
-          <code className="dir-ltr text-[11px]">https://api.carmacheck.com/s/ab12</code> را مستقیم
+          <code className="dir-ltr text-[11px]">https://api-test.carmacheck.com/s/ab12</code> را مستقیم
           باز کنید.
         </p>
       </DashboardCard>

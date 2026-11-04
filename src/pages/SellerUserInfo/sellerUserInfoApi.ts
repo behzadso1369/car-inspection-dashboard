@@ -5,7 +5,9 @@ import {
   SellerUserInfoUpsertResult,
 } from '../../_models/response/sellerUserInfo/sellerUserInfo.response';
 
-const SELLER_USER_INFO_BASE = 'https://api.carmacheck.com/api/SellerUserInfo';
+import { API_BASE } from '../../config/api/base-url';
+
+const SELLER_USER_INFO_BASE = `${API_BASE}SellerUserInfo`;
 
 function authHeaders() {
   const token = localStorage.getItem('accessToken') || '';

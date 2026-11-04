@@ -235,12 +235,23 @@ const FinanceUser: React.FunctionComponent = () => {
         title="کاربران مالی"
         subtitle="پرتال مالی جداست. کاربر رمز عبور ندارد و با کد یک‌بارمصرف وارد می‌شود. غیرفعال کردن ورود را می‌بندد؛ حذف، نرم است و کاربر را از لیست خارج می‌کند."
         headerAction={
-          <button
-            className="bg-brand w-full sm:w-auto min-h-[44px] px-4 rounded-xl text-white text-sm"
-            onClick={() => setShowAddModal(true)}
-          >
-            افزودن کاربر
-          </button>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <a
+              href="/finance/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[44px] items-center justify-center px-4 rounded-xl border border-brand text-brand text-sm"
+            >
+              ورود پرتال مالی
+            </a>
+            <button
+              type="button"
+              className="bg-brand w-full sm:w-auto min-h-[44px] px-4 rounded-xl text-white text-sm"
+              onClick={() => setShowAddModal(true)}
+            >
+              افزودن کاربر
+            </button>
+          </div>
         }
         searchSlot={
           <QuickSearch

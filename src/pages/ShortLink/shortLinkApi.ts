@@ -3,13 +3,17 @@ import instance from '../../helper/interceptor';
 import {
   BulkShortLinkBody,
   CreateShortLinkBody,
+  SaveShortLinkChannelBody,
   ShortLinkBulkResult,
   ShortLinkCampaignRow,
+  ShortLinkChannelRecord,
   ShortLinkCreated,
   ShortLinkItem,
 } from '../../_models/response/shortLink/shortLink.response';
 
-const ADMIN_BASE = 'https://api.carmacheck.com/api/admin';
+import { ADMIN_API_BASE } from '../../config/api/base-url';
+
+const ADMIN_BASE = ADMIN_API_BASE.replace(/\/$/, '');
 
 function assertSuccess(data: any) {
   if (data?.isSuccess === false) {
@@ -27,6 +31,42 @@ export function errorText(err: any) {
     err?.message ||
     'خطا در ارتباط با سرور'
   );
+}
+
+export async function listShortLinkChannels(
+  activeOnly = false
+): Promise<ShortLinkChannelRecord[]> {
+  const res = await instance.get('short-links/channels', {
+    params: activeOnly ? { activeOnly: true } : undefined,
+  });
+  const data = assertSuccess(res.data);
+  return (data.resultObject ?? []) as ShortLinkChannelRecord[];
+}
+
+export async function saveShortLinkChannel(
+  body: SaveShortLinkChannelBody,
+  id?: number
+): Promise<ShortLinkChannelRecord> {
+  const res = id
+    ? await instance.put(`short-links/channels/${id}`, body)
+    : await instance.post('short-links/channels', body);
+  const data = assertSuccess(res.data);
+  return data.resultObject as ShortLinkChannelRecord;
+}
+
+export async function activateShortLinkChannel(id: number): Promise<void> {
+  const res = await instance.post(`short-links/channels/${id}/activate`);
+  assertSuccess(res.data);
+}
+
+export async function deactivateShortLinkChannel(id: number): Promise<void> {
+  const res = await instance.post(`short-links/channels/${id}/deactivate`);
+  assertSuccess(res.data);
+}
+
+export async function deleteShortLinkChannel(id: number): Promise<void> {
+  const res = await instance.delete(`short-links/channels/${id}`);
+  assertSuccess(res.data);
 }
 
 export async function createShortLink(body: CreateShortLinkBody): Promise<ShortLinkCreated> {

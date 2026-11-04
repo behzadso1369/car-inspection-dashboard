@@ -228,6 +228,8 @@ FinanceUserCreate: "FinanceUser/Create",
 FinanceUserUpdate: "FinanceUser/Update",
 FinanceUserDelete: "FinanceUser/Delete",
 FinanceUserGet: "FinanceUser/Get",
+// Digipay (admin)
+DigipaySettings: "Digipay/Settings",
 
 
 

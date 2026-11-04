@@ -11,7 +11,9 @@ import {
   SupportOrderCreated,
 } from '../../_models/response/order/supportOrder.response';
 
-const SITE = 'https://api.carmacheck.com/api';
+import { API_BASE, API_ORIGIN } from '../../config/api/base-url';
+
+const SITE = API_BASE.replace(/\/$/, '');
 
 export function field(obj: any, name: string) {
   if (obj == null || typeof obj !== 'object') return undefined;
@@ -52,7 +54,7 @@ export function imageUrl(path?: string | null) {
   if (!path) return '';
   const clean = String(path).replace(/\\/g, '/');
   if (clean.startsWith('http')) return clean;
-  return `https://api.carmacheck.com/${clean.replace(/^\/+/, '')}`;
+  return `${API_ORIGIN}/${clean.replace(/^\/+/, '')}`;
 }
 
 export function formatToman(value?: number | null) {

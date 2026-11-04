@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { ListPageShell } from '../../components/list/ListPageShell';
@@ -13,12 +13,21 @@ import {
   validateCampaign,
 } from './shortLinkHelpers';
 import { CopyRow, Field, SelectField } from './ShortLinkShared';
+import { useShortLinkChannelOptions } from './useShortLinkChannelOptions';
 
 const ShortLinkCreate: React.FunctionComponent = () => {
+  const { selectOptions, loading: channelsLoading, error: channelsError } =
+    useShortLinkChannelOptions(true);
   const { register, control, getValues } = useForm({
     defaultValues: { expiresAt: '' },
   });
-  const [channel, setChannel] = useState<ShortLinkChannel>('sms');
+  const [channel, setChannel] = useState<ShortLinkChannel>('');
+
+  useEffect(() => {
+    if (!channel && selectOptions.length > 0) {
+      setChannel(selectOptions[0].value);
+    }
+  }, [channel, selectOptions]);
   const [utmCampaign, setUtmCampaign] = useState('');
   const [utmContent, setUtmContent] = useState('');
   const [targetPath, setTargetPath] = useState('/');
@@ -32,6 +41,11 @@ const ShortLinkCreate: React.FunctionComponent = () => {
     const campaignErr = validateCampaign(campaign);
     if (campaignErr) {
       setFormError(campaignErr);
+      return;
+    }
+
+    if (!channel) {
+      setFormError('یک کانال فعال انتخاب کنید یا از «انواع کانال» کانال اضافه کنید.');
       return;
     }
 
@@ -63,7 +77,13 @@ const ShortLinkCreate: React.FunctionComponent = () => {
     >
       <DashboardCard title="فرم ساخت">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <SelectField label="کانال" value={channel} onChange={setChannel} />
+          <SelectField
+            label="کانال"
+            value={channel}
+            onChange={setChannel}
+            options={selectOptions}
+            loading={channelsLoading}
+          />
           <Field
             label="نام کمپین (utm_campaign) *"
             placeholder="aban_takhfif"
@@ -95,6 +115,12 @@ const ShortLinkCreate: React.FunctionComponent = () => {
             />
           </div>
         </div>
+
+        {channelsError ? (
+          <p className="text-amber-800 text-sm mt-2" role="alert">
+            {channelsError}
+          </p>
+        ) : null}
 
         {formError ? (
           <p className="text-red-600 text-sm mt-4" role="alert">

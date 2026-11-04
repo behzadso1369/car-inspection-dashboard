@@ -45,6 +45,7 @@ import AboutUs from '../pages/AboutUs/AboutUs';
 import AboutUsRoute from '../pages/AboutUs/AboutUsRoute';
 import FinancialExpenditure from '../pages/FinancialExpenditure/FinancialExpenditure';
 import FinanceUser from '../pages/FinanceUser/FinanceUser';
+import DigipaySettings from '../pages/Digipay/DigipaySettings';
 import Order from '../pages/Order/Order';
 import SupportOrder from '../pages/SupportOrder/SupportOrder';
 import SiteOrder from '../pages/SiteOrder/SiteOrder';
@@ -391,6 +392,12 @@ export const RoutesData = [
         title: 'گزارش کمپین',
       },
       {
+        path: 'utm/short-link/channels',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 9,
+        title: 'انواع کانال',
+      },
+      {
         path: 'utm/short-link/flow',
         permission: ['admin', 'superAdmin', 'marketing'],
         ID: 5,
@@ -401,6 +408,30 @@ export const RoutesData = [
         permission: ['admin', 'superAdmin', 'marketing'],
         ID: 6,
         title: 'پیامک کارشناسی فروش',
+      },
+      {
+        path: 'utm/analytics/dashboard',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 7,
+        title: 'داشبورد UTM',
+      },
+      {
+        path: 'utm/analytics/channels',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 8,
+        title: 'کانال و کمپین',
+      },
+      {
+        path: 'utm/analytics/behavior',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 9,
+        title: 'مسیر و رفتار',
+      },
+      {
+        path: 'utm/analytics/visits',
+        permission: ['admin', 'superAdmin', 'marketing'],
+        ID: 10,
+        title: 'لاگ بازدید',
       },
     ],
   },
@@ -505,6 +536,14 @@ export const RoutesData = [
     ID: 12,
     permission: ['admin', 'superAdmin'],
     title: 'کاربران مالی',
+    icon: faCreditCard,
+  },
+  {
+    path: 'digipay/settings',
+    component: DigipaySettings,
+    ID: 120,
+    permission: ['admin', 'superAdmin'],
+    title: 'افزایش اقساط دیجی‌پی',
     icon: faCreditCard,
   },
   // {

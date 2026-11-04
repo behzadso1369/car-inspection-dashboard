@@ -22,6 +22,7 @@ import {
 
 const App: React.FunctionComponent = () => {
   const Login = React.lazy(() => import('./pages/Login/Login'));
+  const FinanceRoute = React.lazy(() => import('./pages/FinancePortal/FinanceRoute'));
 
 
   const lazyRoutes = RoutesData.map((item: any) => {
@@ -58,6 +59,14 @@ const App: React.FunctionComponent = () => {
               }
             />
                  <Route
+              path="finance/*"
+              element={
+                <React.Suspense fallback={<>...</>}>
+                  <FinanceRoute />
+                </React.Suspense>
+              }
+            />
+            <Route
               path="register"
               element={
                 <React.Suspense
